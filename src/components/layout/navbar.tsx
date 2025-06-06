@@ -5,6 +5,13 @@ import { User, Search } from "lucide-react";
 import Link from "next/link";
 import { FaCartShopping } from "react-icons/fa6";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  fadeInUp,
+  fadeIn,
+  slideInFromRight,
+  staggerChildren,
+} from "../animations/motion";
 
 export function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -18,7 +25,13 @@ export function Navbar() {
   };
 
   return (
-    <nav className="w-full p-4 flex items-center justify-between relative">
+    <motion.nav
+      className="w-full p-4 flex items-center justify-between relative max-w-[1440px] mx-auto"
+      initial="hidden"
+      animate="visible"
+      variants={fadeInUp}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
       <div className="flex items-center gap-2">
         <Image
           src="/images/furniro_logo.webp"
@@ -53,60 +66,86 @@ export function Navbar() {
       </div>
 
       {isSidebarOpen && (
-        <div
+        <motion.div
           className="fixed inset-0 backdrop-blur-[2px] bg-white/20 z-40"
           onClick={closeSidebar}
-        ></div>
+          initial="hidden"
+          animate="visible"
+          variants={fadeIn}
+        ></motion.div>
       )}
 
-      <div
-        className={`fixed top-0 right-0 h-full w-[300px] bg-white p-8 transform transition-transform duration-500 ease-in-out z-50 *:hover:opacity-85 shadow-md rounded-md ${
-          isSidebarOpen ? "translate-x-0" : "translate-x-full"
-        } md:hidden`}
+      <motion.div
+        className={`fixed top-0 right-0 h-full w-[300px] bg-white p-8 z-50 *:hover:opacity-85 shadow-md rounded-md md:hidden`}
+        initial="hidden"
+        animate={isSidebarOpen ? "visible" : "hidden"}
+        variants={slideInFromRight}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
       >
-        <ul className="flex flex-col gap-8 mt-10">
-          <li>
+        <motion.ul
+          className="flex flex-col gap-8 mt-10"
+          variants={staggerChildren}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.li variants={fadeInUp}>
             <Link href="/home" onClick={closeSidebar}>
               Home
             </Link>
-          </li>
-          <li>
+          </motion.li>
+          <motion.li variants={fadeInUp}>
             <Link href="/shop" onClick={closeSidebar}>
               Shop
             </Link>
-          </li>
-          <li>
+          </motion.li>
+          <motion.li variants={fadeInUp}>
             <Link href="/about" onClick={closeSidebar}>
               About
             </Link>
-          </li>
-          <li>
+          </motion.li>
+          <motion.li variants={fadeInUp}>
             <Link href="/contact" onClick={closeSidebar}>
               Contact
             </Link>
-          </li>
-        </ul>
-      </div>
+          </motion.li>
+        </motion.ul>
+      </motion.div>
 
-      <ul className="hidden md:flex items-center gap-[4.7rem] font-medium text-lg">
-        <li>
+      <motion.ul
+        className="hidden md:flex items-center gap-[4.7rem] font-medium text-lg"
+        variants={staggerChildren}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.li variants={fadeInUp}>
           <Link href="/home">Home</Link>
-        </li>
-        <li>
+        </motion.li>
+        <motion.li variants={fadeInUp}>
           <Link href="/shop">Shop</Link>
-        </li>
-        <li>
+        </motion.li>
+        <motion.li variants={fadeInUp}>
           <Link href="/about">About</Link>
-        </li>
-        <li>
+        </motion.li>
+        <motion.li variants={fadeInUp}>
           <Link href="/contact">Contact</Link>
-        </li>
-      </ul>
-      <div className="hidden md:flex items-center gap-8 *:hover:opacity-80 cursor-pointer">
-        <User />
-        <Search />
-        <FaCartShopping className="text-2xl" />
-      </div>
-    </nav>
+        </motion.li>
+      </motion.ul>
+      <motion.div
+        className="hidden md:flex items-center gap-8 *:hover:opacity-80 cursor-pointer"
+        variants={staggerChildren}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div variants={fadeInUp}>
+          <User />
+        </motion.div>
+        <motion.div variants={fadeInUp}>
+          <Search />
+        </motion.div>
+        <motion.div variants={fadeInUp}>
+          <FaCartShopping className="text-2xl" />
+        </motion.div>
+      </motion.div>
+    </motion.nav>
   );
 }
