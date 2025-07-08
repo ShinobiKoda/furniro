@@ -39,7 +39,7 @@ export function Navbar() {
           width={45}
           height={40}
         />
-        <h1 className="font-bold text-3xl">FURNIRO</h1>
+        <h1 className="font-bold text-2xl lg:text-[34px]">FURNIRO</h1>
       </div>
 
       <div
@@ -86,7 +86,7 @@ export function Navbar() {
           className="flex flex-col gap-8 mt-10"
           variants={staggerChildren}
           initial="hidden"
-          animate="visible"
+          animate={isSidebarOpen ? "visible" : "hidden"}
         >
           <motion.li variants={fadeInUp}>
             <Link href="/home" onClick={closeSidebar}>
@@ -112,7 +112,7 @@ export function Navbar() {
       </motion.div>
 
       <motion.ul
-        className="hidden md:flex items-center gap-[4.7rem] font-medium text-lg"
+        className="hidden md:flex items-center gap-[4.7rem] font-medium text-base"
         variants={staggerChildren}
         initial="hidden"
         animate="visible"
