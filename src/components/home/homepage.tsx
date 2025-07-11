@@ -25,6 +25,16 @@ export function HomePage() {
     "/images/furniro_room-inspiration-2.webp",
   ];
 
+  const setUpImages = [
+    "/images/furniro_furniture-setup-1.webp",
+    "/images/furniro_furniture-setup-2.webp",
+    "/images/furniro_furniture-setup-3.webp",
+    "/images/furniro_furniture-setup-4.webp",
+    "/images/furniro_furniture-setup-5.webp",
+    "/images/furniro_furniture-setup-6.webp",
+    "/images/furniro_furniture-setup-7.webp",
+  ];
+
   const slideInterval = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -56,7 +66,7 @@ export function HomePage() {
 
     return () => {
       if (slideInterval.current) clearInterval(slideInterval.current);
-    }; // Cleanup interval on component unmount
+    };
   }, [images.length]);
 
   const handleNext = () => {
@@ -76,6 +86,8 @@ export function HomePage() {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 5000);
   };
+
+  const getRandomRotation = () => Math.random() * 40 - 20; // Generates a random rotation between -20 and 20 degrees
 
   return (
     <div className="w-full">
@@ -254,6 +266,37 @@ export function HomePage() {
               ))}
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="w-full px-4 lg:px-12 max-w-[1440px] mx-auto mt-[67px] mb-[50px]">
+        <h2 className="flex flex-col text-center">
+          <span className="font-semibold lg:text-xl text-lg text-[#616161]">
+            Share your setup with
+          </span>
+          <span className="font-bold lg:text-[40px] text-2xl">
+            #FurniroFurniture
+          </span>
+        </h2>
+        <div className="relative w-full h-auto mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {setUpImages.map((image, index) => (
+            <div
+              key={index}
+              className="relative w-full h-40 sm:h-48 lg:h-56 overflow-hidden rounded-lg"
+              style={{
+                transform: `rotate(${getRandomRotation()}deg)`,
+                zIndex: Math.floor(Math.random() * 10),
+              }}
+            >
+              <Image
+                src={image}
+                alt={`Setup Image ${index + 1}`}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-lg shadow-lg"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
