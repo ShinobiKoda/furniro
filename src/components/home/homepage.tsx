@@ -44,21 +44,21 @@ export function HomePage() {
           </p>
         </div>
 
-        <div className="overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 py-6">
-          <div className="flex gap-5 justify-center max-w-[1440px] mx-auto">
+        <div className="overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4">
+          <div className="flex gap-5 justify-start max-w-[1440px] mx-auto lg:justify-center">
             {categories.map((category, index) => (
               <div
                 key={index}
-                className="flex-shrink-0 w-[80%] sm:w-[60%] md:w-[40%] lg:w-[30%] max-w-[300px] snap-center space-y-2"
+                className="flex-shrink-0 w-[80%] sm:w-[60%] md:w-[40%] lg:w-[30%] max-w-[300px] snap-center space-y-[30px]"
               >
                 <Image
                   src={`/images/furniro_${category.toLowerCase()}-illustration.webp`}
                   alt={`${category} category image`}
                   width={500}
                   height={500}
-                  className="w-full h-auto object-cover rounded-lg"
+                  className="w-full h-auto object-cover rounded-lg cursor-grab"
                 />
-                <p className="text-center">{category}</p>
+                <p className="text-center font-semibold lg:text-2xl text-lg">{category}</p>
               </div>
             ))}
           </div>
