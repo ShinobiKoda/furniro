@@ -1,7 +1,11 @@
-import type { NextConfig } from "next";
+// next.config.js
 
-const nextConfig: NextConfig = {
-  /* config options here */
+const { hostname } = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || '');
+
+const nextConfig = {
+  images: {
+    domains: [hostname], // e.g. xnxfyqqjrtjbjwceozbj.supabase.co
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

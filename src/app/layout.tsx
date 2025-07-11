@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "Funiro | Landing Page",
   description: "A place to find your next favorite furniture",
   icons: {
-    icon: "/images/furniro_logo.ico",
+    icon: "/images/furniro_logo.webp",
   },
 };
 
