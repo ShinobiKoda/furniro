@@ -3,10 +3,39 @@
 import { motion } from "framer-motion";
 import { zoomIn, fadeInUp, staggerChildren } from "../animations/motion";
 import Image from "next/image";
+import { FetchFurnitureDetails } from "@/api/FetchFurnitureDetails";
+import { useState, useEffect } from "react";
+import { FurnitureCard } from "../FurnitureCard";
+import { FurnitureDetails } from "@/types/type";
+import { SkeletonLoader } from "../animations/SkeletonLoader";
 
 const categories = ["Dining", "Living", "Bedroom"];
 
 export function HomePage() {
+  const [furnitureDetails, setFurnitureDetails] = useState<FurnitureDetails[]>(
+    []
+  );
+
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const getFurnitureDetails = async () => {
+      const { data, error } = await FetchFurnitureDetails();
+
+      if (error) {
+        console.log(error);
+      }
+
+      if (data) {
+        console.log(data);
+        setFurnitureDetails(data);
+        setLoading(false);
+      }
+    };
+
+    getFurnitureDetails();
+  }, []);
+
   return (
     <div className="w-full">
       <div className='bg-[url("/images/furniro_hero-bg.webp")] h-[700px] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center md:justify-end md:pr-8 px-3 md:px-0'>
@@ -38,7 +67,7 @@ export function HomePage() {
         </div>
       </div>
 
-      <div className="mt-[56.47px] w-full px-4 space-y-[62px]">
+      <div className="my-[56.47px] w-full px-4 space-y-[62px]">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -86,6 +115,24 @@ export function HomePage() {
             ))}
           </div>
         </motion.div>
+      </div>
+
+      <div className="flex items-center justify-center flex-col">
+        <h2>Our Products</h2>
+        {loading && (
+          <div className="grid grid-cols-1 lg:grid-cols-4 w-full px-4 items-center justify-center max-w-[1440px] mx-auto gap-4">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <SkeletonLoader key={index} />
+            ))}
+          </div>
+        )}
+        {furnitureDetails && (
+          <div className="grid grid-cols-1 lg:grid-cols-4 w-full px-4 items-center justify-center max-w-[1440px] mx-auto">
+            {furnitureDetails.map((furniture) => (
+              <FurnitureCard key={furniture.id} furniture={furniture} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

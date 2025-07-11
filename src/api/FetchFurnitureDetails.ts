@@ -5,7 +5,7 @@ export async function FetchFurnitureDetails(): Promise<{
   data: FurnitureDetails[] | null;
   error: string | null;
 }> {
-  const { data, error } = await supabase.from("Furniro").select();
+  const { data, error } = await supabase.from("Furniro_FurnitureDetails").select("*").limit(8);
 
   if (error) {
     console.log(error);
@@ -13,6 +13,7 @@ export async function FetchFurnitureDetails(): Promise<{
   }
 
   if (data) {
+    console.log(data)
     return { data, error: null };
   }
 
