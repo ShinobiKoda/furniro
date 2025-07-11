@@ -8,30 +8,34 @@ const categories = ["Dining", "Living", "Bedroom"];
 
 export function HomePage() {
   return (
-    <div className="w-full max-w-[1440px] mx-auto">
+    <div className="w-full">
       <div className='bg-[url("/images/furniro_hero-bg.webp")] h-[700px] w-full bg-cover bg-center bg-no-repeat flex items-center justify-center md:justify-end md:pr-8 px-3 md:px-0'>
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={zoomIn}
-          className="bg-[#FFF3E3] rounded-md p-6 flex flex-col gap-4 max-w-[543px]"
-        >
-          <p className="flex flex-col gap-1">
-            <span className="font-semibold tracking-[0.5rem]">New Arrival</span>
-            <span className="font-bold text-3xl lg:text-5xl text-[#B88E2F]">
-              Discover Our New Collection
-            </span>
-          </p>
-          <p className="font-medium lg:text-lg text-base">
-            Explore our curated collection of furniture designed to elevate your
-            living spaces with style and comfort.
-          </p>
-          <div className="w-full">
-            <button className="bg-[#B88E2F] text-white font-semibold py-3 px-9 mt-8 cursor-pointer hover:opacity-85">
-              BUY NOW
-            </button>
-          </div>
-        </motion.div>
+        <div className="w-full max-w-[1440px] mx-auto flex justify-end">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={zoomIn}
+            className="bg-[#FFF3E3] rounded-md p-6 flex flex-col gap-4 max-w-[543px]"
+          >
+            <p className="flex flex-col gap-1">
+              <span className="font-semibold tracking-[0.5rem]">
+                New Arrival
+              </span>
+              <span className="font-bold text-3xl lg:text-5xl text-[#B88E2F]">
+                Discover Our New Collection
+              </span>
+            </p>
+            <p className="font-medium lg:text-lg text-base">
+              Explore our curated collection of furniture designed to elevate
+              your living spaces with style and comfort.
+            </p>
+            <div className="w-full">
+              <button className="bg-[#B88E2F] text-white font-semibold py-3 px-9 mt-8 cursor-pointer hover:opacity-85">
+                BUY NOW
+              </button>
+            </div>
+          </motion.div>
+        </div>
       </div>
 
       <div className="mt-[56.47px] w-full px-4 space-y-[62px]">
@@ -49,7 +53,7 @@ export function HomePage() {
           </motion.h2>
           <motion.p
             variants={fadeInUp}
-            className="text-base lg:text-2xl font-normal"
+            className="text-base lg:text-2xl font-normal text-[#666666]"
           >
             Discover a variety of furniture styles to suit every room and taste.
           </motion.p>
