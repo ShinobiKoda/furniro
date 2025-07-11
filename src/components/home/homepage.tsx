@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { zoomIn } from "../animations/motion";
+import { zoomIn, fadeInUp, staggerChildren } from "../animations/motion";
 import Image from "next/image";
 
 const categories = ["Dining", "Living", "Bedroom"];
@@ -35,20 +35,37 @@ export function HomePage() {
       </div>
 
       <div className="mt-[56.47px] w-full px-4 space-y-[62px]">
-        <div className="text-center space-y-1">
-          <h2 className="lg:text-[32px] font-bold text-2xl">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={staggerChildren}
+          className="text-center space-y-1"
+        >
+          <motion.h2
+            variants={fadeInUp}
+            className="lg:text-[32px] font-bold text-2xl"
+          >
             Browse The Range
-          </h2>
-          <p className="text-base lg:text-2xl font-normal">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-          </p>
-        </div>
+          </motion.h2>
+          <motion.p
+            variants={fadeInUp}
+            className="text-base lg:text-2xl font-normal"
+          >
+            Discover a variety of furniture styles to suit every room and taste.
+          </motion.p>
+        </motion.div>
 
-        <div className="overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={staggerChildren}
+          className="overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4"
+        >
           <div className="flex gap-5 justify-start max-w-[1440px] mx-auto lg:justify-center">
             {categories.map((category, index) => (
-              <div
+              <motion.div
                 key={index}
+                variants={fadeInUp}
                 className="flex-shrink-0 w-[80%] sm:w-[60%] md:w-[40%] lg:w-[30%] max-w-[300px] snap-center space-y-[30px]"
               >
                 <Image
@@ -58,11 +75,13 @@ export function HomePage() {
                   height={500}
                   className="w-full h-auto object-cover rounded-lg cursor-grab"
                 />
-                <p className="text-center font-semibold lg:text-2xl text-lg">{category}</p>
-              </div>
+                <p className="text-center font-semibold lg:text-2xl text-lg">
+                  {category}
+                </p>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
