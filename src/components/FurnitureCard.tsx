@@ -11,7 +11,7 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureDetails }) {
           alt={furniture.name}
           width={300}
           height={200}
-          className="w-full"
+          className="w-full max-h-[301px]"
         />
         {furniture.discount_percent && (
           <span className="absolute top-4 right-4 h-12 w-12 rounded-full bg-red-400 text-white flex items-center justify-center font-medium text-base">

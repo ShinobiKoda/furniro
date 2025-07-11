@@ -17,6 +17,7 @@ export function HomePage() {
   );
 
   const [loading, setLoading] = useState<boolean>(true);
+  const [showAll, setShowAll] = useState<boolean>(false);
 
   useEffect(() => {
     const getFurnitureDetails = async () => {
@@ -93,6 +94,7 @@ export function HomePage() {
           animate="visible"
           variants={staggerChildren}
           className="overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           <div className="flex gap-5 justify-start max-w-[1440px] mx-auto lg:justify-center">
             {categories.map((category, index) => (
@@ -117,7 +119,7 @@ export function HomePage() {
         </motion.div>
       </div>
 
-      <div className="flex items-center justify-center flex-col gap-8">
+      <div className="flex items-center justify-center flex-col gap-8 mb-[69px]">
         <h2 className="font-bold lg;text-[40px] text-2xl">Our Products</h2>
         {loading && (
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 w-full px-4 items-center justify-center max-w-[1440px] mx-auto gap-8 min-h-[50vh]">
@@ -133,13 +135,23 @@ export function HomePage() {
             variants={staggerChildren}
             className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:grid-cols-4 w-full px-4 items-center justify-center max-w-[1440px] mx-auto"
           >
-            {furnitureDetails.map((furniture) => (
-              <motion.div key={furniture.id} variants={fadeInUp}>
-                <FurnitureCard furniture={furniture} />
-              </motion.div>
-            ))}
+            {(showAll ? furnitureDetails : furnitureDetails.slice(0, 8)).map(
+              (furniture) => (
+                <motion.div key={furniture.id} variants={fadeInUp}>
+                  <FurnitureCard furniture={furniture} />
+                </motion.div>
+              )
+            )}
           </motion.div>
         )}
+        <motion.button
+          className="w-full max-w-[245px] border border-[#B88E2F] text-[#B88E2F] font-semibold text-base py-3 cursor-pointer hover:opacity-85"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setShowAll(!showAll)}
+        >
+          {showAll ? "Show Less" : "Show More"}
+        </motion.button>
       </div>
     </div>
   );
