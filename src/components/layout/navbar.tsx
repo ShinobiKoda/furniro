@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { User, Search } from "lucide-react";
+import { User, Search, Heart } from "lucide-react";
 import Link from "next/link";
 import { FaCartShopping } from "react-icons/fa6";
 import { useState } from "react";
@@ -26,7 +26,7 @@ export function Navbar() {
 
   return (
     <motion.nav
-      className="w-full p-4 flex items-center justify-between relative max-w-[1440px] mx-auto"
+      className="w-full p-4 flex items-center justify-between relative max-w-[1440px] mx-auto lg:px-12"
       initial="hidden"
       animate="visible"
       variants={fadeInUp}
@@ -144,6 +144,9 @@ export function Navbar() {
         </motion.div>
         <motion.div variants={fadeInUp}>
           <FaCartShopping className="text-2xl" />
+        </motion.div>
+        <motion.div variants={fadeInUp}>
+          <Heart className="text-2xl" />
         </motion.div>
       </motion.div>
     </motion.nav>

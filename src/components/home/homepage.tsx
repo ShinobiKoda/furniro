@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { FurnitureCard } from "../FurnitureCard";
 import { FurnitureDetails } from "@/types/type";
 import { SkeletonLoader } from "../animations/SkeletonLoader";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const categories = ["Dining", "Living", "Bedroom"];
 
@@ -18,6 +19,11 @@ export function HomePage() {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [showAll, setShowAll] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const images = [
+    "/images/furniro_room-inspirations-1.webp",
+    "/images/furniro_room-inspiration-2.webp",
+  ];
 
   useEffect(() => {
     const getFurnitureDetails = async () => {
@@ -36,6 +42,24 @@ export function HomePage() {
 
     getFurnitureDetails();
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000); // Slide every 5 seconds
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, [images.length]);
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
 
   return (
     <div className="w-full">
@@ -133,7 +157,7 @@ export function HomePage() {
             initial="hidden"
             animate="visible"
             variants={staggerChildren}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:grid-cols-4 w-full px-4 items-center justify-center max-w-[1440px] mx-auto"
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:grid-cols-4 w-full px-4 lg:px-12 items-center justify-center max-w-[1440px] mx-auto"
           >
             {(showAll ? furnitureDetails : furnitureDetails.slice(0, 8)).map(
               (furniture) => (
@@ -152,6 +176,64 @@ export function HomePage() {
         >
           {showAll ? "Show Less" : "Show More"}
         </motion.button>
+      </div>
+
+      <div className="w-full bg-[#FCF8F3] py-8 lg:h-[670px] flex items-center justify-center">
+        <div className="w-full max-w-[1440px] mx-auto px-4 lg:px-12 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+          <div className="flex flex-col gap-3 text-center lg:text-left max-w-[390px] mx-auto">
+            <h2 className="font-bold lg:text-[40px] text-2xl text-[#3A3A3A]">
+              50+ Beautiful rooms inspiration
+            </h2>
+            <p className="font-medium lg:text-base text-[#616161] text-sm">
+              Our designer already made a lot of beautiful prototype rooms that
+              inspire you
+            </p>
+            <button className="w-full max-w-[176px] bg-[#B88E2F] py-3 text-base font-semibold text-white mx-auto lg:mx-0 hover:opacity-85 cursor-pointer">
+              Explore More
+            </button>
+          </div>
+          <div className="relative w-full max-w-[400px] overflow-hidden mx-auto">
+            <button
+              onClick={handlePrev}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black bg-white h-12 w-12 text-3xl flex items-center justify-center p-3 rounded-full z-10 hover:opacity-90 cursor-pointer"
+            >
+              <ArrowLeft />
+            </button>
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.5 }}
+              className="w-full h-auto"
+            >
+              <Image
+                src={images[currentIndex]}
+                alt={`Carousel Image ${currentIndex + 1}`}
+                width={500}
+                height={500}
+                className="w-full h-auto object-cover"
+              />
+            </motion.div>
+            <button
+              onClick={handleNext}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-black bg-white h-12 w-12 text-3xl flex items-center justify-center p-3 rounded-full z-10 hover:opacity-90 cursor-pointer"
+            >
+              <ArrowRight />
+            </button>
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+              {images.map((_, index) => (
+                <div
+                  key={index}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`w-3 h-3 rounded-full cursor-pointer ${
+                    index === currentIndex ? "bg-[#B88E2F]" : "bg-gray-300"
+                  }`}
+                ></div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

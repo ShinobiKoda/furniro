@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { FurnitureDetails } from "@/types/type";
 import { Share, LucideGitCompareArrows, Heart } from "lucide-react";
 
@@ -20,9 +21,12 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureDetails }) {
           </span>
         )}
         <div className="absolute inset-0 bg-black/10 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center gap-12 p-4 *:cursor-pointer">
-          <button className="bg-white px-6 py-2 shadow-md hover:bg-gray-200 transition font-semibold text-base text-[#B88E2F]">
+          <motion.button
+            whileTap={{ scale: 0.85 }}
+            className="bg-white px-6 py-2 shadow-md hover:bg-gray-200 font-semibold text-base text-[#B88E2F]"
+          >
             Add to Cart
-          </button>
+          </motion.button>
           <div className="flex gap-2 *:cursor-pointer *:hover:opacity-80">
             <button className="text-white font-semibold text-base flex items-center gap-2">
               <Share /> Share
@@ -30,7 +34,7 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureDetails }) {
             <button className="text-white font-semibold text-base flex items-center gap-2">
               <LucideGitCompareArrows /> Compare
             </button>
-              <button className="text-white font-semibold text-base flex items-center gap-2">
+            <button className="text-white font-semibold text-base flex items-center gap-2">
               <Heart /> Like
             </button>
           </div>
@@ -48,16 +52,16 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureDetails }) {
           {furniture.discount_price ? (
             <p className="flex items-center justify-between">
               <span className="font-semibold lg:text-xl text-base text-[#3A3A3A]">
-                ₦{furniture.discount_price}
+                ₦{furniture.discount_price.toLocaleString()}
               </span>
 
               <span className="font-normal text-base text-[#B0B0B0] line-through">
-                ₦{furniture.price}
+                ₦{furniture.price.toLocaleString()}
               </span>
             </p>
           ) : (
             <p className="font-semibold lg:text-xl text-base text-[#3A3A3A]">
-              ₦{furniture.price}
+              ₦{furniture.price.toLocaleString()}
             </p>
           )}
         </div>
