@@ -4,7 +4,7 @@ import { FurnitureDetails } from "@/types/type";
 
 export function FurnitureCard({ furniture }: { furniture: FurnitureDetails }) {
   return (
-    <div className="flex flex-col gap-3 w-full bg-[#F4F5F7] relative">
+    <div className="flex flex-col gap-3 w-full bg-[#F4F5F7] relative max-w-sm mx-auto">
       <div className="w-full max-w-sm min-h-[301px]">
         <Image
           src={furniture.image_url}
@@ -14,8 +14,8 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureDetails }) {
           className="w-full"
         />
         {furniture.discount_percent && (
-          <span className="absolute top-4 right-4 h-12 w-12 rounded-full bg-red-400 text-white flex items-center justify-center">
-            {furniture.discount_percent}%
+          <span className="absolute top-4 right-4 h-12 w-12 rounded-full bg-red-400 text-white flex items-center justify-center font-medium text-base">
+            -{furniture.discount_percent}%
           </span>
         )}
         <div className="w-full px-4 py-6">
