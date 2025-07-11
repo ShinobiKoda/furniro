@@ -117,8 +117,8 @@ export function HomePage() {
         </motion.div>
       </div>
 
-      <div className="flex items-center justify-center flex-col">
-        <h2>Our Products</h2>
+      <div className="flex items-center justify-center flex-col gap-8">
+        <h2 className="font-bold lg;text-[40px] text-2xl">Our Products</h2>
         {loading && (
           <div className="grid grid-cols-1 lg:grid-cols-4 w-full px-4 items-center justify-center max-w-[1440px] mx-auto gap-4">
             {Array.from({ length: 8 }).map((_, index) => (
@@ -127,7 +127,7 @@ export function HomePage() {
           </div>
         )}
         {furnitureDetails && (
-          <div className="grid grid-cols-1 lg:grid-cols-4 w-full px-4 items-center justify-center max-w-[1440px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:grid-cols-4 w-full px-4 items-center justify-center max-w-[1440px] mx-auto">
             {furnitureDetails.map((furniture) => (
               <FurnitureCard key={furniture.id} furniture={furniture} />
             ))}
