@@ -12,14 +12,27 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const categories = ["Dining", "Living", "Bedroom"];
 
-export function HomePage() {
-  const [furnitureDetails, setFurnitureDetails] = useState<FurnitureDetails[]>(
-    []
-  );
+const slideInVariants = {
+  hidden: { opacity: 0, x: -100 },
+  visible: (index: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: index * 0.3, // Stagger the animation by 0.3 seconds per image
+      duration: 0.8,
+      ease: "easeInOut",
+    },
+  }),
+};
 
+export function HomePage() {
   const [loading, setLoading] = useState<boolean>(true);
+  const [furnitureDetails, setFurnitureDetails] = useState<
+    FurnitureDetails[] | null
+  >(null);
   const [showAll, setShowAll] = useState<boolean>(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+
   const images = [
     "/images/furniro_room-inspirations-1.webp",
     "/images/furniro_room-inspiration-2.webp",
@@ -86,8 +99,6 @@ export function HomePage() {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 5000);
   };
-
-  const getRandomRotation = () => Math.random() * 40 - 20; // Generates a random rotation between -20 and 20 degrees
 
   return (
     <div className="w-full">
@@ -280,13 +291,13 @@ export function HomePage() {
         </h2>
         <div className="relative w-full h-auto mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {setUpImages.map((image, index) => (
-            <div
+            <motion.div
               key={index}
+              custom={index}
+              initial="hidden"
+              animate="visible"
+              variants={slideInVariants}
               className="relative w-full h-40 sm:h-48 lg:h-56 overflow-hidden rounded-lg"
-              style={{
-                transform: `rotate(${getRandomRotation()}deg)`,
-                zIndex: Math.floor(Math.random() * 10),
-              }}
             >
               <Image
                 src={image}
@@ -295,7 +306,7 @@ export function HomePage() {
                 objectFit="cover"
                 className="rounded-lg shadow-lg"
               />
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
