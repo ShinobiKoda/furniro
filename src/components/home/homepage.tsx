@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { zoomIn, fadeInUp, staggerChildren } from "../animations/motion";
 import Image from "next/image";
 import { FetchFurnitureDetails } from "@/api/FetchFurnitureDetails";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FurnitureCard } from "../FurnitureCard";
 import { FurnitureDetails } from "@/types/type";
 import { SkeletonLoader } from "../animations/SkeletonLoader";
@@ -25,6 +25,8 @@ export function HomePage() {
     "/images/furniro_room-inspiration-2.webp",
   ];
 
+  const slideInterval = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     const getFurnitureDetails = async () => {
       const { data, error } = await FetchFurnitureDetails();
@@ -44,21 +46,35 @@ export function HomePage() {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); // Slide every 5 seconds
+    const startSliding = () => {
+      slideInterval.current = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      }, 5000);
+    };
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+    startSliding();
+
+    return () => {
+      if (slideInterval.current) clearInterval(slideInterval.current);
+    }; // Cleanup interval on component unmount
   }, [images.length]);
 
   const handleNext = () => {
+    if (slideInterval.current) clearInterval(slideInterval.current);
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    slideInterval.current = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000);
   };
 
   const handlePrev = () => {
+    if (slideInterval.current) clearInterval(slideInterval.current);
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
+    slideInterval.current = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000);
   };
 
   return (
@@ -193,18 +209,20 @@ export function HomePage() {
             </button>
           </div>
           <div className="relative w-full max-w-[400px] overflow-hidden mx-auto">
-            <button
+            <motion.button
               onClick={handlePrev}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black bg-white h-12 w-12 text-3xl flex items-center justify-center p-3 rounded-full z-10 hover:opacity-90 cursor-pointer"
             >
               <ArrowLeft />
-            </button>
+            </motion.button>
             <motion.div
               key={currentIndex}
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
               className="w-full h-auto"
             >
               <Image
@@ -215,21 +233,24 @@ export function HomePage() {
                 className="w-full h-auto object-cover"
               />
             </motion.div>
-            <button
+            <motion.button
               onClick={handleNext}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               className="absolute right-4 top-1/2 transform -translate-y-1/2 text-black bg-white h-12 w-12 text-3xl flex items-center justify-center p-3 rounded-full z-10 hover:opacity-90 cursor-pointer"
             >
               <ArrowRight />
-            </button>
+            </motion.button>
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
               {images.map((_, index) => (
-                <div
+                <motion.div
                   key={index}
                   onClick={() => setCurrentIndex(index)}
+                  whileHover={{ scale: 1.2 }}
                   className={`w-3 h-3 rounded-full cursor-pointer ${
                     index === currentIndex ? "bg-[#B88E2F]" : "bg-gray-300"
                   }`}
-                ></div>
+                ></motion.div>
               ))}
             </div>
           </div>
