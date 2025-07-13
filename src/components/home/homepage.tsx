@@ -9,7 +9,6 @@ import { FurnitureCard } from "../FurnitureCard";
 import { FurnitureDetails } from "@/types/type";
 import { SkeletonLoader } from "../animations/SkeletonLoader";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Footer } from "@/components/Footer";
 
 const categories = ["Dining", "Living", "Bedroom"];
 
@@ -339,7 +338,6 @@ export function HomePage() {
           ))}
         </Section>
       </div>
-      <Footer />
     </div>
   );
 }

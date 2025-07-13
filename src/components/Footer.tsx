@@ -1,16 +1,38 @@
 "use client";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { staggerChildren, fadeInUp } from "./animations/motion";
+import { triggerConfetti } from "./animations/confetti";
 
 export function Footer() {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubscribe = () => {
+    if (!email) {
+      setError("Email is required");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    setError("");
+    triggerConfetti();
+    setEmail("");
+  };
+
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
       variants={staggerChildren}
-      className="w-full border-t-2 mt-[50px] px-4 py-12 lg:px-12"
+      className="w-full border-t-2 mt-[50px] px-4 py-12 lg:px-12 relative"
     >
       <motion.div
         variants={staggerChildren}
@@ -62,19 +84,36 @@ export function Footer() {
           className="font-medium text-base space-y-10 lg:space-y-[50px]"
         >
           <h3 className="text-[#9F9F9F]">Newsletter</h3>
-          <div className="flex flex-row items-center gap-4">
-            <input
-              type="email"
-              placeholder="Enter your email address"
-              className="outline-none border-b border-b-black max-w-[193px]"
-            />
-            <button className="w-full max-w-[75px] border-b border-b-black outline-none font-medium text-sm">
-              SUBSCRIBE
-            </button>
-          </div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubscribe();
+            }}
+            className="flex flex-col gap-2"
+          >
+            <div className="flex flex-row items-center gap-4 *:cursor-pointer">
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="outline-none border-b border-b-black max-w-[193px]"
+              />
+              <button
+                type="submit"
+                className="w-full max-w-[75px] border-b border-b-black outline-none font-medium text-sm hover:opacity-85"
+              >
+                SUBSCRIBE
+              </button>
+            </div>
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+          </form>
         </motion.div>
       </motion.div>
-      <motion.p variants={fadeInUp} className="font-normal text-base mt-[35px] w-full max-w-[1440px] mx-auto">
+      <motion.p
+        variants={fadeInUp}
+        className="font-normal text-base mt-[35px] w-full max-w-[1440px] mx-auto"
+      >
         &copy; 2025 Furniro. All rights reserved.
       </motion.p>
     </motion.div>
