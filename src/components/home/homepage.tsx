@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { zoomIn, fadeInUp, staggerChildren } from "../animations/motion";
 import Image from "next/image";
 import { FetchFurnitureDetails } from "@/api/FetchFurnitureDetails";
@@ -9,6 +9,7 @@ import { FurnitureCard } from "../FurnitureCard";
 import { FurnitureDetails } from "@/types/type";
 import { SkeletonLoader } from "../animations/SkeletonLoader";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Footer } from "@/components/Footer";
 
 const categories = ["Dining", "Living", "Bedroom"];
 
@@ -23,6 +24,29 @@ const slideInVariants = {
       ease: "easeInOut",
     },
   }),
+};
+
+const Section = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={fadeInUp}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
 };
 
 export function HomePage() {
@@ -132,94 +156,95 @@ export function HomePage() {
       </div>
 
       <div className="my-[56.47px] w-full px-4 space-y-[62px]">
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={staggerChildren}
-          className="text-center space-y-1"
-        >
-          <motion.h2
-            variants={fadeInUp}
-            className="lg:text-[32px] font-bold text-2xl"
-          >
-            Browse The Range
-          </motion.h2>
-          <motion.p
-            variants={fadeInUp}
-            className="text-base lg:text-2xl font-normal text-[#666666]"
-          >
-            Discover a variety of furniture styles to suit every room and taste.
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={staggerChildren}
-          className="overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        >
-          <div className="flex gap-5 justify-start max-w-[1440px] mx-auto lg:justify-center">
-            {categories.map((category, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                className="flex-shrink-0 w-[80%] sm:w-[60%] md:w-[40%] lg:w-[30%] max-w-[300px] snap-center space-y-[30px]"
-              >
-                <Image
-                  src={`/images/furniro_${category.toLowerCase()}-illustration.webp`}
-                  alt={`${category} category image`}
-                  width={500}
-                  height={500}
-                  className="w-full h-auto object-cover rounded-lg cursor-grab"
-                />
-                <p className="text-center font-semibold lg:text-2xl text-lg">
-                  {category}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
-
-      <div className="flex items-center justify-center flex-col gap-8 mb-[69px]">
-        <h2 className="font-bold lg;text-[40px] text-2xl">Our Products</h2>
-        {loading && (
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 w-full px-4 items-center justify-center max-w-[1440px] mx-auto gap-8 min-h-[50vh]">
-            {Array.from({ length: 8 }).map((_, index) => (
-              <SkeletonLoader key={index} />
-            ))}
-          </div>
-        )}
-        {furnitureDetails && (
+        <Section>
           <motion.div
-            initial="hidden"
-            animate="visible"
             variants={staggerChildren}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:grid-cols-4 w-full px-4 lg:px-12 items-center justify-center max-w-[1440px] mx-auto"
+            className="text-center space-y-1"
           >
-            {(showAll ? furnitureDetails : furnitureDetails.slice(0, 8)).map(
-              (furniture) => (
-                <motion.div key={furniture.id} variants={fadeInUp}>
-                  <FurnitureCard furniture={furniture} />
-                </motion.div>
-              )
-            )}
+            <motion.h2
+              variants={fadeInUp}
+              className="lg:text-[32px] font-bold text-2xl"
+            >
+              Browse The Range
+            </motion.h2>
+            <motion.p
+              variants={fadeInUp}
+              className="text-base lg:text-2xl font-normal text-[#666666]"
+            >
+              Discover a variety of furniture styles to suit every room and
+              taste.
+            </motion.p>
           </motion.div>
-        )}
-        <motion.button
-          className="w-full max-w-[245px] border border-[#B88E2F] text-[#B88E2F] font-semibold text-base py-3 cursor-pointer hover:opacity-85"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setShowAll(!showAll)}
-        >
-          {showAll ? "Show Less" : "Show More"}
-        </motion.button>
+        </Section>
+
+        <Section>
+          <motion.div
+            variants={staggerChildren}
+            className="overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
+            <div className="flex gap-5 justify-start max-w-[1440px] mx-auto lg:justify-center">
+              {categories.map((category, index) => (
+                <motion.div
+                  key={index}
+                  variants={fadeInUp}
+                  className="flex-shrink-0 w-[80%] sm:w-[60%] md:w-[40%] lg:w-[30%] max-w-[300px] snap-center space-y-[30px]"
+                >
+                  <Image
+                    src={`/images/furniro_${category.toLowerCase()}-illustration.webp`}
+                    alt={`${category} category image`}
+                    width={500}
+                    height={500}
+                    className="w-full h-auto object-cover rounded-lg cursor-grab"
+                  />
+                  <p className="text-center font-semibold lg:text-2xl text-lg">
+                    {category}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </Section>
       </div>
 
-      <div className="w-full bg-[#FCF8F3] py-8 lg:h-[670px] flex items-center justify-center">
-        <div className="w-full max-w-[1440px] mx-auto px-4 lg:px-12 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-          <div className="flex flex-col gap-3 text-center lg:text-left max-w-[390px] mx-auto">
+      <Section>
+        <div className="flex items-center justify-center flex-col gap-8 mb-[69px]">
+          <h2 className="font-bold lg;text-[40px] text-2xl">Our Products</h2>
+          {loading && (
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 w-full px-4 items-center justify-center max-w-[1440px] mx-auto gap-8 min-h-[50vh]">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <SkeletonLoader key={index} />
+              ))}
+            </div>
+          )}
+          {furnitureDetails && (
+            <motion.div
+              variants={staggerChildren}
+              className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:grid-cols-4 w-full px-4 lg:px-12 items-center justify-center max-w-[1440px] mx-auto"
+            >
+              {(showAll ? furnitureDetails : furnitureDetails.slice(0, 8)).map(
+                (furniture) => (
+                  <motion.div key={furniture.id} variants={fadeInUp}>
+                    <FurnitureCard furniture={furniture} />
+                  </motion.div>
+                )
+              )}
+            </motion.div>
+          )}
+          <motion.button
+            className="w-full max-w-[245px] border border-[#B88E2F] text-[#B88E2F] font-semibold text-base py-3 cursor-pointer hover:opacity-85"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowAll(!showAll)}
+          >
+            {showAll ? "Show Less" : "Show More"}
+          </motion.button>
+        </div>
+      </Section>
+
+      <div className="w-full bg-[#FCF8F3] py-8 lg:h-[670px] flex items-center">
+        <div className="w-full max-w-[1440px] mx-auto px-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:px-12">
+          <div className="flex flex-col gap-3 text-center lg:text-left max-w-[390px]">
             <h2 className="font-bold lg:text-[40px] text-2xl text-[#3A3A3A]">
               50+ Beautiful rooms inspiration
             </h2>
@@ -231,7 +256,7 @@ export function HomePage() {
               Explore More
             </button>
           </div>
-          <div className="relative w-full max-w-[400px] overflow-hidden mx-auto">
+          <div className="relative w-full max-w-[400px] overflow-hidden">
             <motion.button
               onClick={handlePrev}
               whileHover={{ scale: 1.1 }}
@@ -281,15 +306,17 @@ export function HomePage() {
       </div>
 
       <div className="w-full px-4 lg:px-12 max-w-[1440px] mx-auto mt-[67px] mb-[50px]">
-        <h2 className="flex flex-col text-center">
-          <span className="font-semibold lg:text-xl text-lg text-[#616161]">
-            Share your setup with
-          </span>
-          <span className="font-bold lg:text-[40px] text-2xl">
-            #FurniroFurniture
-          </span>
-        </h2>
-        <div className="relative w-full h-auto mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <Section className="text-center">
+          <h2 className="flex flex-col">
+            <span className="font-semibold lg:text-xl text-lg text-[#616161]">
+              Share your setup with
+            </span>
+            <span className="font-bold lg:text-[40px] text-2xl">
+              #FurniroFurniture
+            </span>
+          </h2>
+        </Section>
+        <Section className="relative w-full h-auto mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {setUpImages.map((image, index) => (
             <motion.div
               key={index}
@@ -308,8 +335,9 @@ export function HomePage() {
               />
             </motion.div>
           ))}
-        </div>
+        </Section>
       </div>
+      <Footer />
     </div>
   );
 }
