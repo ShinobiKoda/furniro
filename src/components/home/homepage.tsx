@@ -219,6 +219,8 @@ export function HomePage() {
           )}
           {furnitureDetails && (
             <motion.div
+              initial="hidden"
+              animate="visible"
               variants={staggerChildren}
               className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:grid-cols-4 w-full px-4 lg:px-12 items-center justify-center max-w-[1440px] mx-auto"
             >
