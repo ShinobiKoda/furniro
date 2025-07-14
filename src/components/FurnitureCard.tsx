@@ -1,10 +1,11 @@
 "use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { FurnitureDetails } from "@/types/type";
-import { Share, LucideGitCompareArrows, Heart } from "lucide-react";
+import { FurnitureProps } from "@/types/type";
+import { Share, Heart } from "lucide-react";
+import { FaArrowsLeftRight } from "react-icons/fa6";
 
-export function FurnitureCard({ furniture }: { furniture: FurnitureDetails }) {
+export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
   return (
     <div className="group flex flex-col gap-3 w-full bg-[#F4F5F7] relative max-w-sm mx-auto">
       <div className="w-full max-w-sm min-h-[301px] relative overflow-hidden">
@@ -32,7 +33,7 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureDetails }) {
               <Share /> Share
             </button>
             <button className="text-white font-semibold text-base flex items-center gap-2">
-              <LucideGitCompareArrows /> Compare
+              <FaArrowsLeftRight /> Compare
             </button>
             <button className="text-white font-semibold text-base flex items-center gap-2">
               <Heart /> Like

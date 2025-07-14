@@ -1,11 +1,11 @@
 import supabase from "@/config/supabaseClient";
-import { FurnitureDetails } from "@/types/type";
+import { FurnitureProps } from "@/types/type";
 
-export async function FetchFurnitureDetails(): Promise<{
-  data: FurnitureDetails[] | null;
+export async function FetchFurnitures(): Promise<{
+  data: FurnitureProps[] | null;
   error: string | null;
 }> {
-  const { data, error } = await supabase.from("Furniro_FurnitureDetails").select("*");
+  const { data, error } = await supabase.from("Furniro_Furnitures").select("*");
 
   if (error) {
     console.log(error);

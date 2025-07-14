@@ -1,5 +1,12 @@
-import { AboutPage } from "@/components/about/about-page";
+"use client"
+import { AboutHomepage } from "@/components/about/AboutHomepage";
+import { usePathname } from "next/navigation";
+
 
 export default function About(){
-  return <AboutPage />;
+  const pathname = usePathname();
+  const pathSegments = pathname.split("/").filter(Boolean);
+
+
+  return <AboutHomepage pathSegments={pathSegments} />;
 }

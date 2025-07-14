@@ -1,5 +1,11 @@
-import { ShopPage } from "@/components/shop/shop-page";
+"use client";
 
-export default function Shop(){
-  return <ShopPage />;
+import { ShopHomepage } from "@/components/shop/ShopHomepage";
+import { usePathname } from "next/navigation";
+
+export default function Shop() {
+  const pathname = usePathname();
+  const pathSegments = pathname.split("/").filter(Boolean);
+
+  return <ShopHomepage pathSegments={pathSegments} />;
 }

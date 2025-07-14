@@ -6,12 +6,19 @@ import Link from "next/link";
 import { FaCartShopping } from "react-icons/fa6";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Montserrat } from "next/font/google";
 import {
   fadeInUp,
   fadeIn,
   slideInFromRight,
   staggerChildren,
 } from "../animations/motion";
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -39,11 +46,11 @@ export function Navbar() {
           width={45}
           height={40}
         />
-        <h1 className="font-bold text-2xl lg:text-[34px]">FURNIRO</h1>
+        <h1 className={`font-bold text-2xl lg:text-[34px] ${montserrat.className}`}>Furniro</h1>
       </div>
 
       <div
-        className={`w-7 h-6 flex flex-col md:hidden gap-[5px] cursor-pointer hover:opacity-85 relative right-0 top-0 z-60 *:rounded-md ${
+        className={`w-7 h-6 flex flex-col lg:hidden gap-[5px] cursor-pointer hover:opacity-85 relative right-0 top-0 z-60 *:rounded-md ${
           isSidebarOpen ? "rotate-90" : ""
         }`}
         onClick={toggleSidebar}
@@ -76,7 +83,7 @@ export function Navbar() {
       )}
 
       <motion.div
-        className={`fixed top-0 right-0 h-full w-[300px] bg-white p-8 z-50 *:hover:opacity-85 shadow-md rounded-md md:hidden`}
+        className={`fixed top-0 right-0 h-full w-[300px] bg-white p-8 z-50 *:hover:opacity-85 shadow-md rounded-md lg:hidden`}
         initial="hidden"
         animate={isSidebarOpen ? "visible" : "hidden"}
         variants={slideInFromRight}
@@ -112,7 +119,7 @@ export function Navbar() {
       </motion.div>
 
       <motion.ul
-        className="hidden md:flex items-center gap-[4.7rem] font-medium text-base"
+        className="hidden lg:flex items-center gap-[4.7rem] font-medium text-base"
         variants={staggerChildren}
         initial="hidden"
         animate="visible"
@@ -131,7 +138,7 @@ export function Navbar() {
         </motion.li>
       </motion.ul>
       <motion.div
-        className="hidden md:flex items-center gap-8 *:hover:opacity-80 cursor-pointer"
+        className="hidden lg:flex items-center gap-8 *:hover:opacity-80 cursor-pointer"
         variants={staggerChildren}
         initial="hidden"
         animate="visible"

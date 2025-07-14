@@ -27,12 +27,12 @@ export function Footer() {
   };
 
   return (
-    <motion.div
+    <motion.footer
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
       variants={staggerChildren}
-      className="w-full border-t-2 mt-[50px] px-4 py-12 lg:px-12 relative"
+      className="w-full border-t-2 mt-[50px] px-4 py-12 lg:px-12 relative h-full"
     >
       <motion.div
         variants={staggerChildren}
@@ -97,7 +97,7 @@ export function Footer() {
                 placeholder="Enter your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="outline-none border-b border-b-black max-w-[193px]"
+                className="outline-none border-b border-b-black max-w-[193px] text-sm"
               />
               <button
                 type="submit"
@@ -116,6 +116,6 @@ export function Footer() {
       >
         &copy; 2025 Furniro. All rights reserved.
       </motion.p>
-    </motion.div>
+    </motion.footer>
   );
 }

@@ -3,12 +3,13 @@
 import { motion, useInView } from "framer-motion";
 import { zoomIn, fadeInUp, staggerChildren } from "../animations/motion";
 import Image from "next/image";
-import { FetchFurnitureDetails } from "@/api/FetchFurnitureDetails";
+import { FetchFurnitures } from "@/api/FetchFurnitureDetails";
 import { useState, useEffect, useRef } from "react";
 import { FurnitureCard } from "../FurnitureCard";
-import { FurnitureDetails } from "@/types/type";
+import { FurnitureProps } from "@/types/type";
 import { SkeletonLoader } from "../animations/SkeletonLoader";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Footer } from "@/components/Footer";
 
 const categories = ["Dining", "Living", "Bedroom"];
 
@@ -18,7 +19,7 @@ const slideInVariants = {
     opacity: 1,
     x: 0,
     transition: {
-      delay: index * 0.3, // Stagger the animation by 0.3 seconds per image
+      delay: index * 0.3, 
       duration: 0.8,
       ease: "easeInOut",
     },
@@ -51,7 +52,7 @@ const Section = ({
 export function HomePage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [furnitureDetails, setFurnitureDetails] = useState<
-    FurnitureDetails[] | null
+    FurnitureProps[] | null
   >(null);
   const [showAll, setShowAll] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -75,7 +76,7 @@ export function HomePage() {
 
   useEffect(() => {
     const getFurnitureDetails = async () => {
-      const { data, error } = await FetchFurnitureDetails();
+      const { data, error } = await FetchFurnitures();
 
       if (error) {
         console.log(error);
@@ -338,6 +339,7 @@ export function HomePage() {
           ))}
         </Section>
       </div>
+      <Footer />
     </div>
   );
 }

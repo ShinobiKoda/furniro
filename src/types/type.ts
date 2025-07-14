@@ -1,4 +1,4 @@
-export interface FurnitureDetails{
+export interface FurnitureProps{
   id: number;
   name: string
   description: string;
