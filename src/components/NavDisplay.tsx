@@ -15,7 +15,7 @@ export function NavDisplay({ pathSegments }: NavDisplayProps) {
           <Link href={`/${fullPathSegments.slice(0, index + 1).join("/")}`}>
             {segment.charAt(0).toUpperCase() + segment.slice(1)}
           </Link>
-          {index < fullPathSegments.length - 1 && <ArrowRight />}
+          {index < fullPathSegments.length - 1 && <ArrowRight size={19}/>}
         </span>
       ))}
     </p>
