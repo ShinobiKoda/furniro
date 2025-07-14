@@ -19,6 +19,8 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
   const [furnitureDetails, setFurnitureDetails] = useState<
     FurnitureProps[] | null
   >(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 16;
 
   useEffect(() => {
     const getFurnitureDetails = async () => {
@@ -37,6 +39,17 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
 
     getFurnitureDetails();
   }, []);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const paginatedFurnitureDetails = furnitureDetails
+    ? furnitureDetails.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+      )
+    : [];
 
   return (
     <div className="w-full">
@@ -71,7 +84,13 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
         <div className="flex items-center gap-4">
           <div className="hidden lg:flex font-normal text-xl lg:items-center lg:gap-2">
             <p>Show</p>
-            <input type="number" className="w-[55px] h-[55px] bg-white p-2" placeholder="16"/>
+            <div className="w-[55px] h-[55px] bg-white flex items-center justify-center">
+              <input
+                type="number"
+                className="border-none outline-none w-full h-full text-center"
+                placeholder="16"
+              />
+            </div>
           </div>
           <div className="font-normal lg:text-xl text-lg flex items-center gap-2">
             <p>Sort by</p>
@@ -98,13 +117,40 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
               variants={staggerChildren}
               className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:grid-cols-4 w-full px-4 lg:px-12 items-center justify-center max-w-[1440px] mx-auto"
             >
-              {furnitureDetails.map((furniture) => (
+              {paginatedFurnitureDetails.map((furniture) => (
                 <motion.div key={furniture.id} variants={fadeInUp}>
                   <FurnitureCard furniture={furniture} />
                 </motion.div>
               ))}
             </motion.div>
           )}
+        </div>
+        <div className="flex justify-center gap-4 mt-4">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+          >
+            Prev
+          </button>
+          {[1, 2, 3].map((page) => (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`px-4 py-2 rounded ${
+                currentPage === page ? "bg-blue-500 text-white" : "bg-gray-300"
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === 3}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>

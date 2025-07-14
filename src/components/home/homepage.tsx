@@ -19,7 +19,7 @@ const slideInVariants = {
     opacity: 1,
     x: 0,
     transition: {
-      delay: index * 0.3, 
+      delay: index * 0.3,
       duration: 0.8,
       ease: "easeInOut",
     },
@@ -54,8 +54,8 @@ export function HomePage() {
   const [furnitureDetails, setFurnitureDetails] = useState<
     FurnitureProps[] | null
   >(null);
-  const [showAll, setShowAll] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [currentRange, setCurrentRange] = useState<number>(0);
 
   const images = [
     "/images/furniro_room-inspirations-1.webp",
@@ -122,6 +122,10 @@ export function HomePage() {
     slideInterval.current = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 5000);
+  };
+
+  const handleShowMore = () => {
+    setCurrentRange((prevRange) => (prevRange + 8) % 16);
   };
 
   return (
@@ -224,22 +228,24 @@ export function HomePage() {
               variants={staggerChildren}
               className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:grid-cols-4 w-full px-4 lg:px-12 items-center justify-center max-w-[1440px] mx-auto"
             >
-              {(showAll ? furnitureDetails : furnitureDetails.slice(0, 8)).map(
-                (furniture) => (
+              {furnitureDetails
+                .slice(currentRange, currentRange + 8)
+                .map((furniture) => (
                   <motion.div key={furniture.id} variants={fadeInUp}>
                     <FurnitureCard furniture={furniture} />
                   </motion.div>
-                )
-              )}
+                ))}
             </motion.div>
           )}
           <motion.button
             className="w-full max-w-[245px] border border-[#B88E2F] text-[#B88E2F] font-semibold text-base py-3 cursor-pointer hover:opacity-85"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => setShowAll(!showAll)}
+            onClick={handleShowMore}
           >
-            {showAll ? "Show Less" : "Show More"}
+            {currentRange + 8 >= (furnitureDetails?.length || 0)
+              ? "Show Less"
+              : "Show More"}
           </motion.button>
         </div>
       </Section>
