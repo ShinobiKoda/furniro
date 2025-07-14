@@ -33,7 +33,7 @@ export function Navbar() {
 
   return (
     <motion.nav
-      className="w-full p-4 flex items-center justify-between relative max-w-[1440px] mx-auto lg:px-12"
+      className="w-screen p-4 flex items-center justify-between lg:px-12 fixed top-0 left-0 bg-white z-50"
       initial="hidden"
       animate="visible"
       variants={fadeInUp}
@@ -46,7 +46,11 @@ export function Navbar() {
           width={45}
           height={40}
         />
-        <h1 className={`font-bold text-2xl lg:text-[34px] ${montserrat.className}`}>Furniro</h1>
+        <h1
+          className={`font-bold text-2xl lg:text-[34px] ${montserrat.className}`}
+        >
+          Furniro
+        </h1>
       </div>
 
       <div
