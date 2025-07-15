@@ -5,10 +5,23 @@ import { FurnitureProps } from "@/types/type";
 import { Heart } from "lucide-react";
 import { CiShare2 } from "react-icons/ci";
 import { BsArrowLeftRight } from "react-icons/bs";
+import { useState } from "react";
 
 export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
+  // Added logic to activate overlay on tap for mobile devices
+  const [isOverlayActive, setIsOverlayActive] = useState(false);
+
+  const handleOverlayToggle = () => {
+    setIsOverlayActive(!isOverlayActive);
+  };
+
   return (
-    <div className="group flex flex-col gap-3 w-full bg-[#F4F5F7] relative max-w-sm mx-auto">
+    <div
+      className={`group flex flex-col gap-3 w-full bg-[#F4F5F7] relative max-w-sm mx-auto ${
+        isOverlayActive ? "overlay-active" : ""
+      }`}
+      onClick={handleOverlayToggle}
+    >
       <div className="w-full max-w-sm min-h-[301px] relative overflow-hidden">
         <Image
           src={furniture.image_url}
@@ -22,13 +35,19 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
             -{furniture.discount_percent}%
           </span>
         )}
-         {furniture.new && (
+        {furniture.new && (
           <span className="absolute top-4 left-4 h-12 w-12 rounded-full bg-[#2EC1AC] text-white flex items-center justify-center font-medium text-base">
             New!
           </span>
         )}
 
-        <div className="absolute inset-0 bg-black/10 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center gap-12 p-4 *:cursor-pointer">
+        <div
+          className={`absolute inset-0 bg-black/10 backdrop-blur-[3px] transition-opacity duration-300 flex flex-col justify-center items-center gap-12 p-4 *:cursor-pointer ${
+            isOverlayActive
+              ? "opacity-100"
+              : "opacity-0 group-hover:opacity-100"
+          }`}
+        >
           <motion.button
             whileTap={{ scale: 0.85 }}
             className="bg-white px-6 py-2 shadow-md hover:bg-gray-200 font-semibold text-base text-[#B88E2F]"
@@ -40,7 +59,7 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
               <CiShare2 size={22} /> Share
             </button>
             <button className="text-white font-semibold text-base flex items-center gap-2">
-              <BsArrowLeftRight size={20}/> Compare
+              <BsArrowLeftRight size={20} /> Compare
             </button>
             <button className="text-white font-semibold text-base flex items-center gap-2">
               <Heart /> Like

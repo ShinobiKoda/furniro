@@ -188,7 +188,7 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
           initial="hidden"
           animate="visible"
           variants={fadeInUp}
-          className="w-full h-[270px] max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center lg:justify-between px-4 lg:px-12 py-8"
+          className="w-full lg:h-[270px] max-w-[1440px] mx-auto flex flex-col justify-center gap-14 lg:flex-row lg:items-center lg:justify-between px-4 lg:px-12 py-8"
         >
           <motion.div variants={fadeInUp} className="flex items-center gap-2">
             <GrTrophy size={60} />
