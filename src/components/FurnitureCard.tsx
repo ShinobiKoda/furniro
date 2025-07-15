@@ -22,6 +22,12 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
             -{furniture.discount_percent}%
           </span>
         )}
+         {furniture.new && (
+          <span className="absolute top-4 left-4 h-12 w-12 rounded-full bg-[#2EC1AC] text-white flex items-center justify-center font-medium text-base">
+            New!
+          </span>
+        )}
+
         <div className="absolute inset-0 bg-black/10 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center gap-12 p-4 *:cursor-pointer">
           <motion.button
             whileTap={{ scale: 0.85 }}
@@ -41,7 +47,6 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
             </button>
           </div>
         </div>
-        {/* End Hover Overlay */}
         <div className="w-full px-4 py-6">
           <p className="flex flex-col">
             <span className="font-semibold lg:text-2xl text-lg text-[#3A3A3A]">
