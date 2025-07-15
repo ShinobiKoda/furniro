@@ -4,12 +4,15 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { staggerChildren, fadeInUp } from "./animations/motion";
 import { triggerConfetti } from "./animations/confetti";
+import { ClipLoader } from "react-spinners";
+import { showSuccessToast } from "./animations/toast";
 
 export function Footer() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubscribe = () => {
+  const handleSubscribe = async () => {
     if (!email) {
       setError("Email is required");
       return;
@@ -22,7 +25,14 @@ export function Footer() {
     }
 
     setError("");
+    setIsSubmitting(true);
+
+    // Simulate a delay for submission
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    setIsSubmitting(false);
     triggerConfetti();
+    showSuccessToast("Successfully subscribed, check your email");
     setEmail("");
   };
 
@@ -101,9 +111,14 @@ export function Footer() {
               />
               <button
                 type="submit"
-                className="w-full max-w-[75px] border-b border-b-black outline-none font-medium text-sm hover:opacity-85"
+                className="w-full max-w-[75px] border-b border-b-black outline-none font-medium text-sm hover:opacity-85 flex items-center justify-center"
+                disabled={isSubmitting}
               >
-                SUBSCRIBE
+                {isSubmitting ? (
+                  <ClipLoader size={15} color={"#000"} />
+                ) : (
+                  "SUBSCRIBE"
+                )}
               </button>
             </div>
             {error && <p className="text-red-500 text-sm">{error}</p>}

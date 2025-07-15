@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { User, Search, Heart } from "lucide-react";
 import Link from "next/link";
-import { FaCartShopping } from "react-icons/fa6";
+import { IoCartOutline } from "react-icons/io5";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Montserrat } from "next/font/google";
@@ -33,133 +33,136 @@ export function Navbar() {
 
   return (
     <motion.nav
-      className="w-screen p-4 flex items-center justify-between lg:px-12 fixed top-0 left-0 bg-white z-50"
+      className="w-screen fixed top-0 left-0 bg-white z-50"
       initial="hidden"
       animate="visible"
       variants={fadeInUp}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <div className="flex items-center gap-2">
-        <Image
-          src="/images/furniro_logo.webp"
-          alt="Logo"
-          width={45}
-          height={40}
-        />
-        <h1
-          className={`font-bold text-2xl lg:text-[34px] ${montserrat.className}`}
+      <div className="w-full max-w-[1440px] mx-auto flex items-center justify-between p-4 lg:px-12">
+        <div className="flex items-center gap-2">
+          <Image
+            src="/images/furniro_logo.webp"
+            alt="Logo"
+            width={45}
+            height={40}
+          />
+          <h1
+            className={`font-bold text-2xl lg:text-[34px] ${montserrat.className}`}
+          >
+            Furniro
+          </h1>
+        </div>
+
+        <div
+          className={`w-7 h-6 flex flex-col lg:hidden gap-[5px] cursor-pointer hover:opacity-85 relative right-0 top-0 z-60 *:rounded-md ${
+            isSidebarOpen ? "rotate-90" : ""
+          }`}
+          onClick={toggleSidebar}
         >
-          Furniro
-        </h1>
-      </div>
+          <div
+            className={`w-full h-1 bg-black transition-transform duration-100 ease-in-out ${
+              isSidebarOpen ? "rotate-45 translate-y-[8px]" : ""
+            }`}
+          ></div>
+          <div
+            className={`w-full h-1 bg-black transition-opacity duration-100 ease-in-out ${
+              isSidebarOpen ? "opacity-0" : ""
+            }`}
+          ></div>
+          <div
+            className={`w-full h-1 bg-black transition-transform duration-100 ease-in-out ${
+              isSidebarOpen ? "-rotate-45 -translate-y-[9px]" : ""
+            }`}
+          ></div>
+        </div>
 
-      <div
-        className={`w-7 h-6 flex flex-col lg:hidden gap-[5px] cursor-pointer hover:opacity-85 relative right-0 top-0 z-60 *:rounded-md ${
-          isSidebarOpen ? "rotate-90" : ""
-        }`}
-        onClick={toggleSidebar}
-      >
-        <div
-          className={`w-full h-1 bg-black transition-transform duration-100 ease-in-out ${
-            isSidebarOpen ? "rotate-45 translate-y-[8px]" : ""
-          }`}
-        ></div>
-        <div
-          className={`w-full h-1 bg-black transition-opacity duration-100 ease-in-out ${
-            isSidebarOpen ? "opacity-0" : ""
-          }`}
-        ></div>
-        <div
-          className={`w-full h-1 bg-black transition-transform duration-100 ease-in-out ${
-            isSidebarOpen ? "-rotate-45 -translate-y-[9px]" : ""
-          }`}
-        ></div>
-      </div>
+        {isSidebarOpen && (
+          <motion.div
+            className="fixed inset-0 backdrop-blur-[2px] bg-white/20 z-40"
+            onClick={closeSidebar}
+            initial="hidden"
+            animate="visible"
+            variants={fadeIn}
+          ></motion.div>
+        )}
 
-      {isSidebarOpen && (
         <motion.div
-          className="fixed inset-0 backdrop-blur-[2px] bg-white/20 z-40"
-          onClick={closeSidebar}
-          initial="hidden"
-          animate="visible"
-          variants={fadeIn}
-        ></motion.div>
-      )}
-
-      <motion.div
-        className={`fixed top-0 right-0 h-full w-[300px] bg-white p-8 z-50 *:hover:opacity-85 shadow-md rounded-md lg:hidden`}
-        initial="hidden"
-        animate={isSidebarOpen ? "visible" : "hidden"}
-        variants={slideInFromRight}
-        transition={{ duration: 0.8, ease: "easeInOut" }}
-      >
-        <motion.ul
-          className="flex flex-col gap-8 mt-10"
-          variants={staggerChildren}
+          className={`fixed top-0 right-0 h-full w-[300px] bg-white p-8 z-50 *:hover:opacity-85 shadow-md rounded-md lg:hidden`}
           initial="hidden"
           animate={isSidebarOpen ? "visible" : "hidden"}
+          variants={slideInFromRight}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+        >
+          <motion.ul
+            className="flex flex-col gap-8 mt-10"
+            variants={staggerChildren}
+            initial="hidden"
+            animate={isSidebarOpen ? "visible" : "hidden"}
+          >
+            <motion.li variants={fadeInUp}>
+              <Link href="/home" onClick={closeSidebar}>
+                Home
+              </Link>
+            </motion.li>
+            <motion.li variants={fadeInUp}>
+              <Link href="/shop" onClick={closeSidebar}>
+                Shop
+              </Link>
+            </motion.li>
+            <motion.li variants={fadeInUp}>
+              <Link href="/about" onClick={closeSidebar}>
+                About
+              </Link>
+            </motion.li>
+            <motion.li variants={fadeInUp}>
+              <Link href="/contact" onClick={closeSidebar}>
+                Contact
+              </Link>
+            </motion.li>
+          </motion.ul>
+        </motion.div>
+
+        <motion.ul
+          className="hidden lg:flex items-center gap-[4.7rem] font-medium text-base"
+          variants={staggerChildren}
+          initial="hidden"
+          animate="visible"
         >
           <motion.li variants={fadeInUp}>
-            <Link href="/home" onClick={closeSidebar}>
-              Home
-            </Link>
+            <Link href="/home">Home</Link>
           </motion.li>
           <motion.li variants={fadeInUp}>
-            <Link href="/shop" onClick={closeSidebar}>
-              Shop
-            </Link>
+            <Link href="/shop">Shop</Link>
           </motion.li>
           <motion.li variants={fadeInUp}>
-            <Link href="/about" onClick={closeSidebar}>
-              About
-            </Link>
+            <Link href="/about">About</Link>
           </motion.li>
           <motion.li variants={fadeInUp}>
-            <Link href="/contact" onClick={closeSidebar}>
-              Contact
-            </Link>
+            <Link href="/contact">Contact</Link>
           </motion.li>
         </motion.ul>
-      </motion.div>
 
-      <motion.ul
-        className="hidden lg:flex items-center gap-[4.7rem] font-medium text-base"
-        variants={staggerChildren}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.li variants={fadeInUp}>
-          <Link href="/home">Home</Link>
-        </motion.li>
-        <motion.li variants={fadeInUp}>
-          <Link href="/shop">Shop</Link>
-        </motion.li>
-        <motion.li variants={fadeInUp}>
-          <Link href="/about">About</Link>
-        </motion.li>
-        <motion.li variants={fadeInUp}>
-          <Link href="/contact">Contact</Link>
-        </motion.li>
-      </motion.ul>
-      <motion.div
-        className="hidden lg:flex items-center gap-8 *:hover:opacity-80 cursor-pointer"
-        variants={staggerChildren}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.div variants={fadeInUp}>
-          <User />
+        <motion.div
+          className="hidden lg:flex items-center gap-8 *:hover:opacity-80 cursor-pointer"
+          variants={staggerChildren}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div variants={fadeInUp}>
+            <User />
+          </motion.div>
+          <motion.div variants={fadeInUp}>
+            <Search />
+          </motion.div>
+          <motion.div variants={fadeInUp}>
+            <IoCartOutline className="text-2xl" />
+          </motion.div>
+          <motion.div variants={fadeInUp}>
+            <Heart className="text-2xl" />
+          </motion.div>
         </motion.div>
-        <motion.div variants={fadeInUp}>
-          <Search />
-        </motion.div>
-        <motion.div variants={fadeInUp}>
-          <FaCartShopping className="text-2xl" />
-        </motion.div>
-        <motion.div variants={fadeInUp}>
-          <Heart className="text-2xl" />
-        </motion.div>
-      </motion.div>
+      </div>
     </motion.nav>
   );
 }

@@ -2,8 +2,9 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FurnitureProps } from "@/types/type";
-import { Share, Heart } from "lucide-react";
-import { FaArrowsLeftRight } from "react-icons/fa6";
+import { Heart } from "lucide-react";
+import { CiShare2 } from "react-icons/ci";
+import { BsArrowLeftRight } from "react-icons/bs";
 
 export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
   return (
@@ -30,10 +31,10 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
           </motion.button>
           <div className="flex gap-2 *:cursor-pointer *:hover:opacity-80">
             <button className="text-white font-semibold text-base flex items-center gap-2">
-              <Share /> Share
+              <CiShare2 size={22} /> Share
             </button>
             <button className="text-white font-semibold text-base flex items-center gap-2">
-              <FaArrowsLeftRight /> Compare
+              <BsArrowLeftRight size={20}/> Compare
             </button>
             <button className="text-white font-semibold text-base flex items-center gap-2">
               <Heart /> Like
