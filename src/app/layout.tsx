@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "../components/layout/navbar";
 import { ToastProvider } from "../components/animations/toast";
+import { LikedItemsProvider } from "@/context/LikedItemsContext";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -26,9 +27,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
-        <Navbar />
-        <ToastProvider />
-        <div className="lg:pt-[76px] pt-[65px]">{children}</div>
+        <LikedItemsProvider>
+          <Navbar />
+          <ToastProvider />
+          <div className="lg:pt-[76px] pt-[65px]">{children}</div>
+        </LikedItemsProvider>
       </body>
     </html>
   );

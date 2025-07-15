@@ -13,6 +13,7 @@ import {
   slideInFromRight,
   staggerChildren,
 } from "../animations/motion";
+import { useLikedItems } from "@/context/LikedItemsContext";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -30,6 +31,8 @@ export function Navbar() {
   const closeSidebar = () => {
     setIsSidebarOpen(false);
   };
+
+  const { likedItems } = useLikedItems();
 
   return (
     <motion.nav
@@ -158,8 +161,13 @@ export function Navbar() {
           <motion.div variants={fadeInUp}>
             <IoCartOutline className="text-2xl" />
           </motion.div>
-          <motion.div variants={fadeInUp}>
+          <motion.div variants={fadeInUp} className="relative">
             <Heart className="text-2xl" />
+            {likedItems.size > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                {likedItems.size}
+              </span>
+            )}
           </motion.div>
         </motion.div>
       </div>

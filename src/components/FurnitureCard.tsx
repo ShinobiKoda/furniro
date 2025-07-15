@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FurnitureProps } from "@/types/type";
@@ -6,6 +7,7 @@ import { Heart } from "lucide-react";
 import { CiShare2 } from "react-icons/ci";
 import { BsArrowLeftRight } from "react-icons/bs";
 import { useState } from "react";
+import { useLikedItems } from "@/context/LikedItemsContext";
 
 export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
   // Added logic to activate overlay on tap for mobile devices
@@ -13,6 +15,15 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
 
   const handleOverlayToggle = () => {
     setIsOverlayActive(!isOverlayActive);
+  };
+
+  const { likedItems, toggleLike } = useLikedItems();
+
+  const isLiked = likedItems.has(furniture.id.toString());
+
+  const handleLikeToggle = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent triggering the overlay toggle
+    toggleLike(furniture.id.toString());
   };
 
   return (
@@ -61,8 +72,11 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
             <button className="text-white font-semibold text-base flex items-center gap-2">
               <BsArrowLeftRight size={20} /> Compare
             </button>
-            <button className="text-white font-semibold text-base flex items-center gap-2">
-              <Heart /> Like
+            <button
+              className={`text-white font-semibold text-base flex items-center gap-2`}
+              onClick={handleLikeToggle}
+            >
+              <Heart className={`${isLiked ? "fill-white" : ""}`} /> Like
             </button>
           </div>
         </div>
