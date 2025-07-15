@@ -215,6 +215,8 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
           </div>
         </div>
       </div>
+      
+      <Footer />
     </div>
   );
 }
