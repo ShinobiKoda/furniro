@@ -42,7 +42,7 @@ export function Footer() {
       whileInView="visible"
       viewport={{ once: true }}
       variants={staggerChildren}
-      className="w-full border-t-2 mt-[50px] px-4 py-12 lg:px-12 relative h-full"
+      className="w-full border-t-2 px-4 py-12 lg:px-12 relative h-full"
     >
       <motion.div
         variants={staggerChildren}
