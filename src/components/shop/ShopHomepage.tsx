@@ -4,11 +4,16 @@ import { NavDisplay } from "@/components/NavDisplay";
 import { motion } from "framer-motion";
 import { zoomIn, fadeInUp, staggerChildren } from "../animations/motion";
 import { BsSliders, BsGridFill, BsViewList } from "react-icons/bs";
+import { GrTrophy } from "react-icons/gr";
+import { HiOutlineBadgeCheck } from "react-icons/hi";
+import { LiaShippingFastSolid } from "react-icons/lia";
+import { RiCustomerService2Line } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import { FetchFurnitures } from "@/api/FetchFurnitureDetails";
 import { FurnitureCard } from "../FurnitureCard";
 import { FurnitureProps } from "@/types/type";
 import { SkeletonLoader } from "../animations/SkeletonLoader";
+import { Footer } from "../Footer";
 
 interface ShopHomepageProps {
   pathSegments: string[];
@@ -175,6 +180,39 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
           >
             Next
           </button>
+        </div>
+      </div>
+
+      <div className="w-full bg-[#FAF3EA]">
+        <div className="w-full h-[270px] max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center lg:justify-between px-4 lg:px-12 py-8">
+          <div className="flex items-center gap-2">
+            <GrTrophy size={60}/>
+            <p className="flex flex-col">
+              <span className="font-semibold lg:text-[25px] text-lg">High Quality</span>
+              <span className="font-medium lg:text-xl text-base text-[#898989]">crafted from top materials</span>
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <HiOutlineBadgeCheck size={60}/>
+            <p className="flex flex-col">
+              <span className="font-semibold lg:text-[25px] text-lg">Warranty Protection</span>
+              <span className="font-medium lg:text-xl text-base text-[#898989]">Over 2 years</span>
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <LiaShippingFastSolid size={60}/>
+            <p className="flex flex-col">
+              <span className="font-semibold lg:text-[25px] text-lg">Free Shipping</span>
+              <span className="font-medium lg:text-xl text-base text-[#898989]">Order over 150$</span>
+            </p>
+          </div>
+           <div className="flex items-center gap-2">
+            <RiCustomerService2Line size={60}/>
+            <p className="flex flex-col">
+              <span className="font-semibold lg:text-[25px] text-lg">24/7 Support</span>
+              <span className="font-medium lg:text-xl text-base text-[#898989]">Dedicated support</span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
