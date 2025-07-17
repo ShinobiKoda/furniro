@@ -14,6 +14,7 @@ import { FurnitureCard } from "../FurnitureCard";
 import { FurnitureProps } from "@/types/type";
 import { SkeletonLoader } from "../animations/SkeletonLoader";
 import { Footer } from "../Footer";
+import Image from "next/image"
 
 interface ShopHomepageProps {
   pathSegments: string[];
@@ -68,6 +69,12 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
           variants={zoomIn}
           className="flex flex-col gap-2 w-full h-full justify-center items-center"
         >
+          <Image
+            src="/images/furniro_path-logo.svg"
+            alt="Furniro Logo"
+            height={77}
+            width={77}
+          />
           <h1 className="font-medium lg:text-5xl text-3xl capitalize">
             {pathSegments[pathSegments.length - 1] || "Shop"}
           </h1>
