@@ -5,13 +5,13 @@ import { motion } from "framer-motion";
 import { zoomIn, fadeInUp, staggerChildren } from "../animations/motion";
 import { BsSliders, BsGridFill, BsViewList } from "react-icons/bs";
 import { Services } from "../Services";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FetchFurnitures } from "@/api/FetchFurnitureDetails";
 import { FurnitureCard } from "../FurnitureCard";
 import { FurnitureProps } from "@/types/type";
 import { SkeletonLoader } from "../animations/SkeletonLoader";
 import { Footer } from "../Footer";
-import Image from "next/image"
+import Image from "next/image";
 
 interface ShopHomepageProps {
   pathSegments: string[];
@@ -24,6 +24,7 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
   >(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 16;
+  const productsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const getFurnitureDetails = async () => {
@@ -45,6 +46,15 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+
+    if (productsRef.current) {
+      const yOffset = -200; 
+      const y =
+        productsRef.current.getBoundingClientRect().top +
+        window.pageYOffset +
+        yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
   };
 
   const paginatedFurnitureDetails = furnitureDetails
@@ -132,7 +142,7 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
         </div>
       </div>
 
-      <div className="mt-[46px] w-full mb-[85px]">
+      <div ref={productsRef} className="mt-[46px] w-full mb-[85px]">
         <div className="flex items-center justify-center flex-col gap-8 mb-[40px]">
           {loading && (
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 w-full px-4 items-center justify-center max-w-[1440px] mx-auto gap-8 min-h-[50vh]">
@@ -187,7 +197,6 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
         </div>
       </div>
 
-     
       <Services />
       <Footer />
     </div>

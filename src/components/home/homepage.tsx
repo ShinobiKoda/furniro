@@ -5,6 +5,7 @@ import { zoomIn, fadeInUp, staggerChildren } from "../animations/motion";
 import Image from "next/image";
 import { FetchFurnitures } from "@/api/FetchFurnitureDetails";
 import { useState, useEffect, useRef } from "react";
+import React from "react";
 import { FurnitureCard } from "../FurnitureCard";
 import { FurnitureProps } from "@/types/type";
 import { SkeletonLoader } from "../animations/SkeletonLoader";
@@ -27,19 +28,28 @@ const slideInVariants = {
   }),
 };
 
-const Section = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  const ref = useRef(null);
+const Section = React.forwardRef<
+  HTMLDivElement,
+  {
+    children: React.ReactNode;
+    className?: string;
+  }
+>(({ children, className }, forwardedRef) => {
+  const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true });
 
   return (
     <motion.div
-      ref={ref}
+      ref={(node) => {
+        if (ref) ref.current = node;
+        if (forwardedRef) {
+          if (typeof forwardedRef === "function") {
+            forwardedRef(node);
+          } else {
+            forwardedRef.current = node;
+          }
+        }
+      }}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       variants={fadeInUp}
@@ -48,7 +58,9 @@ const Section = ({
       {children}
     </motion.div>
   );
-};
+});
+
+Section.displayName = "Section";
 
 export function HomePage() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -57,6 +69,7 @@ export function HomePage() {
   >(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [showAllProducts, setShowAllProducts] = useState<boolean>(false);
+  const productsRef = useRef<HTMLDivElement>(null);
 
   const images = [
     "/images/furniro_room-inspirations-1.webp",
@@ -126,7 +139,22 @@ export function HomePage() {
   };
 
   const handleShowMore = () => {
-    setShowAllProducts((prev) => !prev);
+    setShowAllProducts((prev) => {
+      if (prev) {
+        setTimeout(() => {
+          if (productsRef.current) {
+            const elementTop = productsRef.current.getBoundingClientRect().top;
+            const offsetPosition = elementTop + window.pageYOffset - 200;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth",
+            });
+          }
+        }, 100);
+      }
+      return !prev;
+    });
   };
 
   return (
@@ -151,10 +179,7 @@ export function HomePage() {
               Explore our curated collection of furniture designed to elevate
               your living spaces with style and comfort.
             </p>
-            <motion.div
-              whileTap={{ scale: 0.95 }}
-              className="w-full"
-            >
+            <motion.div whileTap={{ scale: 0.95 }} className="w-full">
               <button className="bg-[#B88E2F] text-white font-semibold py-3 px-9 mt-8 cursor-pointer hover:opacity-85">
                 <Link href="/shop">BUY NOW</Link>
               </button>
@@ -215,7 +240,7 @@ export function HomePage() {
         </Section>
       </div>
 
-      <Section>
+      <Section ref={productsRef}>
         <div className="flex items-center justify-center flex-col gap-8 mb-[69px]">
           <h2 className="font-bold lg;text-[40px] text-2xl">Our Products</h2>
           {loading && (
