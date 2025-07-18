@@ -95,7 +95,7 @@ export function Navbar() {
           initial="hidden"
           animate={isSidebarOpen ? "visible" : "hidden"}
           variants={slideInFromRight}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
         >
           <motion.ul
             className="flex flex-col gap-8 mt-10"

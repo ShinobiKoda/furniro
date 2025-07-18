@@ -10,7 +10,7 @@ export const fadeIn = {
 
 export const slideInFromRight = {
   hidden: { x: "100%" },
-  visible: { x: "0%", transition: { duration: 0.8, ease: "easeInOut" } },
+  visible: { x: "0%", transition: { duration: 0.4, ease: "easeInOut" } },
 };
 
 export const staggerChildren = {
