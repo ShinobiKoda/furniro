@@ -13,6 +13,8 @@ import { Search } from "lucide-react";
 import { FaTag } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { Services } from "./Services";
+import { Footer } from "./Footer";
 
 interface BlogProps {
   pathSegments: string[];
@@ -278,6 +280,12 @@ export function Blog({ pathSegments }: BlogProps) {
           </motion.div>
         </motion.div>
       </motion.div>
+
+      <div className="w-full mb-[50px]">
+        <Services />
+      </div>
+
+      <Footer />
     </div>
   );
 }
