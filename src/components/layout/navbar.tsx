@@ -53,7 +53,7 @@ export function Navbar() {
           <h1
             className={`font-bold text-2xl lg:text-[34px] ${montserrat.className}`}
           >
-            Furniro
+           <Link href="/home">Furniro</Link>
           </h1>
         </div>
 

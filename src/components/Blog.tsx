@@ -156,7 +156,7 @@ export function Blog({ pathSegments }: BlogProps) {
                 </p>
               </div>
               <div className="w-full">
-                <button className="text-left font-normal lg:text-base text-sm border-b border-black pb-2">
+                <button className="text-left font-normal lg:text-base text-sm border-b border-black pb-2 cursor-pointer hover:opacity-85">
                   Read more
                 </button>
               </div>
