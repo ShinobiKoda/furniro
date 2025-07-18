@@ -10,6 +10,7 @@ import { FurnitureProps } from "@/types/type";
 import { SkeletonLoader } from "../animations/SkeletonLoader";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Footer } from "@/components/Footer";
+import Link from "next/link"
 
 const categories = ["Dining", "Living", "Bedroom"];
 
@@ -152,7 +153,7 @@ export function HomePage() {
             </p>
             <div className="w-full">
               <button className="bg-[#B88E2F] text-white font-semibold py-3 px-9 mt-8 cursor-pointer hover:opacity-85">
-                BUY NOW
+                <Link href="/shop">BUY NOW</Link>
               </button>
             </div>
           </motion.div>
@@ -261,7 +262,7 @@ export function HomePage() {
               inspire you
             </p>
             <button className="w-full max-w-[176px] bg-[#B88E2F] py-3 text-base font-semibold text-white mx-auto lg:mx-0 hover:opacity-85 cursor-pointer">
-              Explore More
+              <Link href="/shop">Explore More</Link>
             </button>
           </div>
           <div className="relative w-full max-w-[400px] overflow-hidden">

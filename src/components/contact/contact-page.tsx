@@ -13,6 +13,8 @@ import { NavDisplay } from "@/components/NavDisplay";
 import { FaLocationDot, FaPhone } from "react-icons/fa6";
 import { MdOutlineAccessTimeFilled } from "react-icons/md";
 import Image from "next/image";
+import { Services } from "../Services";
+import { Footer } from "../Footer";
 
 interface ContactPageProps {
   pathSegments: string[];
@@ -302,6 +304,11 @@ export function ContactPage({ pathSegments }: ContactPageProps) {
           </motion.div>
         </motion.form>
       </motion.div>
+
+      <div className="w-full mb-[50px]">
+        <Services />
+      </div>
+      <Footer />
     </div>
   );
 }

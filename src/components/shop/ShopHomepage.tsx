@@ -4,10 +4,7 @@ import { NavDisplay } from "@/components/NavDisplay";
 import { motion } from "framer-motion";
 import { zoomIn, fadeInUp, staggerChildren } from "../animations/motion";
 import { BsSliders, BsGridFill, BsViewList } from "react-icons/bs";
-import { GrTrophy } from "react-icons/gr";
-import { HiOutlineBadgeCheck } from "react-icons/hi";
-import { LiaShippingFastSolid } from "react-icons/lia";
-import { RiCustomerService2Line } from "react-icons/ri";
+import { Services } from "../Services";
 import { useState, useEffect } from "react";
 import { FetchFurnitures } from "@/api/FetchFurnitureDetails";
 import { FurnitureCard } from "../FurnitureCard";
@@ -163,7 +160,7 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="px-4 py-2 bg-[#F9F1E7] rounded disabled:opacity-50 font-light text-lg lg:text-xl"
+            className="px-4 py-2 bg-[#F9F1E7] rounded disabled:opacity-50 font-light text-lg lg:text-xl cursor-pointer disabled:cursor-not-allowed"
           >
             Prev
           </button>
@@ -171,7 +168,7 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`px-4 py-2 rounded font-normal lg:text-xl text-lg ${
+              className={`px-4 py-2 rounded font-normal lg:text-xl text-lg cursor-pointer hover:opacity-85 ${
                 currentPage === page
                   ? "bg-[#B88E2F] text-white"
                   : "bg-[#F9F1E7]"
@@ -183,67 +180,15 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === 3}
-            className="px-4 py-2 bg-[#F9F1E7] rounded disabled:opacity-50 font-light text-lg lg:text-xl"
+            className="px-4 py-2 bg-[#F9F1E7] rounded disabled:opacity-50 font-light text-lg lg:text-xl cursor-pointer disabled:cursor-not-allowed"
           >
             Next
           </button>
         </div>
       </div>
 
-      <div className="w-full bg-[#FAF3EA]">
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={fadeInUp}
-          className="w-full lg:h-[270px] max-w-[1440px] mx-auto flex flex-col justify-center gap-14 lg:flex-row lg:items-center lg:justify-between px-4 lg:px-12 py-8"
-        >
-          <motion.div variants={fadeInUp} className="flex items-center gap-2">
-            <GrTrophy size={60} />
-            <p className="flex flex-col">
-              <span className="font-semibold lg:text-[25px] text-lg">
-                High Quality
-              </span>
-              <span className="font-medium lg:text-xl text-base text-[#898989]">
-                crafted from top materials
-              </span>
-            </p>
-          </motion.div>
-          <motion.div variants={fadeInUp} className="flex items-center gap-2">
-            <HiOutlineBadgeCheck size={60} />
-            <p className="flex flex-col">
-              <span className="font-semibold lg:text-[25px] text-lg">
-                Warranty Protection
-              </span>
-              <span className="font-medium lg:text-xl text-base text-[#898989]">
-                Over 2 years
-              </span>
-            </p>
-          </motion.div>
-          <motion.div variants={fadeInUp} className="flex items-center gap-2">
-            <LiaShippingFastSolid size={60} />
-            <p className="flex flex-col">
-              <span className="font-semibold lg:text-[25px] text-lg">
-                Free Shipping
-              </span>
-              <span className="font-medium lg:text-xl text-base text-[#898989]">
-                Order over 150$
-              </span>
-            </p>
-          </motion.div>
-          <motion.div variants={fadeInUp} className="flex items-center gap-2">
-            <RiCustomerService2Line size={60} />
-            <p className="flex flex-col">
-              <span className="font-semibold lg:text-[25px] text-lg">
-                24/7 Support
-              </span>
-              <span className="font-medium lg:text-xl text-base text-[#898989]">
-                Dedicated support
-              </span>
-            </p>
-          </motion.div>
-        </motion.div>
-      </div>
-
+     
+      <Services />
       <Footer />
     </div>
   );
