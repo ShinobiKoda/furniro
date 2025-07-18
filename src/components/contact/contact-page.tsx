@@ -1,11 +1,14 @@
 "use client";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import {
   zoomIn,
   fadeInUp,
   fadeIn,
   staggerChildren,
 } from "../animations/motion";
+import { triggerConfetti } from "../animations/confetti";
+import { ClipLoader } from "react-spinners";
 import { NavDisplay } from "@/components/NavDisplay";
 import { FaLocationDot, FaPhone } from "react-icons/fa6";
 import { MdOutlineAccessTimeFilled } from "react-icons/md";
@@ -16,6 +19,100 @@ interface ContactPageProps {
 }
 
 export function ContactPage({ pathSegments }: ContactPageProps) {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validateForm = () => {
+    const newErrors = { name: "", email: "", message: "" };
+    let isValid = true;
+
+    // Name validation
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+      isValid = false;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+      isValid = false;
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+      isValid = false;
+    }
+
+    // Message validation
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    // Clear error when user starts typing
+    if (errors[name as keyof typeof errors]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // Trigger confetti animation
+      triggerConfetti();
+
+      // Clear form data
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+
+      // Clear any remaining errors
+      setErrors({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error("Form submission error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="w-full">
       <header
@@ -111,6 +208,7 @@ export function ContactPage({ pathSegments }: ContactPageProps) {
         <motion.form
           variants={fadeInUp}
           className="flex flex-col gap-9 lg:w-1/2 w-full"
+          onSubmit={handleSubmit}
         >
           <motion.div variants={fadeInUp} className="flex flex-col gap-[22px]">
             <label htmlFor="name" className="font-medium text-base">
@@ -119,9 +217,17 @@ export function ContactPage({ pathSegments }: ContactPageProps) {
             <input
               type="text"
               id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
               placeholder="John Doe"
-              className="border outline p-4 rounded-[10px] border-[#9F9F9F]"
+              className={`border outline p-4 rounded-[10px] ${
+                errors.name ? "border-red-500" : "border-[#9F9F9F]"
+              }`}
             />
+            {errors.name && (
+              <span className="text-red-500 text-sm">{errors.name}</span>
+            )}
           </motion.div>
           <motion.div variants={fadeInUp} className="flex flex-col gap-4">
             <label htmlFor="email" className="font-medium text-base">
@@ -130,9 +236,17 @@ export function ContactPage({ pathSegments }: ContactPageProps) {
             <input
               type="email"
               id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
               placeholder="johndoe@mail.com"
-              className="border outline p-4 rounded-[10px] border-[#9F9F9F]"
+              className={`border outline p-4 rounded-[10px] ${
+                errors.email ? "border-red-500" : "border-[#9F9F9F]"
+              }`}
             />
+            {errors.email && (
+              <span className="text-red-500 text-sm">{errors.email}</span>
+            )}
           </motion.div>
           <motion.div variants={fadeInUp} className="flex flex-col gap-4">
             <label htmlFor="subject" className="font-medium text-base">
@@ -141,6 +255,9 @@ export function ContactPage({ pathSegments }: ContactPageProps) {
             <input
               type="text"
               id="subject"
+              name="subject"
+              value={formData.subject}
+              onChange={handleInputChange}
               placeholder="Optional"
               className="border outline p-4 rounded-[10px] border-[#9F9F9F]"
             />
@@ -152,18 +269,35 @@ export function ContactPage({ pathSegments }: ContactPageProps) {
             <textarea
               name="message"
               id="message"
+              value={formData.message}
+              onChange={handleInputChange}
               rows={3}
               cols={5}
-              className="border border-black rounded-[10px] p-4"
+              className={`border rounded-[10px] p-4 ${
+                errors.message ? "border-red-500" : "border-black"
+              }`}
             ></textarea>
+            {errors.message && (
+              <span className="text-red-500 text-sm">{errors.message}</span>
+            )}
           </motion.div>
 
           <motion.div
             variants={fadeInUp}
             className="w-full flex items-center justify-center lg:justify-start"
           >
-            <button className="bg-[#B88E2F] py-4 px-16 hover:opacity-85 cursor-pointer rounded-[5px] outline-none border-none text-white text-base font-normal">
-              Submit
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="bg-[#B88E2F] py-4 px-16 hover:opacity-85 cursor-pointer rounded-[5px] outline-none border-none text-white text-base font-normal disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              {isSubmitting ? (
+                <>
+                  <ClipLoader size={20} color="#ffffff" />
+                </>
+              ) : (
+                "Submit"
+              )}
             </button>
           </motion.div>
         </motion.form>
