@@ -1,6 +1,11 @@
 "use client";
 import { motion } from "framer-motion";
-import { zoomIn } from "../animations/motion";
+import {
+  zoomIn,
+  fadeInUp,
+  fadeIn,
+  staggerChildren,
+} from "../animations/motion";
 import { NavDisplay } from "@/components/NavDisplay";
 import { FaLocationDot, FaPhone } from "react-icons/fa6";
 import { MdOutlineAccessTimeFilled } from "react-icons/md";
@@ -34,68 +39,135 @@ export function ContactPage({ pathSegments }: ContactPageProps) {
           </h1>
           <NavDisplay pathSegments={pathSegments} />
         </motion.div>
-
-        <div className="w-full text-center max-w-[644px] flex flex-col items-center justify-center mx-auto mt-[98px] gap-4">
-          <h2 className="capitalize font-semibold lg:text-4xl text-2xl">
-            Get in touch with us
-          </h2>
-          <p className="font-normal lg:text-base text-sm text-[#9F9F9F]">
-            For More Information About Our Product & Services. Please Feel Free
-            To Drop Us An Email. Our Staff Always Be There To Help You Out. Do
-            Not Hesitate!
-          </p>
-        </div>
-
-        <div className="w-full flex flex-col lg:flex-row gap-8 max-w-[1440px] mx-auto px-4 lg:px-12 mt-[50px]">
-          <div className="flex flex-col gap-4 max-w-[393px]">
-            <div className="flex items-start gap-6">
-              <FaLocationDot className="mt-1"/>
-              <p>
-                <span>Address</span> <br />
-                <span>236 5th SE Avenue, New <br /> York NY10000, United States</span>
-              </p>
-            </div>
-            <div className="flex items-start gap-6">
-              <FaPhone className="mt-1"/>
-              <p>
-                <span>Phone</span><br />
-                <span>
-                  Mobile: +(84)546-6789 <br />
-                  Hotiline: +(84)546-6789
-                </span>
-              </p>
-            </div>
-            <div className="flex items-start gap-6">
-              <MdOutlineAccessTimeFilled className="mt-1"/>
-              <p>
-                <span>Working Time</span><br />
-                <span>
-                  Monday-Friday: 9:00 - 22:00 <br />
-                  Saturday-Sunday: 14:00 - 21:00
-                </span>
-              </p>
-            </div>
-          </div>
-          <form className="flex flex-col gap-4">
-            <div>
-              <label htmlFor="name">Your Name</label>
-              <input type="text" id="name" placeholder="John Doe" />
-            </div>
-            <div>
-              <label htmlFor="email">Email Address</label>
-              <input type="email" id="email" placeholder="johndoe@mail.com"/>
-            </div>
-            <div>
-              <label htmlFor="subject">Subject</label>
-              <input type="text" id="subject" placeholder="Optional"/>
-            </div>
-            <div>
-              <label htmlFor="message">Message</label>
-              <textarea name="message" id="message" rows={5}></textarea>
-            </div>
-          </form>
-        </div>
       </header>
+
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeIn}
+        className="w-full text-center max-w-[644px] flex flex-col items-center justify-center mx-auto mt-[98px] gap-4 px-8"
+      >
+        <motion.h2
+          variants={fadeInUp}
+          className="capitalize font-semibold lg:text-4xl text-2xl"
+        >
+          Get in touch with us
+        </motion.h2>
+        <motion.p
+          variants={fadeInUp}
+          className="font-normal lg:text-base text-sm text-[#9F9F9F]"
+        >
+          For More Information About Our Product & Services. Please Feel Free To
+          Drop Us An Email. Our Staff Always Be There To Help You Out. Do Not
+          Hesitate!
+        </motion.p>
+      </motion.div>
+
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={staggerChildren}
+        className="w-full flex flex-col lg:flex-row lg:gap-[8rem] gap-8 max-w-[1440px] mx-auto px-8 lg:pl-[229px] lg:mt-[100px] mt-[50px] mb-[50px]"
+      >
+        <motion.div
+          variants={fadeInUp}
+          className="flex flex-col gap-4 max-w-[393px]"
+        >
+          <motion.div variants={fadeInUp} className="flex items-start gap-6">
+            <FaLocationDot className="mt-1" size={30} />
+            <p className="">
+              <span className="font-medium lg:text-2xl text-lg">Address</span>{" "}
+              <br />
+              <span className="font-normal lg:text-base text-sm leading-8">
+                236 5th SE Avenue, New <br /> York NY10000, United States
+              </span>
+            </p>
+          </motion.div>
+          <motion.div variants={fadeInUp} className="flex items-start gap-6">
+            <FaPhone className="mt-1" size={30} />
+            <p>
+              <span className="font-medium lg:text-2xl text-lg">Phone</span>
+              <br />
+              <span className="font-normal lg:text-base text-sm leading-8">
+                Mobile: +(84)546-6789 <br />
+                Hotiline: +(84)546-6789
+              </span>
+            </p>
+          </motion.div>
+          <motion.div variants={fadeInUp} className="flex items-start gap-6">
+            <MdOutlineAccessTimeFilled className="mt-1" size={30} />
+            <p>
+              <span className="font-medium lg:text-2xl text-lg">
+                Working Time
+              </span>
+              <br />
+              <span className="font-normal lg:text-base text-sm leading-8">
+                Monday-Friday: 9:00 - 22:00 <br />
+                Saturday-Sunday: 14:00 - 21:00
+              </span>
+            </p>
+          </motion.div>
+        </motion.div>
+        <motion.form
+          variants={fadeInUp}
+          className="flex flex-col gap-9 lg:w-1/2 w-full"
+        >
+          <motion.div variants={fadeInUp} className="flex flex-col gap-[22px]">
+            <label htmlFor="name" className="font-medium text-base">
+              Your Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              placeholder="John Doe"
+              className="border outline p-4 rounded-[10px] border-[#9F9F9F]"
+            />
+          </motion.div>
+          <motion.div variants={fadeInUp} className="flex flex-col gap-4">
+            <label htmlFor="email" className="font-medium text-base">
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="email"
+              placeholder="johndoe@mail.com"
+              className="border outline p-4 rounded-[10px] border-[#9F9F9F]"
+            />
+          </motion.div>
+          <motion.div variants={fadeInUp} className="flex flex-col gap-4">
+            <label htmlFor="subject" className="font-medium text-base">
+              Subject
+            </label>
+            <input
+              type="text"
+              id="subject"
+              placeholder="Optional"
+              className="border outline p-4 rounded-[10px] border-[#9F9F9F]"
+            />
+          </motion.div>
+          <motion.div variants={fadeInUp} className="flex flex-col gap-4">
+            <label htmlFor="message" className="font-medium text-base">
+              Message
+            </label>
+            <textarea
+              name="message"
+              id="message"
+              rows={3}
+              cols={5}
+              className="border border-black rounded-[10px] p-4"
+            ></textarea>
+          </motion.div>
+
+          <motion.div
+            variants={fadeInUp}
+            className="w-full flex items-center justify-center lg:justify-start"
+          >
+            <button className="bg-[#B88E2F] py-4 px-16 hover:opacity-85 cursor-pointer rounded-[5px] outline-none border-none text-white text-base font-normal">
+              Submit
+            </button>
+          </motion.div>
+        </motion.form>
+      </motion.div>
     </div>
   );
 }
