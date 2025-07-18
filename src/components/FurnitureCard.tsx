@@ -10,7 +10,6 @@ import { useState } from "react";
 import { useLikedItems } from "@/context/LikedItemsContext";
 
 export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
-  // Added logic to activate overlay on tap for mobile devices
   const [isOverlayActive, setIsOverlayActive] = useState(false);
 
   const handleOverlayToggle = () => {
@@ -22,7 +21,7 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
   const isLiked = likedItems.has(furniture.id.toString());
 
   const handleLikeToggle = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent triggering the overlay toggle
+    e.stopPropagation(); 
     toggleLike(furniture.id.toString());
   };
 

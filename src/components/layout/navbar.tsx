@@ -35,14 +35,14 @@ export function Navbar() {
   const { likedItems } = useLikedItems();
 
   return (
-    <motion.nav
-      className="w-screen fixed top-0 left-0 bg-white z-50"
-      initial="hidden"
-      animate="visible"
-      variants={fadeInUp}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-    >
-      <div className="w-full max-w-[1440px] mx-auto flex items-center justify-between p-4 lg:px-12">
+    <nav className="w-screen fixed top-0 left-0 bg-white z-50">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeInUp}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="w-full max-w-[1440px] mx-auto flex items-center justify-between p-4 lg:px-12"
+      >
         <div className="flex items-center gap-2">
           <Image
             src="/images/furniro_logo.webp"
@@ -153,7 +153,9 @@ export function Navbar() {
           animate="visible"
         >
           <motion.div variants={fadeInUp}>
-            <User />
+            <Link href="/blog">
+              <User />
+            </Link>
           </motion.div>
           <motion.div variants={fadeInUp}>
             <Search />
@@ -170,7 +172,7 @@ export function Navbar() {
             )}
           </motion.div>
         </motion.div>
-      </div>
-    </motion.nav>
+      </motion.div>
+    </nav>
   );
 }
