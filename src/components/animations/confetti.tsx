@@ -6,6 +6,6 @@ export function triggerConfetti() {
     spread: 70, 
     origin: { y: 0.6 }, 
     gravity: 1.2, 
-    scalar: 1.5, 
+    scalar: 1, 
   });
 }
