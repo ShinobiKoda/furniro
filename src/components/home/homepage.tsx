@@ -151,11 +151,14 @@ export function HomePage() {
               Explore our curated collection of furniture designed to elevate
               your living spaces with style and comfort.
             </p>
-            <div className="w-full">
+            <motion.div
+              whileTap={{ scale: 0.95 }}
+              className="w-full"
+            >
               <button className="bg-[#B88E2F] text-white font-semibold py-3 px-9 mt-8 cursor-pointer hover:opacity-85">
                 <Link href="/shop">BUY NOW</Link>
               </button>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

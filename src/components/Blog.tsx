@@ -1,9 +1,15 @@
 "use client";
 import { NavDisplay } from "@/components/NavDisplay";
 import { motion } from "framer-motion";
-import { zoomIn } from "@/components/animations/motion";
+import {
+  zoomIn,
+  fadeInUp,
+  staggerChildren,
+  fadeIn,
+} from "@/components/animations/motion";
 import { FaUserAlt } from "react-icons/fa";
 import { CiCalendarDate } from "react-icons/ci";
+import { Search } from "lucide-react";
 import { FaTag } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -21,6 +27,34 @@ interface BlogDataProps {
   description: string;
   category: string;
 }
+
+const recentPosts = [
+  {
+    img: "/images/recent-posts-1.svg",
+    topic: "Going all-in with millenial design",
+    date: "03 Aug 2024",
+  },
+  {
+    img: "/images/recent-posts-2.svg",
+    topic: "Exploring new ways of decorating",
+    date: "10 Oct 2024",
+  },
+  {
+    img: "/images/recent-posts-3.svg",
+    topic: "Handmade pieces that took time to make",
+    date: "23 Oct 2024",
+  },
+  {
+    img: "/images/recent-posts-4.svg",
+    topic: "Modern home in milan",
+    date: "09 Dec 2024",
+  },
+  {
+    img: "/images/recent-posts-2.svg",
+    topic: "Colorful office redesign",
+    date: "13 Dec 2024",
+  },
+];
 
 export function Blog({ pathSegments }: BlogProps) {
   const [blogs, setBlogs] = useState<BlogDataProps[]>([]);
@@ -69,11 +103,21 @@ export function Blog({ pathSegments }: BlogProps) {
         </motion.div>
       </header>
 
-      <div className="lg:grid lg:grid-cols-[2fr_1fr] mt-[106px] w-full max-w-[1440px] mx-auto mb-[58px]">
-        <div className="flex flex-col gap-8 px-4 lg:px-12">
-          {paginatedBlogs.map((blog) => (
-            <section
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={staggerChildren}
+        className="lg:grid lg:grid-cols-[3fr_1fr] mt-[106px] w-full max-w-[1440px] mx-auto mb-[58px]"
+      >
+        <motion.div
+          variants={fadeIn}
+          className="flex flex-col gap-8 px-4 lg:px-12"
+        >
+          {paginatedBlogs.map((blog, index) => (
+            <motion.section
               key={blog.id}
+              variants={fadeInUp}
+              custom={index}
               className="flex flex-col gap-7 w-full max-w-[817px]"
             >
               <Image
@@ -114,9 +158,12 @@ export function Blog({ pathSegments }: BlogProps) {
                   Read more
                 </button>
               </div>
-            </section>
+            </motion.section>
           ))}
-          <div className="flex items-center justify-center gap-4 flex-wrap">
+          <motion.div
+            variants={fadeInUp}
+            className="flex items-center justify-center gap-4 flex-wrap"
+          >
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
@@ -144,11 +191,93 @@ export function Blog({ pathSegments }: BlogProps) {
             >
               Next
             </button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <div className="hidden lg:flex flex-col gap-2"></div>
-      </div>
+        <motion.div
+          variants={fadeIn}
+          className="hidden lg:flex flex-col gap-[43px]"
+        >
+          <motion.div
+            variants={fadeInUp}
+            className="w-full border border-[#9F9F9F] rounded-[10px] flex items-center justify-end pr-4"
+          >
+            <input
+              type="text"
+              className="w-full text-left border-0 outline-0 h-full p-4"
+            />
+            <Search />
+          </motion.div>
+          <motion.div variants={fadeInUp} className="space-y-[33px]">
+            <h2 className="font-medium lg:text-2xl text-xl">Categories</h2>
+            <motion.div variants={staggerChildren} className="space-y-[41px]">
+              <motion.p
+                variants={fadeInUp}
+                className="flex items-center justify-between w-full text-[#9F9F9F] font-normal text-base"
+              >
+                <span>Crafts</span>
+                <span>2</span>
+              </motion.p>
+              <motion.p
+                variants={fadeInUp}
+                className="flex items-center justify-between w-full text-[#9F9F9F] font-normal text-base"
+              >
+                <span>Design</span>
+                <span>8</span>
+              </motion.p>
+              <motion.p
+                variants={fadeInUp}
+                className="flex items-center justify-between w-full text-[#9F9F9F] font-normal text-base"
+              >
+                <span>Handmade</span>
+                <span>7</span>
+              </motion.p>
+              <motion.p
+                variants={fadeInUp}
+                className="flex items-center justify-between w-full text-[#9F9F9F] font-normal text-base"
+              >
+                <span>Interior</span>
+                <span>1</span>
+              </motion.p>
+              <motion.p
+                variants={fadeInUp}
+                className="flex items-center justify-between w-full text-[#9F9F9F] font-normal text-base"
+              >
+                <span>Wood</span>
+                <span>6</span>
+              </motion.p>
+            </motion.div>
+          </motion.div>
+
+          <motion.div variants={fadeInUp} className="space-y-[33px]">
+            <h2 className="font-medium lg:text-2xl text-xl">Recent Posts</h2>
+            <motion.div variants={staggerChildren} className="space-y-[41px]">
+              {recentPosts.map((post, index) => (
+                <motion.div
+                  key={index}
+                  variants={fadeInUp}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="flex items-start gap-2 max-w-[200px] hover:opacity-85 cursor-pointer"
+                >
+                  <Image
+                    src={post.img}
+                    alt="Post Image"
+                    width={100}
+                    height={100}
+                  />
+                  <p className="flex flex-col font-regular space-y-2">
+                    <span className="text-sm">{post.topic}</span>
+                    <span className="text-[#9F9F9F] text-[12px]">
+                      {post.date}
+                    </span>
+                  </p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }
