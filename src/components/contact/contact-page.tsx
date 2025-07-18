@@ -166,7 +166,7 @@ export function ContactPage({ pathSegments }: ContactPageProps) {
         initial="hidden"
         animate="visible"
         variants={staggerChildren}
-        className="w-full flex flex-col lg:flex-row lg:gap-[8rem] gap-8 max-w-[1440px] mx-auto px-8 lg:pl-[229px] lg:mt-[100px] mt-[50px] mb-[50px]"
+        className="w-full flex flex-col lg:flex-row lg:gap-[8rem] gap-8 max-w-[1440px] mx-auto px-8 xl:pl-[229px] lg:mt-[100px] mt-[50px] mb-[50px]"
       >
         <motion.div
           variants={fadeInUp}

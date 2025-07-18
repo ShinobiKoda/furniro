@@ -10,7 +10,7 @@ import { FurnitureProps } from "@/types/type";
 import { SkeletonLoader } from "../animations/SkeletonLoader";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Footer } from "@/components/Footer";
-import Link from "next/link"
+import Link from "next/link";
 
 const categories = ["Dining", "Living", "Bedroom"];
 
@@ -56,7 +56,7 @@ export function HomePage() {
     FurnitureProps[] | null
   >(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [currentRange, setCurrentRange] = useState<number>(0);
+  const [showAllProducts, setShowAllProducts] = useState<boolean>(false);
 
   const images = [
     "/images/furniro_room-inspirations-1.webp",
@@ -126,7 +126,7 @@ export function HomePage() {
   };
 
   const handleShowMore = () => {
-    setCurrentRange((prevRange) => (prevRange + 8) % 16);
+    setShowAllProducts((prev) => !prev);
   };
 
   return (
@@ -230,7 +230,7 @@ export function HomePage() {
               className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:grid-cols-4 w-full px-4 lg:px-12 items-center justify-center max-w-[1440px] mx-auto"
             >
               {furnitureDetails
-                .slice(currentRange, currentRange + 8)
+                .slice(0, showAllProducts ? 16 : 8)
                 .map((furniture) => (
                   <motion.div key={furniture.id} variants={fadeInUp}>
                     <FurnitureCard furniture={furniture} />
@@ -244,9 +244,7 @@ export function HomePage() {
             whileTap={{ scale: 0.95 }}
             onClick={handleShowMore}
           >
-            {currentRange + 8 >= (furnitureDetails?.length || 0)
-              ? "Show Less"
-              : "Show More"}
+            {showAllProducts ? "Show Less" : "Show More"}
           </motion.button>
         </div>
       </Section>

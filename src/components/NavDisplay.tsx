@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import Link from "next/link";
 
 interface NavDisplayProps {
@@ -15,7 +15,7 @@ export function NavDisplay({ pathSegments }: NavDisplayProps) {
           <Link href={`/${fullPathSegments.slice(0, index + 1).join("/")}`}>
             {segment.charAt(0).toUpperCase() + segment.slice(1)}
           </Link>
-          {index < fullPathSegments.length - 1 && <ArrowRight size={19} />}
+          {index < fullPathSegments.length - 1 && <MdOutlineKeyboardArrowRight size={20} />}
         </span>
       ))}
     </p>
