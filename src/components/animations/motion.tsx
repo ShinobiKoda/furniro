@@ -72,3 +72,23 @@ export const bounce = {
     },
   },
 };
+
+export const scaleOnHover = {
+  hidden: { scale: 1 },
+  visible: {
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+  hover: {
+    scale: 1.02,
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 25,
+    },
+  },
+};

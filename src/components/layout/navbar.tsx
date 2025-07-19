@@ -53,7 +53,7 @@ export function Navbar() {
           <h1
             className={`font-bold text-2xl lg:text-[34px] ${montserrat.className}`}
           >
-           <Link href="/home">Furniro</Link>
+            <Link href="/home">Furniro</Link>
           </h1>
         </div>
 
@@ -161,7 +161,9 @@ export function Navbar() {
             <Search />
           </motion.div>
           <motion.div variants={fadeInUp}>
-            <IoCartOutline className="text-2xl" />
+            <Link href="/checkout">
+              <IoCartOutline className="text-2xl" />
+            </Link>
           </motion.div>
           <motion.div variants={fadeInUp} className="relative">
             <Heart className="text-2xl" />
