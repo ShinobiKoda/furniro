@@ -10,6 +10,8 @@ import {
   fadeIn,
 } from "./animations/motion";
 import Image from "next/image";
+import { Services } from "./Services";
+import { Footer } from "./Footer";
 
 export function Checkout() {
   return (
@@ -381,6 +383,13 @@ export function Checkout() {
           </motion.div>
         </div>
       </motion.div>
+
+      <div>
+        <Services />
+      </div>
+
+      <Footer />
+      
     </div>
   );
 }
