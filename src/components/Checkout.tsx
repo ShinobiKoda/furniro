@@ -4,16 +4,39 @@ import {
   zoomIn,
   fadeInUp,
   staggerChildren,
-  slideInFromLeft,
-  slideInFromRight,
   scaleOnHover,
   fadeIn,
+  fadeInDown,
 } from "./animations/motion";
 import Image from "next/image";
 import { Services } from "./Services";
 import { Footer } from "./Footer";
+import { useState, useEffect } from "react";
+import { fetchWestAfricanCountries } from "@/api/FetchCountry";
+import { Country } from "@/types/type";
+import { ClipLoader } from "react-spinners";
 
 export function Checkout() {
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [isLoadingCountries, setIsLoadingCountries] = useState(true);
+
+  useEffect(() => {
+    const loadCountries = async () => {
+      try {
+        const result = await fetchWestAfricanCountries();
+        if (result.success && result.data) {
+          setCountries(result.data);
+        }
+      } catch (error) {
+        console.error("Failed to load countries:", error);
+      } finally {
+        setIsLoadingCountries(false);
+      }
+    };
+
+    loadCountries();
+  }, []);
+
   return (
     <div className="w-full">
       <header
@@ -51,11 +74,7 @@ export function Checkout() {
           Billing Details
         </motion.h2>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] w-full  gap-[105px]">
-          <motion.form
-            variants={slideInFromLeft}
-            action=""
-            className="space-y-9"
-          >
+          <motion.form variants={fadeInUp} action="" className="space-y-9">
             <motion.div
               variants={fadeInUp}
               className="w-full flex flex-col lg:flex-row lg:items-center justify-between gap-[31px]"
@@ -115,17 +134,29 @@ export function Checkout() {
               <motion.div
                 variants={scaleOnHover}
                 whileHover="hover"
-                className="border border-[#9F9F9F] rounded-[10px] px-2 py-4 transition-all duration-200"
+                className="border border-[#9F9F9F] rounded-[10px] px-2 py-4 transition-all duration-200 relative"
               >
-                <select
-                  name="country_region"
-                  id="country_region"
-                  className="w-full outline-0 border-0 cursor-pointer bg-transparent"
-                >
-                  <option value="nigeria">Nigeria</option>
-                  <option value="USA">United States of America</option>
-                  <option value="germany">Germany</option>
-                </select>
+                {isLoadingCountries ? (
+                  <div className="flex items-center justify-center w-full py-1">
+                    <ClipLoader size={20} color="#B88E2F" />
+                    <span className="ml-2 text-sm text-gray-500">
+                      Loading countries...
+                    </span>
+                  </div>
+                ) : (
+                  <select
+                    name="country_region"
+                    id="country_region"
+                    className="w-full outline-0 border-0 cursor-pointer bg-transparent rounded-md h-full"
+                  >
+                    <option value="" disabled>Select a country</option>
+                    {countries.map((country) => (
+                      <option key={country.cca3} value={country.cca3}>
+                        {country.name.common}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </motion.div>
             </motion.div>
 
@@ -251,7 +282,7 @@ export function Checkout() {
           </motion.form>
 
           <motion.div
-            variants={slideInFromRight}
+            variants={fadeInDown}
             className="w-full space-y-3.5  max-w-[533px]"
           >
             <motion.p
@@ -370,7 +401,6 @@ export function Checkout() {
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   whileHover={{
-                    scale: 1.05,
                     boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
                     transition: { duration: 0.2 },
                   }}
@@ -389,7 +419,6 @@ export function Checkout() {
       </div>
 
       <Footer />
-      
     </div>
   );
 }
