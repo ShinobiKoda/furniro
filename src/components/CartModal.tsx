@@ -17,15 +17,11 @@ interface CartModalProps {
 }
 
 export function CartModal({ onClose }: CartModalProps) {
-  // Prevent background scrolling when modal is open
   useEffect(() => {
-    // Store original overflow style
     const originalStyle = window.getComputedStyle(document.body).overflow;
 
-    // Disable scrolling
     document.body.style.overflow = "hidden";
 
-    // Cleanup function to restore scrolling when component unmounts
     return () => {
       document.body.style.overflow = originalStyle;
     };
@@ -39,7 +35,6 @@ export function CartModal({ onClose }: CartModalProps) {
       exit={{ x: "100%", opacity: 0 }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
     >
-      {/* Header */}
       <motion.div
         className="flex items-center justify-between w-full border-b border-gray-200 pb-6 mb-6"
         variants={fadeInUp}
@@ -64,14 +59,12 @@ export function CartModal({ onClose }: CartModalProps) {
         </motion.div>
       </motion.div>
 
-      {/* Cart Items Container */}
       <motion.div
         className="flex flex-col gap-6 mb-8"
         variants={staggerChildren}
         initial="hidden"
         animate="visible"
       >
-        {/* Cart Item 1 */}
         <motion.div
           className="flex items-center justify-between w-full gap-4"
           variants={fadeInUp}
@@ -119,7 +112,6 @@ export function CartModal({ onClose }: CartModalProps) {
           </motion.button>
         </motion.div>
 
-        {/* Cart Item 2 */}
         <motion.div
           className="flex items-center justify-between w-full gap-4"
           variants={fadeInUp}
@@ -168,7 +160,6 @@ export function CartModal({ onClose }: CartModalProps) {
         </motion.div>
       </motion.div>
 
-      {/* Bottom Section */}
       <motion.div
         className="absolute bottom-0 space-y-4 w-full left-0 mb-8"
         variants={fadeInUp}
@@ -197,39 +188,45 @@ export function CartModal({ onClose }: CartModalProps) {
         />
 
         <motion.div
-          className="w-full gap-3.5 px-6 flex items-center justify-between"
+          className="w-full gap-3.5 px-6 flex items-center justify-between *:cursor-pointer"
           variants={staggerChildren}
           initial="hidden"
           animate="visible"
           transition={{ delay: 0.5 }}
         >
-          <motion.button
-            className="w-full py-2 border border-black rounded-[50px] font-medium transition-all duration-200"
-            onClick={onClose}
-            variants={scaleOnHover}
-            whileHover="hover"
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link href="/cart">Cart</Link>
-          </motion.button>
-          <motion.button
-            className="w-full py-2 border border-black rounded-[50px] font-medium transition-all duration-200"
-            onClick={onClose}
-            variants={scaleOnHover}
-            whileHover="hover"
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link href="/checkout">Checkout</Link>
-          </motion.button>
-          <motion.button
-            className="w-full py-2 border border-black rounded-[50px] font-medium transition-all duration-200"
-            onClick={onClose}
-            variants={scaleOnHover}
-            whileHover="hover"
-            whileTap={{ scale: 0.95 }}
-          >
-            Comparison
-          </motion.button>
+          <Link href="/cart" className="w-full">
+            <motion.button
+              className="w-full py-2 border border-black rounded-[50px] font-medium transition-all duration-200 cursor-pointer"
+              onClick={onClose}
+              variants={scaleOnHover}
+              whileHover="hover"
+              whileTap={{ scale: 0.95 }}
+            >
+              Cart
+            </motion.button>
+          </Link>
+          <Link href="/checkout" className="w-full">
+            <motion.button
+              className="w-full py-2 border border-black rounded-[50px] font-medium transition-all duration-200 cursor-pointer"
+              onClick={onClose}
+              variants={scaleOnHover}
+              whileHover="hover"
+              whileTap={{ scale: 0.95 }}
+            >
+              Checkout
+            </motion.button>
+          </Link>
+          <Link href="/#" className="w-full">
+            <motion.button
+              className="w-full py-2 border border-black rounded-[50px] font-medium transition-all duration-200 cursor-pointer"
+              onClick={onClose}
+              variants={scaleOnHover}
+              whileHover="hover"
+              whileTap={{ scale: 0.95 }}
+            >
+              Comparison
+            </motion.button>
+          </Link>
         </motion.div>
       </motion.div>
     </motion.div>
