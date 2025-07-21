@@ -44,7 +44,7 @@ export function Navbar() {
   };
 
   const { likedItems } = useLikedItems();
-  const { getItemCount } = useCart();
+  const { getUniqueItemCount } = useCart();
 
   return (
     <nav className="w-screen fixed top-0 left-0 bg-white z-50">
@@ -178,9 +178,9 @@ export function Navbar() {
             className="relative"
           >
             <IoCartOutline className="text-2xl" />
-            {getItemCount() > 0 && (
+            {getUniqueItemCount() > 0 && (
               <span className="absolute -top-2 -right-2 bg-[#B88E2F] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                {getItemCount()}
+                {getUniqueItemCount()}
               </span>
             )}
           </motion.div>

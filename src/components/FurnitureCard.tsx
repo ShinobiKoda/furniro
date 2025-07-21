@@ -9,7 +9,6 @@ import { BsArrowLeftRight } from "react-icons/bs";
 import { useState } from "react";
 import { useLikedItems } from "@/context/LikedItemsContext";
 import { useCart } from "@/context/CartContext";
-import { showSuccessToast } from "@/components/animations/toast";
 
 export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
   const [isOverlayActive, setIsOverlayActive] = useState(false);
@@ -31,7 +30,6 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     addToCart(furniture);
-    showSuccessToast(`${furniture.name} added to cart!`);
   };
 
   return (
