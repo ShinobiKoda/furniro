@@ -4,6 +4,7 @@ import { MdCancel } from "react-icons/md";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import {
   fadeInUp,
   staggerChildren,
@@ -16,6 +17,20 @@ interface CartModalProps {
 }
 
 export function CartModal({ onClose }: CartModalProps) {
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    // Store original overflow style
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+
+    // Disable scrolling
+    document.body.style.overflow = "hidden";
+
+    // Cleanup function to restore scrolling when component unmounts
+    return () => {
+      document.body.style.overflow = originalStyle;
+    };
+  }, []);
+
   return (
     <motion.div
       className="bg-white top-0 right-0 w-[417px] h-screen py-6 px-6 shadow-2xl overflow-y-auto"
