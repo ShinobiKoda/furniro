@@ -5,7 +5,7 @@ import { User, Search, Heart } from "lucide-react";
 import Link from "next/link";
 import { IoCartOutline } from "react-icons/io5";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Montserrat } from "next/font/google";
 import {
   fadeInUp,
@@ -14,6 +14,7 @@ import {
   staggerChildren,
 } from "../animations/motion";
 import { useLikedItems } from "@/context/LikedItemsContext";
+import { CartModal } from "../CartModal";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -23,6 +24,7 @@ const montserrat = Montserrat({
 
 export function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -30,6 +32,14 @@ export function Navbar() {
 
   const closeSidebar = () => {
     setIsSidebarOpen(false);
+  };
+
+  const toggleCart = () => {
+    setIsCartOpen((prev) => !prev);
+  };
+
+  const closeCart = () => {
+    setIsCartOpen(false);
   };
 
   const { likedItems } = useLikedItems();
@@ -160,10 +170,8 @@ export function Navbar() {
           <motion.div variants={fadeInUp}>
             <Search />
           </motion.div>
-          <motion.div variants={fadeInUp}>
-            <Link href="/checkout">
-              <IoCartOutline className="text-2xl" />
-            </Link>
+          <motion.div variants={fadeInUp} onClick={toggleCart}>
+            <IoCartOutline className="text-2xl" />
           </motion.div>
           <motion.div variants={fadeInUp} className="relative">
             <Heart className="text-2xl" />
@@ -174,6 +182,33 @@ export function Navbar() {
             )}
           </motion.div>
         </motion.div>
+
+        {/* Cart Modal with Overlay */}
+        <AnimatePresence>
+          {isCartOpen && (
+            <>
+              {/* Overlay */}
+              <motion.div
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+                onClick={closeCart}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              />
+              {/* Cart Modal */}
+              <motion.div
+                className="fixed top-0 right-0 z-50"
+                initial={{ x: "100%", opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: "100%", opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+              >
+                <CartModal onClose={closeCart} />
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
       </motion.div>
     </nav>
   );
