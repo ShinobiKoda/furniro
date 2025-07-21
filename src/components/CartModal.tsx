@@ -11,12 +11,15 @@ import {
   scaleOnHover,
   fadeIn,
 } from "./animations/motion";
+import { useCart } from "@/context/CartContext";
 
 interface CartModalProps {
   onClose: () => void;
 }
 
 export function CartModal({ onClose }: CartModalProps) {
+  const { cartItems, removeFromCart, getTotalPrice } = useCart();
+
   useEffect(() => {
     const originalStyle = window.getComputedStyle(document.body).overflow;
 
@@ -65,99 +68,74 @@ export function CartModal({ onClose }: CartModalProps) {
         initial="hidden"
         animate="visible"
       >
-        <motion.div
-          className="flex items-center justify-between w-full gap-4"
-          variants={fadeInUp}
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.2 }}
-        >
-          <div className="flex items-center gap-4">
-            <motion.div
-              className="w-[108px] h-[105px] rounded-lg overflow-hidden bg-[#B88E2F]/10 flex-shrink-0"
-              variants={scaleOnHover}
-              whileHover="hover"
-            >
-              <Image
-                src="/images/furniro_furniture-setup-3.webp"
-                alt="Furniture Image"
-                width={108}
-                height={105}
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-
-            <motion.div className="flex-1 space-y-2" variants={fadeInUp}>
-              <motion.h3 className="font-normal text-base" variants={fadeInUp}>
-                Asgaard Sofa
-              </motion.h3>
-              <motion.div
-                className="flex items-center gap-4 text-sm"
-                variants={fadeInUp}
-              >
-                <span className="text-base font-light">1 x</span>
-                <span className="font-medium text-[#B88E2F] text-[12px]">
-                  ₦40,000
-                </span>
-              </motion.div>
-            </motion.div>
-          </div>
-
-          <motion.button
-            className="p-1 rounded-full transition-colors duration-200 flex-shrink-0"
-            variants={scaleOnHover}
-            whileHover="hover"
-            whileTap={{ scale: 0.9 }}
+        {cartItems.length === 0 ? (
+          <motion.div
+            variants={fadeInUp}
+            className="text-center py-8 text-gray-500"
           >
-            <MdCancel className="text-[#9F9F9F] hover:text-red-500 text-2xl transition-colors duration-200" />
-          </motion.button>
-        </motion.div>
-
-        <motion.div
-          className="flex items-center justify-between w-full gap-4"
-          variants={fadeInUp}
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.2 }}
-        >
-          <div className="flex items-center gap-4">
+            <p className="text-lg font-medium">Your cart is empty</p>
+            <p className="text-sm">Add some furniture to get started!</p>
+          </motion.div>
+        ) : (
+          cartItems.map((item) => (
             <motion.div
-              className="w-[108px] h-[105px] rounded-lg overflow-hidden bg-[#B88E2F]/10 flex-shrink-0"
-              variants={scaleOnHover}
-              whileHover="hover"
+              key={item.furniture.id}
+              className="flex items-center justify-between w-full gap-4"
+              variants={fadeInUp}
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
             >
-              <Image
-                src="/images/furniro_furniture-setup-3.webp"
-                alt="Furniture Image"
-                width={108}
-                height={105}
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
+              <div className="flex items-center gap-4">
+                <motion.div
+                  className="w-[108px] h-[105px] rounded-lg overflow-hidden bg-[#B88E2F]/10 flex-shrink-0"
+                  variants={scaleOnHover}
+                  whileHover="hover"
+                >
+                  <Image
+                    src={item.furniture.image_url}
+                    alt={item.furniture.name}
+                    width={108}
+                    height={105}
+                    className="w-full h-full object-cover"
+                  />
+                </motion.div>
 
-            <motion.div className="flex-1 space-y-2" variants={fadeInUp}>
-              <motion.h3 className="font-normal text-base" variants={fadeInUp}>
-                Asgaard Sofa
-              </motion.h3>
-              <motion.div
-                className="flex items-center gap-4 text-sm"
-                variants={fadeInUp}
+                <motion.div className="flex-1 space-y-2" variants={fadeInUp}>
+                  <motion.h3
+                    className="font-normal text-base"
+                    variants={fadeInUp}
+                  >
+                    {item.furniture.name}
+                  </motion.h3>
+                  <motion.div
+                    className="flex items-center gap-4 text-sm"
+                    variants={fadeInUp}
+                  >
+                    <span className="text-base font-light">
+                      {item.quantity} x
+                    </span>
+                    <span className="font-medium text-[#B88E2F] text-[12px]">
+                      ₦
+                      {(
+                        item.furniture.discount_price || item.furniture.price
+                      ).toLocaleString()}
+                    </span>
+                  </motion.div>
+                </motion.div>
+              </div>
+
+              <motion.button
+                className="p-1 rounded-full transition-colors duration-200 flex-shrink-0"
+                variants={scaleOnHover}
+                whileHover="hover"
+                whileTap={{ scale: 0.9 }}
+                onClick={() => removeFromCart(item.furniture.id)}
               >
-                <span className="text-base font-light">1 x</span>
-                <span className="font-medium text-[#B88E2F] text-[12px]">
-                  ₦40,000
-                </span>
-              </motion.div>
+                <MdCancel className="text-[#9F9F9F] hover:text-red-500 text-2xl transition-colors duration-200" />
+              </motion.button>
             </motion.div>
-          </div>
-
-          <motion.button
-            className="p-1 rounded-full transition-colors duration-200 flex-shrink-0"
-            variants={scaleOnHover}
-            whileHover="hover"
-            whileTap={{ scale: 0.9 }}
-          >
-            <MdCancel className="text-[#9F9F9F] hover:text-red-500 text-2xl transition-colors duration-200" />
-          </motion.button>
-        </motion.div>
+          ))
+        )}
       </motion.div>
 
       <motion.div
@@ -176,7 +154,7 @@ export function CartModal({ onClose }: CartModalProps) {
             className="font-semibold text-base text-[#B88E2F]"
             variants={fadeInUp}
           >
-            ₦40,000
+            ₦{getTotalPrice().toLocaleString()}
           </motion.span>
         </motion.div>
 

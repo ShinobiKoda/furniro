@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "../components/layout/navbar";
 import { ToastProvider } from "../components/animations/toast";
 import { LikedItemsProvider } from "@/context/LikedItemsContext";
+import { CartProvider } from "@/context/CartContext";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -27,11 +28,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
-        <LikedItemsProvider>
-          <Navbar />
-          <ToastProvider />
-          <div className="lg:pt-[76px] pt-[65px]">{children}</div>
-        </LikedItemsProvider>
+        <CartProvider>
+          <LikedItemsProvider>
+            <Navbar />
+            <ToastProvider />
+            <div className="lg:pt-[76px] pt-[65px]">{children}</div>
+          </LikedItemsProvider>
+        </CartProvider>
       </body>
     </html>
   );

@@ -8,6 +8,8 @@ import { CiShare2 } from "react-icons/ci";
 import { BsArrowLeftRight } from "react-icons/bs";
 import { useState } from "react";
 import { useLikedItems } from "@/context/LikedItemsContext";
+import { useCart } from "@/context/CartContext";
+import { showSuccessToast } from "@/components/animations/toast";
 
 export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
   const [isOverlayActive, setIsOverlayActive] = useState(false);
@@ -17,12 +19,19 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
   };
 
   const { likedItems, toggleLike } = useLikedItems();
+  const { addToCart } = useCart();
 
   const isLiked = likedItems.has(furniture.id.toString());
 
   const handleLikeToggle = (e: React.MouseEvent) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     toggleLike(furniture.id.toString());
+  };
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart(furniture);
+    showSuccessToast(`${furniture.name} added to cart!`);
   };
 
   return (
@@ -61,6 +70,7 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
           <motion.button
             whileTap={{ scale: 0.85 }}
             className="bg-white px-6 py-2 shadow-md hover:bg-gray-200 font-semibold text-base text-[#B88E2F]"
+            onClick={handleAddToCart}
           >
             Add to Cart
           </motion.button>
