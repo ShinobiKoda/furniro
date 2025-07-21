@@ -48,7 +48,7 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
     setCurrentPage(page);
 
     if (productsRef.current) {
-      const yOffset = -200; 
+      const yOffset = -200;
       const y =
         productsRef.current.getBoundingClientRect().top +
         window.pageYOffset +
@@ -124,19 +124,24 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
           <div className="flex items-center gap-4">
             <div className="hidden lg:flex font-normal text-xl lg:items-center lg:gap-2">
               <p>Show</p>
-              <div className="w-[55px] h-[55px] bg-white flex items-center justify-center">
+              <div className="w-[55px] h-[55px] bg-white flex items-center justify-center text-center">
                 <input
                   type="number"
-                  className="border-none outline-none w-full h-full text-center"
+                  className="border-none outline-none w-full h-full text-center text-[#9F9F9F] cursor-not-allowed"
                   placeholder="16"
+                  min={16}
+                  disabled
                 />
               </div>
             </div>
             <div className="font-normal lg:text-xl text-lg flex items-center gap-2">
               <p>Sort by</p>
-              <select name="" id="" className="bg-white p-3">
-                <option value="default">Default</option>
-              </select>
+              <div className="px-2 py-4 bg-white">
+                <select name="sort" id="sort" className="outline-none border-none  cursor-pointer w-full">
+                  <option value="default">Default</option>
+                  <option value="alphabetical">Name</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
