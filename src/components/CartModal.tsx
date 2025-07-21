@@ -131,7 +131,7 @@ export function CartModal({ onClose }: CartModalProps) {
                 whileTap={{ scale: 0.9 }}
                 onClick={() => removeFromCart(item.furniture.id)}
               >
-                <MdCancel className="text-[#9F9F9F] hover:text-red-500 text-2xl transition-colors duration-200" />
+                <MdCancel className="text-[#9F9F9F] hover:text-red-500 text-2xl transition-colors duration-200 cursor-pointer" />
               </motion.button>
             </motion.div>
           ))
