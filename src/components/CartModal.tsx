@@ -37,7 +37,7 @@ export function CartModal({ onClose }: CartModalProps) {
 
   return (
     <motion.div
-      className="bg-white top-0 right-0 w-[417px] h-screen py-6 px-6 shadow-2xl overflow-y-auto"
+      className="bg-white top-0 right-0 w-[417px] h-screen py-6 px-6 shadow-2xl overflow-y-auto flex flex-col"
       initial={{ x: "100%", opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: "100%", opacity: 0 }}
@@ -68,7 +68,7 @@ export function CartModal({ onClose }: CartModalProps) {
       </motion.div>
 
       <motion.div
-        className="flex flex-col gap-6 mb-8"
+        className="flex flex-col gap-6 flex-1"
         variants={staggerChildren}
         initial="hidden"
         animate="visible"
@@ -150,15 +150,23 @@ export function CartModal({ onClose }: CartModalProps) {
         )}
       </motion.div>
 
+       <motion.hr
+          variants={fadeIn}
+          initial="hidden"
+          animate="visible"
+          transition={{ delay: 0.4 }}
+          className="my-4"
+        />
+
       <motion.div
-        className="absolute bottom-0 space-y-4 w-full left-0 mb-8"
+        className="space-y-4 w-full mt-auto"
         variants={fadeInUp}
         initial="hidden"
         animate="visible"
         transition={{ delay: 0.3 }}
       >
         <motion.div
-          className="flex items-center justify-between px-6"
+          className="flex items-center justify-between"
           variants={fadeInUp}
         >
           <span className="font-normal text-base">Subtotal</span>
@@ -170,15 +178,8 @@ export function CartModal({ onClose }: CartModalProps) {
           </motion.span>
         </motion.div>
 
-        <motion.hr
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-          transition={{ delay: 0.4 }}
-        />
-
         <motion.div
-          className="w-full gap-3.5 px-6 flex items-center justify-between *:cursor-pointer"
+          className="w-full gap-3.5 flex items-center justify-between *:cursor-pointer"
           variants={staggerChildren}
           initial="hidden"
           animate="visible"
@@ -195,17 +196,7 @@ export function CartModal({ onClose }: CartModalProps) {
               Cart
             </motion.button>
           </Link>
-          <Link href="/checkout" className="w-full">
-            <motion.button
-              className="w-full py-2 border border-black rounded-[50px] font-medium transition-all duration-200 cursor-pointer"
-              onClick={onClose}
-              variants={scaleOnHover}
-              whileHover="hover"
-              whileTap={{ scale: 0.95 }}
-            >
-              Checkout
-            </motion.button>
-          </Link>
+
           <Link href="/#" className="w-full">
             <motion.button
               className="w-full py-2 border border-black rounded-[50px] font-medium transition-all duration-200 cursor-pointer"
