@@ -52,7 +52,7 @@ export function Navbar() {
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        
         className="w-full max-w-[1440px] mx-auto flex items-center justify-between p-4 lg:px-12"
       >
         <div className="flex items-center gap-2">

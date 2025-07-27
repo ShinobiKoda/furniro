@@ -4,7 +4,7 @@ import { MdCancel } from "react-icons/md";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   fadeInUp,
   staggerChildren,
@@ -19,6 +19,11 @@ interface CartModalProps {
 
 export function CartModal({ onClose }: CartModalProps) {
   const { cartItems, removeFromCart, getTotalPrice } = useCart();
+  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
+
+  const handleImageError = (itemId: number) => {
+    setImageErrors((prev) => new Set(prev).add(itemId));
+  };
 
   useEffect(() => {
     const originalStyle = window.getComputedStyle(document.body).overflow;
@@ -87,17 +92,24 @@ export function CartModal({ onClose }: CartModalProps) {
             >
               <div className="flex items-center gap-4">
                 <motion.div
-                  className="w-[108px] h-[105px] rounded-lg overflow-hidden bg-[#B88E2F]/10 flex-shrink-0"
+                  className="w-[108px] h-[105px] rounded-lg overflow-hidden bg-[#B88E2F]/10 flex-shrink-0 relative"
                   variants={scaleOnHover}
                   whileHover="hover"
                 >
-                  <Image
-                    src={item.furniture.image_url}
-                    alt={item.furniture.name}
-                    width={108}
-                    height={105}
-                    className="w-full h-full object-cover"
-                  />
+                  {imageErrors.has(item.furniture.id) ? (
+                    <div className="w-full h-full bg-[#B88E2F]/20 flex items-center justify-center">
+                      <IoBagAddOutline className="text-[#B88E2F] text-3xl" />
+                    </div>
+                  ) : (
+                    <Image
+                      src={item.furniture.image_url}
+                      alt={item.furniture.name}
+                      width={108}
+                      height={105}
+                      className="w-full h-full object-cover"
+                      onError={() => handleImageError(item.furniture.id)}
+                    />
+                  )}
                 </motion.div>
 
                 <motion.div className="flex-1 space-y-2" variants={fadeInUp}>

@@ -48,7 +48,7 @@ export function Cart({ pathSegments }: CartPageProps) {
         initial="hidden"
         animate="visible"
         variants={staggerChildren}
-        className="grid grid-cols-1 w-full lg:grid-cols-[2fr_1fr] gap-[30px] mt-[72px] max-w-[1440px] mx-auto px-4 lg:px-12"
+        className="grid grid-cols-1 w-full xl:grid-cols-[2fr_1fr] gap-[30px] mt-[72px] max-w-[1440px] mx-auto px-4 lg:px-12"
       >
         <motion.div variants={fadeInUp}>
           <motion.ul
@@ -94,7 +94,7 @@ export function Cart({ pathSegments }: CartPageProps) {
             >
               <AiFillDelete
                 className="text-[#B88E2F] text-base font-normal"
-                size={40}
+                size={30}
               />
             </motion.div>
           </motion.div>

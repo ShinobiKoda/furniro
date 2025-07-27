@@ -46,7 +46,7 @@ export function Footer() {
     >
       <motion.div
         variants={staggerChildren}
-        className="w-full border-b-2 max-w-[1440px] mx-auto space-y-12 lg:grid lg:grid-cols-4 pb-8"
+        className="w-full border-b-2 max-w-[1440px] mx-auto space-y-12 lg:grid lg:grid-cols-3 xl:grid-cols-4 pb-8"
       >
         <motion.div variants={fadeInUp} className="lg:space-y-[50px] space-y-4">
           <h2 className="font-bold lg:text-2xl text-xl">Furniro</h2>

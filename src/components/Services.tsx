@@ -13,7 +13,7 @@ export function Services() {
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
-        className="w-full lg:h-[270px] max-w-[1440px] mx-auto flex flex-col justify-center gap-14 lg:flex-row lg:items-center lg:justify-between px-4 lg:px-12 py-8"
+        className="w-full max-w-[1440px] mx-auto flex flex-col justify-center gap-14 xl:flex-row xl:items-center xl:justify-between px-4 lg:px-12 py-8 lg:py-[100px]"
       >
         <motion.div variants={fadeInUp} className="flex items-center gap-2">
           <GrTrophy size={60} />
