@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import {
   zoomIn,
   fadeInUp,
@@ -11,14 +12,30 @@ import {
 } from "./animations/motion";
 import { NavDisplay } from "./NavDisplay";
 import { AiFillDelete } from "react-icons/ai";
+import { IoBagAddOutline } from "react-icons/io5";
 import { Services } from "./Services";
 import { Footer } from "./Footer";
+import { useCart } from "@/context/CartContext";
+import Link from "next/link";
 
 interface CartPageProps {
   pathSegments: string[];
 }
 
 export function Cart({ pathSegments }: CartPageProps) {
+  const { cartItems, removeFromCart, updateQuantity, getTotalPrice } =
+    useCart();
+  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
+
+  const handleImageError = (itemId: number) => {
+    setImageErrors((prev) => new Set(prev).add(itemId));
+  };
+
+  const handleQuantityChange = (furnitureId: number, newQuantity: number) => {
+    if (newQuantity > 0) {
+      updateQuantity(furnitureId, newQuantity);
+    }
+  };
   return (
     <div className="w-full">
       <header
@@ -61,43 +78,91 @@ export function Cart({ pathSegments }: CartPageProps) {
             <li>Subtotal</li>
           </motion.ul>
 
-          <motion.div
-            variants={fadeInUp}
-            className="flex items-center gap-4 lg:gap-[114px] justify-around mt-[55px] overflow-x-auto scrollbar-hide"
-          >
-            <div className="flex items-center gap-8">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="w-[108px] h-[105px] rounded-lg overflow-hidden"
-              >
-                <Image
-                  src="/images/furniro_furniture-setup-3.webp"
-                  alt="Furniture Image"
-                  width={100}
-                  height={100}
-                  className="w-full h-full transition-transform duration-300 hover:scale-105"
-                />
-              </motion.div>
-              <span className="text-[#9F9F9F] text-base font-normal text-nowrap">
-                Asgaard Sofa
-              </span>
-            </div>
-            <p className="text-[#9F9F9F] text-base font-normal">₦30,000</p>
-            <p className="p-3 rounded-[5px] border text-base font-normal">1</p>
-            <p>₦30,000</p>
+          {cartItems.length === 0 ? (
             <motion.div
-              variants={scaleOnHover}
-              whileHover="hover"
-              className="cursor-pointer"
+              variants={fadeInUp}
+              className="text-center py-16 text-gray-500"
             >
-              <AiFillDelete
-                className="text-[#B88E2F] text-base font-normal"
-                size={30}
-              />
+              <p className="text-lg font-medium">Your cart is empty</p>
+              <p className="text-sm">Add some furniture to get started!</p>
             </motion.div>
-          </motion.div>
+          ) : (
+            <motion.div
+              variants={staggerChildren}
+              className="space-y-6 mt-[55px]"
+            >
+              {cartItems.map((item) => (
+                <motion.div
+                  key={item.furniture.id}
+                  variants={fadeInUp}
+                  className="flex items-center gap-4 lg:gap-[114px] justify-around overflow-x-auto scrollbar-hide"
+                >
+                  <div className="flex items-center gap-8">
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      className="w-[108px] h-[105px] rounded-lg overflow-hidden bg-[#B88E2F]/10 flex-shrink-0 relative"
+                    >
+                      {imageErrors.has(item.furniture.id) ? (
+                        <div className="w-full h-full bg-[#B88E2F]/20 flex items-center justify-center">
+                          <IoBagAddOutline className="text-[#B88E2F] text-3xl" />
+                        </div>
+                      ) : (
+                        <Image
+                          src={item.furniture.image_url}
+                          alt={item.furniture.name}
+                          width={108}
+                          height={105}
+                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                          onError={() => handleImageError(item.furniture.id)}
+                        />
+                      )}
+                    </motion.div>
+                    <span className="text-[#9F9F9F] text-base font-normal text-nowrap">
+                      {item.furniture.name}
+                    </span>
+                  </div>
+                  <p className="text-[#9F9F9F] text-base font-normal">
+                    ₦
+                    {(
+                      item.furniture.discount_price || item.furniture.price
+                    ).toLocaleString()}
+                  </p>
+                  <input
+                    type="number"
+                    min="1"
+                    value={item.quantity}
+                    onChange={(e) =>
+                      handleQuantityChange(
+                        item.furniture.id,
+                        parseInt(e.target.value)
+                      )
+                    }
+                    className="p-3 rounded-[5px] border text-base font-normal w-16 text-center"
+                  />
+                  <p>
+                    ₦
+                    {(
+                      (item.furniture.discount_price || item.furniture.price) *
+                      item.quantity
+                    ).toLocaleString()}
+                  </p>
+                  <motion.div
+                    variants={scaleOnHover}
+                    whileHover="hover"
+                    className="cursor-pointer"
+                    onClick={() => removeFromCart(item.furniture.id)}
+                  >
+                    <AiFillDelete
+                      className="text-[#B88E2F] text-base font-normal hover:text-red-500 transition-colors duration-200"
+                      size={30}
+                    />
+                  </motion.div>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
         </motion.div>
 
         <motion.div
@@ -120,22 +185,29 @@ export function Cart({ pathSegments }: CartPageProps) {
           >
             <p className="w-full flex items-center justify-between text-base">
               <span className="font-medium">Subtotal</span>
-              <span className="font-normal">₦30,000</span>
+              <span className="font-normal">
+                ₦{getTotalPrice().toLocaleString()}
+              </span>
             </p>
             <p className="w-full flex items-center justify-between font-medium">
               <span className="text-base">Total</span>
-              <span className="text-xl text-[#B88E2F]">₦30,000</span>
+              <span className="text-xl text-[#B88E2F]">
+                ₦{getTotalPrice().toLocaleString()}
+              </span>
             </p>
           </motion.div>
           <div className="w-full flex items-center justify-center">
-            <motion.button
-              variants={scaleOnHover}
-              whileHover="hover"
-              whileTap={{ scale: 0.98 }}
-              className="py-4 px-18 border border-black rounded-[15px] font-normal text-xl hover:opacity-85 cursor-pointer"
-            >
-              Checkout
-            </motion.button>
+            <Link href="/checkout">
+              <motion.button
+                variants={scaleOnHover}
+                whileHover="hover"
+                whileTap={{ scale: 0.98 }}
+                className="py-4 px-18 border border-black rounded-[15px] font-normal text-xl hover:opacity-85 cursor-pointer"
+                disabled={cartItems.length === 0}
+              >
+                Checkout
+              </motion.button>
+            </Link>
           </div>
         </motion.div>
       </motion.div>
