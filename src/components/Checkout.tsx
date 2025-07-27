@@ -15,8 +15,10 @@ import { useState, useEffect } from "react";
 import { fetchWestAfricanCountries } from "@/api/FetchCountry";
 import { Country } from "@/types/type";
 import { ClipLoader } from "react-spinners";
+import { useCart } from "@/context/CartContext";
 
 export function Checkout() {
+  const { cartItems, getTotalPrice } = useCart();
   const [countries, setCountries] = useState<Country[]>([]);
   const [isLoadingCountries, setIsLoadingCountries] = useState(true);
 
@@ -149,7 +151,9 @@ export function Checkout() {
                     id="country_region"
                     className="w-full outline-0 border-0 cursor-pointer bg-transparent rounded-md h-full"
                   >
-                    <option value="" disabled>Select a country</option>
+                    <option value="" disabled>
+                      Select a country
+                    </option>
                     {countries.map((country) => (
                       <option key={country.cca3} value={country.cca3}>
                         {country.name.common}
@@ -293,34 +297,59 @@ export function Checkout() {
               <span>Subtotal</span>
             </motion.p>
             <motion.div variants={staggerChildren} className="space-y-3.5">
-              <motion.div
-                variants={fadeInUp}
-                className="flex items-center justify-between"
-              >
-                <p>
-                  <span className="font-regular text-base text-[#9F9F9F]">
-                    Asgaard Sofa{" "}
-                  </span>
-                  <span className="font-medium text-[12px]">x1</span>
-                </p>
-                <p className="font-light text-base">₦30,0000.00</p>
-              </motion.div>
-              <motion.p
-                variants={fadeInUp}
-                className="flex items-center justify-between text-base"
-              >
-                <span className="font-normal">Subtotal</span>
-                <span className="font-light">₦35, 0000.00</span>
-              </motion.p>
-              <motion.p
-                variants={fadeInUp}
-                className="flex items-center justify-between"
-              >
-                <span className="font-normal text-base">Total</span>
-                <span className="font-bold lg:text-2xl text-lg text-[#B88E2F]">
-                  ₦65,000.00
-                </span>
-              </motion.p>
+              {cartItems.length === 0 ? (
+                <motion.div
+                  variants={fadeInUp}
+                  className="text-center py-8 text-gray-500"
+                >
+                  <p className="text-lg font-medium">Your cart is empty</p>
+                  <p className="text-sm">Add some furniture to get started!</p>
+                </motion.div>
+              ) : (
+                <>
+                  {cartItems.map((item) => (
+                    <motion.div
+                      key={item.furniture.id}
+                      variants={fadeInUp}
+                      className="flex items-center justify-between"
+                    >
+                      <p>
+                        <span className="font-regular text-base text-[#9F9F9F]">
+                          {item.furniture.name}{" "}
+                        </span>
+                        <span className="font-medium text-[12px]">
+                          x{item.quantity}
+                        </span>
+                      </p>
+                      <p className="font-light text-base">
+                        ₦
+                        {(
+                          (item.furniture.discount_price ||
+                            item.furniture.price) * item.quantity
+                        ).toLocaleString()}
+                      </p>
+                    </motion.div>
+                  ))}
+                  <motion.p
+                    variants={fadeInUp}
+                    className="flex items-center justify-between text-base"
+                  >
+                    <span className="font-normal">Subtotal</span>
+                    <span className="font-light">
+                      ₦{getTotalPrice().toLocaleString()}
+                    </span>
+                  </motion.p>
+                  <motion.p
+                    variants={fadeInUp}
+                    className="flex items-center justify-between"
+                  >
+                    <span className="font-normal text-base">Total</span>
+                    <span className="font-bold lg:text-2xl text-lg text-[#B88E2F]">
+                      ₦{getTotalPrice().toLocaleString()}
+                    </span>
+                  </motion.p>
+                </>
+              )}
             </motion.div>
 
             <motion.hr variants={fadeInUp} />
@@ -404,7 +433,8 @@ export function Checkout() {
                     boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
                     transition: { duration: 0.2 },
                   }}
-                  className="rounded-[15px] outline-none border w-full max-w-[318px] border-black lg:py-4 py-2 font-normal lg:text-xl text-lg cursor-pointer transition-all duration-200 hover:bg-black hover:text-white"
+                  disabled={cartItems.length === 0}
+                  className="rounded-[15px] outline-none border w-full max-w-[318px] border-black lg:py-4 py-2 font-normal lg:text-xl text-lg cursor-pointer transition-all duration-200 hover:bg-black hover:text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-black"
                 >
                   Place Order
                 </motion.button>

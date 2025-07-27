@@ -150,13 +150,13 @@ export function CartModal({ onClose }: CartModalProps) {
         )}
       </motion.div>
 
-       <motion.hr
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-          transition={{ delay: 0.4 }}
-          className="my-4"
-        />
+      <motion.hr
+        variants={fadeIn}
+        initial="hidden"
+        animate="visible"
+        transition={{ delay: 0.4 }}
+        className="my-4"
+      />
 
       <motion.div
         className="space-y-4 w-full mt-auto"
@@ -194,6 +194,18 @@ export function CartModal({ onClose }: CartModalProps) {
               whileTap={{ scale: 0.95 }}
             >
               Cart
+            </motion.button>
+          </Link>
+
+          <Link href="/checkout" className="w-full">
+            <motion.button
+              className="w-full py-2 border border-black rounded-[50px] font-medium transition-all duration-200 cursor-pointer"
+              onClick={onClose}
+              variants={scaleOnHover}
+              whileHover="hover"
+              whileTap={{ scale: 0.95 }}
+            >
+              Checkout
             </motion.button>
           </Link>
 

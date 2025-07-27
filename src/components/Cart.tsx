@@ -202,7 +202,7 @@ export function Cart({ pathSegments }: CartPageProps) {
                 variants={scaleOnHover}
                 whileHover="hover"
                 whileTap={{ scale: 0.98 }}
-                className="py-4 px-18 border border-black rounded-[15px] font-normal text-xl hover:opacity-85 cursor-pointer"
+                className="py-4 px-18 border border-black rounded-[15px] font-normal text-xl hover:opacity-85 cursor-pointer disabled:cursor-not-allowed"
                 disabled={cartItems.length === 0}
               >
                 Checkout
