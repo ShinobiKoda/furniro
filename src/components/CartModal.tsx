@@ -37,14 +37,14 @@ export function CartModal({ onClose }: CartModalProps) {
 
   return (
     <motion.div
-      className="bg-white top-0 right-0 w-[417px] h-screen py-6 px-6 shadow-2xl overflow-y-auto flex flex-col"
+      className="bg-white top-0 right-0 max-w-[417px] w-screen h-screen py-6 px-6 shadow-2xl overflow-y-auto flex flex-col"
       initial={{ x: "100%", opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: "100%", opacity: 0 }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
     >
       <motion.div
-        className="flex items-center justify-between w-full border-b border-gray-200 pb-6 mb-6"
+        className="flex items-center justify-between w-full border-b border-gray-200 pb-6 mb-6 mt-8 lg:mt-0"
         variants={fadeInUp}
         initial="hidden"
         animate="visible"

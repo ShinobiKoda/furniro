@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { User, Search, Heart } from "lucide-react";
+import { User, Search, Heart, Home, Store, Info, Mail } from "lucide-react";
 import Link from "next/link";
 import { IoCartOutline } from "react-icons/io5";
 import { useState } from "react";
@@ -52,7 +52,6 @@ export function Navbar() {
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
-        
         className="w-full max-w-[1440px] mx-auto flex items-center justify-between p-4 lg:px-12"
       >
         <div className="flex items-center gap-2">
@@ -103,39 +102,187 @@ export function Navbar() {
         )}
 
         <motion.div
-          className={`fixed top-0 right-0 h-full w-[300px] bg-white p-8 z-50 *:hover:opacity-85 shadow-md rounded-md lg:hidden`}
+          className={`fixed top-0 right-0 h-full w-[300px] bg-white p-8 z-50 shadow-2xl rounded-l-2xl lg:hidden`}
           initial="hidden"
           animate={isSidebarOpen ? "visible" : "hidden"}
           variants={slideInFromRight}
           transition={{ duration: 0.5, ease: "easeInOut" }}
         >
-          <motion.ul
-            className="flex flex-col gap-8 mt-10"
+          {/* Header */}
+          <motion.div
+            className="flex items-center justify-center mb-8"
+            variants={fadeInUp}
+            initial="hidden"
+            animate={isSidebarOpen ? "visible" : "hidden"}
+          >
+            <h2 className="text-xl font-semibold text-gray-800">Menu</h2>
+          </motion.div>
+
+          {/* Navigation Links */}
+          <motion.div
+            className="mb-8"
             variants={staggerChildren}
             initial="hidden"
             animate={isSidebarOpen ? "visible" : "hidden"}
           >
-            <motion.li variants={fadeInUp}>
-              <Link href="/home" onClick={closeSidebar}>
-                Home
+            <motion.h3
+              className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4"
+              variants={fadeInUp}
+            >
+              Navigation
+            </motion.h3>
+            <motion.ul className="space-y-4">
+              <motion.li variants={fadeInUp}>
+                <Link
+                  href="/home"
+                  onClick={closeSidebar}
+                  className="flex items-center p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+                >
+                  <Home className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                  <span>Home</span>
+                  <span className="w-2 h-2 bg-[#B88E2F] rounded-full ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </Link>
+              </motion.li>
+              <motion.li variants={fadeInUp}>
+                <Link
+                  href="/shop"
+                  onClick={closeSidebar}
+                  className="flex items-center p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+                >
+                  <Store className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                  <span>Shop</span>
+                  <span className="w-2 h-2 bg-[#B88E2F] rounded-full ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </Link>
+              </motion.li>
+              <motion.li variants={fadeInUp}>
+                <Link
+                  href="/about"
+                  onClick={closeSidebar}
+                  className="flex items-center p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+                >
+                  <Info className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                  <span>About</span>
+                  <span className="w-2 h-2 bg-[#B88E2F] rounded-full ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </Link>
+              </motion.li>
+              <motion.li variants={fadeInUp}>
+                <Link
+                  href="/contact"
+                  onClick={closeSidebar}
+                  className="flex items-center p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+                >
+                  <Mail className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                  <span>Contact</span>
+                  <span className="w-2 h-2 bg-[#B88E2F] rounded-full ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </Link>
+              </motion.li>
+            </motion.ul>
+          </motion.div>
+
+          {/* Divider */}
+          <motion.hr
+            className="border-gray-200 mb-6"
+            variants={fadeInUp}
+            initial="hidden"
+            animate={isSidebarOpen ? "visible" : "hidden"}
+          />
+
+          {/* Actions */}
+          <motion.div
+            className="space-y-4"
+            variants={staggerChildren}
+            initial="hidden"
+            animate={isSidebarOpen ? "visible" : "hidden"}
+          >
+            <motion.h3
+              className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4"
+              variants={fadeInUp}
+            >
+              Actions
+            </motion.h3>
+
+            {/* Search */}
+            <motion.button
+              variants={fadeInUp}
+              className="flex items-center w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+            >
+              <Search className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+              <span>Search</span>
+            </motion.button>
+
+            {/* Blog */}
+            <motion.div variants={fadeInUp}>
+              <Link
+                href="/blog"
+                onClick={closeSidebar}
+                className="flex items-center w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+              >
+                <User className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                <span>Blog</span>
               </Link>
-            </motion.li>
-            <motion.li variants={fadeInUp}>
-              <Link href="/shop" onClick={closeSidebar}>
-                Shop
-              </Link>
-            </motion.li>
-            <motion.li variants={fadeInUp}>
-              <Link href="/about" onClick={closeSidebar}>
-                About
-              </Link>
-            </motion.li>
-            <motion.li variants={fadeInUp}>
-              <Link href="/contact" onClick={closeSidebar}>
-                Contact
-              </Link>
-            </motion.li>
-          </motion.ul>
+            </motion.div>
+
+            {/* Cart */}
+            <motion.button
+              variants={fadeInUp}
+              onClick={() => {
+                toggleCart();
+                closeSidebar();
+              }}
+              className="flex items-center justify-between w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+            >
+              <div className="flex items-center">
+                <IoCartOutline className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                <span>Cart</span>
+              </div>
+              {getUniqueItemCount() > 0 && (
+                <span className="bg-[#B88E2F] text-white text-xs px-2 py-1 rounded-full min-w-[20px] h-5 flex items-center justify-center">
+                  {getUniqueItemCount()}
+                </span>
+              )}
+            </motion.button>
+
+            {/* Liked Items */}
+            <motion.button
+              variants={fadeInUp}
+              className="flex items-center justify-between w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+            >
+              <div className="flex items-center">
+                <Heart className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                <span>Wishlist</span>
+              </div>
+              {likedItems.size > 0 && (
+                <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full min-w-[20px] h-5 flex items-center justify-center">
+                  {likedItems.size}
+                </span>
+              )}
+            </motion.button>
+          </motion.div>
+
+          {/* Footer */}
+          <motion.div
+            className="absolute bottom-8 left-8 right-8"
+            variants={fadeInUp}
+            initial="hidden"
+            animate={isSidebarOpen ? "visible" : "hidden"}
+          >
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-2">
+                <Image
+                  src="/images/furniro_logo.webp"
+                  alt="Logo"
+                  width={30}
+                  height={25}
+                />
+                <span className="ml-2 font-semibold text-[#B88E2F]">
+                  Furniro
+                </span>
+              </div>
+              <p className="text-xs text-gray-500">
+                Quality furniture for your home
+              </p>
+            </div>
+          </motion.div>
         </motion.div>
 
         <motion.ul
