@@ -11,33 +11,50 @@ import {
 import Image from "next/image";
 import { Services } from "./Services";
 import { Footer } from "./Footer";
-import { useState, useEffect } from "react";
-import { fetchWestAfricanCountries } from "@/api/FetchCountry";
-import { Country } from "@/types/type";
-import { ClipLoader } from "react-spinners";
 import { useCart } from "@/context/CartContext";
 
 export function Checkout() {
   const { cartItems, getTotalPrice } = useCart();
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [isLoadingCountries, setIsLoadingCountries] = useState(true);
 
-  useEffect(() => {
-    const loadCountries = async () => {
-      try {
-        const result = await fetchWestAfricanCountries();
-        if (result.success && result.data) {
-          setCountries(result.data);
-        }
-      } catch (error) {
-        console.error("Failed to load countries:", error);
-      } finally {
-        setIsLoadingCountries(false);
-      }
-    };
-
-    loadCountries();
-  }, []);
+  const nigerianStates = [
+    "Abia",
+    "Adamawa",
+    "Akwa Ibom",
+    "Anambra",
+    "Bauchi",
+    "Bayelsa",
+    "Benue",
+    "Borno",
+    "Cross River",
+    "Delta",
+    "Ebonyi",
+    "Edo",
+    "Ekiti",
+    "Enugu",
+    "Federal Capital Territory",
+    "Gombe",
+    "Imo",
+    "Jigawa",
+    "Kaduna",
+    "Kano",
+    "Katsina",
+    "Kebbi",
+    "Kogi",
+    "Kwara",
+    "Lagos",
+    "Nasarawa",
+    "Niger",
+    "Ogun",
+    "Ondo",
+    "Osun",
+    "Oyo",
+    "Plateau",
+    "Rivers",
+    "Sokoto",
+    "Taraba",
+    "Yobe",
+    "Zamfara",
+  ];
 
   return (
     <div className="w-full">
@@ -138,29 +155,14 @@ export function Checkout() {
                 whileHover="hover"
                 className="border border-[#9F9F9F] rounded-[10px] px-2 py-4 transition-all duration-200 relative"
               >
-                {isLoadingCountries ? (
-                  <div className="flex items-center justify-center w-full py-1">
-                    <ClipLoader size={20} color="#B88E2F" />
-                    <span className="ml-2 text-sm text-gray-500">
-                      Loading countries...
-                    </span>
-                  </div>
-                ) : (
-                  <select
-                    name="country_region"
-                    id="country_region"
-                    className="w-full outline-0 border-0 cursor-pointer bg-transparent rounded-md h-full"
-                  >
-                    <option value="" disabled>
-                      Select a country
-                    </option>
-                    {countries.map((country) => (
-                      <option key={country.cca3} value={country.cca3}>
-                        {country.name.common}
-                      </option>
-                    ))}
-                  </select>
-                )}
+                <select
+                  name="country_region"
+                  id="country_region"
+                  className="w-full outline-0 border-0 cursor-pointer bg-transparent rounded-md h-full"
+                  defaultValue="nigeria"
+                >
+                  <option value="nigeria">Nigeria</option>
+                </select>
               </motion.div>
             </motion.div>
 
@@ -202,8 +204,8 @@ export function Checkout() {
               variants={fadeInUp}
               className="flex flex-col gap-[22px]"
             >
-              <label htmlFor="" className="font-medium text-base">
-                Province
+              <label htmlFor="province" className="font-medium text-base">
+                State/Province
               </label>
               <motion.div
                 variants={scaleOnHover}
@@ -215,11 +217,15 @@ export function Checkout() {
                   id="province"
                   className="w-full outline-0 border-0 bg-transparent"
                 >
-                  <option value="">Default</option>
-                  <option value="">Nigeria</option>
-                  <option value="">Nigeria</option>
-                  <option value="">Nigeria</option>
-                  <option value="">Nigeria</option>
+                  <option value="">Select a state</option>
+                  {nigerianStates.map((state) => (
+                    <option
+                      key={state}
+                      value={state.toLowerCase().replace(/\s+/g, "-")}
+                    >
+                      {state}
+                    </option>
+                  ))}
                 </select>
               </motion.div>
             </motion.div>

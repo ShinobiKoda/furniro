@@ -1,4 +1,4 @@
-"use client";
+ "use client";
 
 import { NavDisplay } from "@/components/NavDisplay";
 import Image from "next/image";
