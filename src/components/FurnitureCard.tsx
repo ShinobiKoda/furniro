@@ -6,20 +6,10 @@ import { FurnitureProps } from "@/types/type";
 import { Heart } from "lucide-react";
 import { CiShare2 } from "react-icons/ci";
 import { BsArrowLeftRight } from "react-icons/bs";
-import { useState } from "react";
 import { useLikedItems } from "@/context/LikedItemsContext";
 import { useCart } from "@/context/CartContext";
 
 export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
-  const [isOverlayActive, setIsOverlayActive] = useState(false);
-
-  const handleOverlayToggle = () => {
-    // Only handle overlay toggle on desktop (md and above)
-    if (window.innerWidth >= 768) {
-      setIsOverlayActive(!isOverlayActive);
-    }
-  };
-
   const { likedItems, toggleLike } = useLikedItems();
   const { addToCart } = useCart();
 
@@ -36,12 +26,7 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
   };
 
   return (
-    <div
-      className={`group flex flex-col gap-3 w-full bg-[#F4F5F7] relative max-w-sm mx-auto ${
-        isOverlayActive ? "overlay-active" : ""
-      }`}
-      onClick={handleOverlayToggle}
-    >
+    <div className="group flex flex-col gap-3 w-full bg-[#F4F5F7] relative max-w-sm mx-auto">
       <div className="w-full max-w-sm min-h-[301px] relative overflow-hidden">
         <Image
           src={furniture.image_url}
@@ -61,41 +46,9 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
           </span>
         )}
 
-        {/* Desktop hover overlay */}
-        <div
-          className={`absolute inset-0 bg-black/10 backdrop-blur-[3px] transition-opacity duration-300 flex-col justify-center items-center gap-12 p-4 *:cursor-pointer hidden md:flex ${
-            isOverlayActive
-              ? "opacity-100"
-              : "opacity-0 group-hover:opacity-100"
-          }`}
-        >
-          <motion.button
-            whileTap={{ scale: 0.85 }}
-            className="bg-white px-6 py-2 shadow-md hover:bg-gray-200 font-semibold text-base text-[#B88E2F]"
-            onClick={handleAddToCart}
-          >
-            Add to Cart
-          </motion.button>
-          <div className="flex gap-2 *:cursor-pointer *:hover:opacity-80">
-            <button className="text-white font-semibold text-base flex items-center gap-2">
-              <CiShare2 size={22} /> Share
-            </button>
-            <button className="text-white font-semibold text-base flex items-center gap-2">
-              <BsArrowLeftRight size={20} /> Compare
-            </button>
-            <button
-              className={`text-white font-semibold text-base flex items-center gap-2`}
-              onClick={handleLikeToggle}
-            >
-              <Heart className={`${isLiked ? "fill-white" : ""}`} /> Like
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile action buttons - positioned below the image */}
-        <div className="w-full px-4 py-3 border-t border-gray-200 md:hidden">
+        <div className="w-full px-4 py-3 border-t border-gray-200">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 *:hover:cursor-pointer">
               <motion.button
                 whileTap={{ scale: 0.9 }}
                 className={`p-2 rounded-full border transition-colors duration-200 ${
@@ -125,7 +78,7 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
             </div>
             <motion.button
               whileTap={{ scale: 0.95 }}
-              className="bg-[#B88E2F] text-white px-4 py-2 rounded-md font-medium text-sm hover:bg-[#A67C29] transition-colors"
+              className="bg-[#B88E2F] text-white px-4 py-2 rounded-md font-medium text-sm hover:bg-[#A67C29] transition-colors cursor-pointer"
               onClick={handleAddToCart}
             >
               Add to Cart
