@@ -69,11 +69,21 @@ export function Navbar() {
         </div>
 
         <div
-          className={`w-7 h-6 flex flex-col lg:hidden gap-[5px] cursor-pointer hover:opacity-85 relative right-0 top-0 z-60 *:rounded-md ${
+          className={`w-7 h-6 flex-col lg:hidden gap-[5px] cursor-pointer hover:opacity-85 relative right-0 top-0 z-60 *:rounded-md ${
             isSidebarOpen ? "rotate-90" : ""
-          }`}
+          } ${isCartOpen ? "hidden" : "flex"}`}
           onClick={toggleSidebar}
         >
+          {/* Cart count badge on hamburger */}
+          {getUniqueItemCount() > 0 && (
+            <span
+              className={`absolute -top-2 -right-2 bg-[#B88E2F] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full z-10 transition-transform duration-100 ease-in-out ${
+                isSidebarOpen ? "-rotate-90" : ""
+              }`}
+            >
+              {getUniqueItemCount()}
+            </span>
+          )}
           <div
             className={`w-full h-1 bg-black transition-transform duration-100 ease-in-out ${
               isSidebarOpen ? "rotate-45 translate-y-[8px]" : ""
