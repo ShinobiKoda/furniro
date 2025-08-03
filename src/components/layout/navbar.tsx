@@ -4,7 +4,7 @@ import Image from "next/image";
 import { User, Search, Heart, Home, Store, Info, Mail } from "lucide-react";
 import Link from "next/link";
 import { IoCartOutline } from "react-icons/io5";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Montserrat } from "next/font/google";
 import {
@@ -45,6 +45,18 @@ export function Navbar() {
 
   const { likedItems } = useLikedItems();
   const { getUniqueItemCount } = useCart();
+
+  // Prevent body scroll when sidebar is open
+  useEffect(() => {
+    if (isSidebarOpen) {
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = "hidden";
+
+      return () => {
+        document.body.style.overflow = originalStyle;
+      };
+    }
+  }, [isSidebarOpen]);
 
   return (
     <nav className="w-screen fixed top-0 left-0 bg-white z-50">
