@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 import { FurnitureProps } from "@/types/type";
 
 interface CartItem {
@@ -39,13 +45,13 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   // Load cart items from localStorage on component mount
   useEffect(() => {
-    const savedCartItems = localStorage.getItem('furniro-cart-items');
+    const savedCartItems = localStorage.getItem("furniro-cart-items");
     if (savedCartItems) {
       try {
         const parsedItems = JSON.parse(savedCartItems);
         setCartItems(parsedItems);
       } catch (error) {
-        console.error('Error parsing cart items from localStorage:', error);
+        console.error("Error parsing cart items from localStorage:", error);
       }
     }
     setIsInitialized(true);
@@ -54,7 +60,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   // Save cart items to localStorage whenever cartItems changes
   useEffect(() => {
     if (isInitialized) {
-      localStorage.setItem('furniro-cart-items', JSON.stringify(cartItems));
+      localStorage.setItem("furniro-cart-items", JSON.stringify(cartItems));
     }
   }, [cartItems, isInitialized]);
 
