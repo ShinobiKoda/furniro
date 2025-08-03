@@ -14,7 +14,10 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
   const [isOverlayActive, setIsOverlayActive] = useState(false);
 
   const handleOverlayToggle = () => {
-    setIsOverlayActive(!isOverlayActive);
+    // Only handle overlay toggle on desktop (md and above)
+    if (window.innerWidth >= 768) {
+      setIsOverlayActive(!isOverlayActive);
+    }
   };
 
   const { likedItems, toggleLike } = useLikedItems();
@@ -48,18 +51,19 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
           className="w-full max-h-[301px]"
         />
         {furniture.discount_percent && (
-          <span className="absolute top-4 right-4 h-12 w-12 rounded-full bg-red-400 text-white flex items-center justify-center font-medium text-base">
+          <span className="absolute top-4 right-4 h-12 w-12 rounded-full bg-red-400 text-white flex items-center justify-center font-medium text-base z-10">
             -{furniture.discount_percent}%
           </span>
         )}
         {furniture.new && (
-          <span className="absolute top-4 left-4 h-12 w-12 rounded-full bg-[#2EC1AC] text-white flex items-center justify-center font-medium text-base">
+          <span className="absolute top-4 left-4 h-12 w-12 rounded-full bg-[#2EC1AC] text-white flex items-center justify-center font-medium text-base z-10">
             New!
           </span>
         )}
 
+        {/* Desktop hover overlay */}
         <div
-          className={`absolute inset-0 bg-black/10 backdrop-blur-[3px] transition-opacity duration-300 flex flex-col justify-center items-center gap-12 p-4 *:cursor-pointer ${
+          className={`absolute inset-0 bg-black/10 backdrop-blur-[3px] transition-opacity duration-300 flex-col justify-center items-center gap-12 p-4 *:cursor-pointer hidden md:flex ${
             isOverlayActive
               ? "opacity-100"
               : "opacity-0 group-hover:opacity-100"
@@ -87,6 +91,48 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
             </button>
           </div>
         </div>
+
+        {/* Mobile action buttons - positioned below the image */}
+        <div className="w-full px-4 py-3 border-t border-gray-200 md:hidden">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                className={`p-2 rounded-full border transition-colors duration-200 ${
+                  isLiked
+                    ? "bg-red-50 border-red-200 text-red-500"
+                    : "bg-gray-50 border-gray-200 text-gray-600"
+                }`}
+                onClick={handleLikeToggle}
+              >
+                <Heart
+                  size={18}
+                  className={`${isLiked ? "fill-red-500" : ""}`}
+                />
+              </motion.button>
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                className="p-2 rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100"
+              >
+                <CiShare2 size={18} />
+              </motion.button>
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                className="p-2 rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100"
+              >
+                <BsArrowLeftRight size={16} />
+              </motion.button>
+            </div>
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              className="bg-[#B88E2F] text-white px-4 py-2 rounded-md font-medium text-sm hover:bg-[#A67C29] transition-colors"
+              onClick={handleAddToCart}
+            >
+              Add to Cart
+            </motion.button>
+          </div>
+        </div>
+
         <div className="w-full px-4 py-6">
           <p className="flex flex-col">
             <span className="font-semibold lg:text-2xl text-lg text-[#3A3A3A]">
