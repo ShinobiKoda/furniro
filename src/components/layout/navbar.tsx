@@ -108,7 +108,6 @@ export function Navbar() {
           variants={slideInFromRight}
           transition={{ duration: 0.5, ease: "easeInOut" }}
         >
-          {/* Header */}
           <motion.div
             className="flex items-center justify-center mb-8"
             variants={fadeInUp}
@@ -118,7 +117,6 @@ export function Navbar() {
             <h2 className="text-xl font-semibold text-gray-800">Menu</h2>
           </motion.div>
 
-          {/* Navigation Links */}
           <motion.div
             className="mb-8"
             variants={staggerChildren}
@@ -179,7 +177,6 @@ export function Navbar() {
             </motion.ul>
           </motion.div>
 
-          {/* Divider */}
           <motion.hr
             className="border-gray-200 mb-6"
             variants={fadeInUp}
@@ -187,7 +184,6 @@ export function Navbar() {
             animate={isSidebarOpen ? "visible" : "hidden"}
           />
 
-          {/* Actions */}
           <motion.div
             className="space-y-4"
             variants={staggerChildren}
@@ -201,7 +197,6 @@ export function Navbar() {
               Actions
             </motion.h3>
 
-            {/* Search */}
             <motion.button
               variants={fadeInUp}
               className="flex items-center w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
@@ -210,7 +205,6 @@ export function Navbar() {
               <span>Search</span>
             </motion.button>
 
-            {/* Blog */}
             <motion.div variants={fadeInUp}>
               <Link
                 href="/blog"
@@ -222,7 +216,6 @@ export function Navbar() {
               </Link>
             </motion.div>
 
-            {/* Cart */}
             <motion.button
               variants={fadeInUp}
               onClick={() => {
@@ -242,7 +235,6 @@ export function Navbar() {
               )}
             </motion.button>
 
-            {/* Liked Items */}
             <motion.button
               variants={fadeInUp}
               className="flex items-center justify-between w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
@@ -259,7 +251,6 @@ export function Navbar() {
             </motion.button>
           </motion.div>
 
-          {/* Footer */}
           <motion.div
             className="absolute bottom-8 left-8 right-8"
             variants={fadeInUp}
@@ -341,11 +332,9 @@ export function Navbar() {
           </motion.div>
         </motion.div>
 
-        {/* Cart Modal with Overlay */}
         <AnimatePresence>
           {isCartOpen && (
             <>
-              {/* Overlay */}
               <motion.div
                 className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
                 onClick={closeCart}
@@ -354,7 +343,6 @@ export function Navbar() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
               />
-              {/* Cart Modal */}
               <motion.div
                 className="fixed top-0 right-0 z-50"
                 initial={{ x: "100%", opacity: 0 }}
