@@ -21,7 +21,6 @@ export const LikedItemsProvider = ({ children }: { children: ReactNode }) => {
   const [likedItems, setLikedItems] = useState<Set<string>>(new Set());
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Load liked items from localStorage on component mount
   useEffect(() => {
     const savedLikedItems = localStorage.getItem("furniro-liked-items");
     if (savedLikedItems) {
@@ -35,7 +34,6 @@ export const LikedItemsProvider = ({ children }: { children: ReactNode }) => {
     setIsInitialized(true);
   }, []);
 
-  // Save liked items to localStorage whenever likedItems changes
   useEffect(() => {
     if (isInitialized) {
       localStorage.setItem(

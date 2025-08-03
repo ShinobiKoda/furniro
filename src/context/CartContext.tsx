@@ -43,7 +43,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Load cart items from localStorage on component mount
   useEffect(() => {
     const savedCartItems = localStorage.getItem("furniro-cart-items");
     if (savedCartItems) {
@@ -57,7 +56,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     setIsInitialized(true);
   }, []);
 
-  // Save cart items to localStorage whenever cartItems changes
   useEffect(() => {
     if (isInitialized) {
       localStorage.setItem("furniro-cart-items", JSON.stringify(cartItems));

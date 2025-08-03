@@ -46,7 +46,6 @@ export function Navbar() {
   const { likedItems } = useLikedItems();
   const { getUniqueItemCount } = useCart();
 
-  // Prevent body scroll when sidebar is open
   useEffect(() => {
     if (isSidebarOpen) {
       const originalStyle = window.getComputedStyle(document.body).overflow;
@@ -86,7 +85,6 @@ export function Navbar() {
           } ${isCartOpen ? "hidden" : "flex"}`}
           onClick={toggleSidebar}
         >
-          {/* Cart count badge on hamburger */}
           {getUniqueItemCount() > 0 && (
             <span
               className={`absolute -top-2 -right-2 bg-[#B88E2F] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full z-10 transition-transform duration-100 ease-in-out ${
