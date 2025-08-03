@@ -11,18 +11,23 @@ import { useCart } from "@/context/CartContext";
 
 export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
   const { likedItems, toggleLike } = useLikedItems();
-  const { addToCart } = useCart();
+  const { addToCart, removeFromCart, cartItems } = useCart();
 
   const isLiked = likedItems.has(furniture.id.toString());
+  const isInCart = cartItems.some((item) => item.furniture.id === furniture.id);
 
   const handleLikeToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     toggleLike(furniture.id.toString());
   };
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleCartToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
-    addToCart(furniture);
+    if (isInCart) {
+      removeFromCart(furniture.id);
+    } else {
+      addToCart(furniture);
+    }
   };
 
   return (
@@ -78,10 +83,14 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
             </div>
             <motion.button
               whileTap={{ scale: 0.95 }}
-              className="bg-[#B88E2F] text-white px-4 py-2 rounded-md font-medium text-sm hover:bg-[#A67C29] transition-colors cursor-pointer"
-              onClick={handleAddToCart}
+              className={`px-4 py-2 rounded-md font-medium text-sm transition-colors cursor-pointer ${
+                isInCart
+                  ? "bg-[#B88E2F] text-white hover:bg-red-600"
+                  : "bg-[#B88E2F] text-white hover:bg-[#A67C29]"
+              }`}
+              onClick={handleCartToggle}
             >
-              Add to Cart
+              {isInCart ? "Remove" : "Add to Cart"}
             </motion.button>
           </div>
         </div>
