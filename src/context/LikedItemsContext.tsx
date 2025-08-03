@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 interface LikedItemsContextProps {
   likedItems: Set<string>;
@@ -13,6 +13,28 @@ const LikedItemsContext = createContext<LikedItemsContextProps | undefined>(
 
 export const LikedItemsProvider = ({ children }: { children: ReactNode }) => {
   const [likedItems, setLikedItems] = useState<Set<string>>(new Set());
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Load liked items from localStorage on component mount
+  useEffect(() => {
+    const savedLikedItems = localStorage.getItem('furniro-liked-items');
+    if (savedLikedItems) {
+      try {
+        const parsedItems = JSON.parse(savedLikedItems);
+        setLikedItems(new Set(parsedItems));
+      } catch (error) {
+        console.error('Error parsing liked items from localStorage:', error);
+      }
+    }
+    setIsInitialized(true);
+  }, []);
+
+  // Save liked items to localStorage whenever likedItems changes
+  useEffect(() => {
+    if (isInitialized) {
+      localStorage.setItem('furniro-liked-items', JSON.stringify(Array.from(likedItems)));
+    }
+  }, [likedItems, isInitialized]);
 
   const toggleLike = (id: string) => {
     setLikedItems((prev) => {
