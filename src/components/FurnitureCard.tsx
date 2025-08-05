@@ -8,10 +8,13 @@ import { CiShare2 } from "react-icons/ci";
 import { BsArrowLeftRight } from "react-icons/bs";
 import { useLikedItems } from "@/context/LikedItemsContext";
 import { useCart } from "@/context/CartContext";
+import { IoBagAddOutline } from "react-icons/io5";
+import { useState } from "react";
 
 export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
   const { likedItems, toggleLike } = useLikedItems();
   const { addToCart, removeFromCart, cartItems } = useCart();
+  const [imageError, setImageError] = useState(false);
 
   const isLiked = likedItems.has(furniture.id.toString());
   const isInCart = cartItems.some((item) => item.furniture.id === furniture.id);
@@ -33,13 +36,20 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
   return (
     <div className="group flex flex-col gap-3 w-full bg-[#F4F5F7] relative max-w-sm mx-auto">
       <div className="w-full max-w-sm min-h-[301px] relative overflow-hidden">
-        <Image
-          src={furniture.image_url}
-          alt={furniture.name}
-          width={300}
-          height={200}
-          className="w-full max-h-[301px]"
-        />
+        {!imageError ? (
+          <Image
+            src={furniture.image_url}
+            alt={furniture.name}
+            width={300}
+            height={200}
+            className="w-full max-h-[301px] object-cover"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <div className="w-full h-[301px] bg-gray-300 flex items-center justify-center">
+            <IoBagAddOutline size={80} className="text-gray-500" />
+          </div>
+        )}
         {furniture.discount_percent && (
           <span className="absolute top-4 right-4 h-12 w-12 rounded-full bg-red-400 text-white flex items-center justify-center font-medium text-base z-10">
             -{furniture.discount_percent}%
