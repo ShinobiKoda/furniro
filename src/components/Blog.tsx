@@ -109,11 +109,11 @@ export function Blog({ pathSegments }: BlogProps) {
         initial="hidden"
         animate="visible"
         variants={staggerChildren}
-        className="lg:grid lg:grid-cols-[3fr_1fr] mt-[106px] w-full max-w-[1440px] mx-auto mb-[58px]"
+        className="lg:grid lg:grid-cols-[3fr_1fr] mt-[106px] w-full max-w-[1440px] mx-auto mb-[58px] grid grid-cols-1 lg:px-12"
       >
         <motion.div
           variants={fadeIn}
-          className="flex flex-col gap-8 px-4 lg:px-12"
+          className="flex flex-col gap-8 px-4"
         >
           {paginatedBlogs.map((blog, index) => (
             <motion.section
@@ -198,7 +198,7 @@ export function Blog({ pathSegments }: BlogProps) {
 
         <motion.div
           variants={fadeIn}
-          className="hidden lg:flex flex-col gap-[43px]"
+          className="flex flex-col gap-[43px] w-full px-4 mt-10 lg:mt-0"
         >
           <motion.div
             variants={fadeInUp}
