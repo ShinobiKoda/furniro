@@ -1,11 +1,14 @@
 import supabase from "@/config/supabaseClient";
 import { FurnitureProps } from "@/types/type";
 
-export async function FetchFurnitures(): Promise<{
-  data: FurnitureProps[] | null;
+export async function FetchFurnitureById(id: string): Promise<{
+  data: FurnitureProps | null;
   error: string | null;
 }> {
-  const { data, error } = await supabase.from("Furniro_Furnitures").select(`
+  const { data, error } = await supabase
+    .from("Furniro_Furnitures")
+    .select(
+      `
       *,
       Furniro_FurnitureDetails (
         short_description,
@@ -34,27 +37,30 @@ export async function FetchFurnitures(): Promise<{
         review,
         sku
       )
-    `);
+    `
+    )
+    .eq("id", id)
+    .single();
 
   if (error) {
     console.log(error);
-    return { data: null, error: "Could not fetch data" };
+    return { data: null, error: "Could not fetch furniture details" };
   }
 
   if (data) {
     // Transform the data to match our interface
-    const transformedData = data.map((item) => ({
-      ...item,
+    const furnitureData: FurnitureProps = {
+      ...data,
       furniture_details:
-        item.Furniro_FurnitureDetails &&
-        item.Furniro_FurnitureDetails.length > 0
-          ? item.Furniro_FurnitureDetails[0]
+        data.Furniro_FurnitureDetails &&
+        data.Furniro_FurnitureDetails.length > 0
+          ? data.Furniro_FurnitureDetails[0]
           : null,
-    }));
+    };
 
-    console.log(transformedData);
-    return { data: transformedData, error: null };
+    console.log(furnitureData);
+    return { data: furnitureData, error: null };
   }
 
-  return { data: null, error: "Unknown error occurred" };
+  return { data: null, error: "Furniture not found" };
 }
