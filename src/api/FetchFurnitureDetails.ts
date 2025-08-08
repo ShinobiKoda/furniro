@@ -42,7 +42,6 @@ export async function FetchFurnitures(): Promise<{
   }
 
   if (data) {
-    // Transform the data to match our interface
     const transformedData = data.map((item) => ({
       ...item,
       furniture_details:

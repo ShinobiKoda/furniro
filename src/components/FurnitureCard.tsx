@@ -52,7 +52,7 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
           )}
 
           <div className="w-full px-4 py-3 border-t border-gray-200">
-            <div className="flex items-center justify-center">
+            <div className="flex items-center">
               <div className="flex items-center gap-3 *:hover:cursor-pointer">
                 <motion.button
                   whileTap={{ scale: 0.9 }}

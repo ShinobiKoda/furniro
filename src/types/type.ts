@@ -24,12 +24,12 @@ export interface FurnitureDetails{
   finish_type: string
   maximum_load_capacity: number
   origin_of_manufacture: string
-  width: number
+  width: string
   height: string
-  depth: number
-  weight: number
-  seat_height?: number;
-  leg_height?: number;
+  depth: string
+  weight: string
+  seat_height?: string;
+  leg_height?: string;
   warranty_summary: string
   covered_in_warranty: string
   not_covered_in_warranty: string

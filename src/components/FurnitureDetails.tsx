@@ -10,33 +10,13 @@ import { useCart } from "@/context/CartContext";
 import { useLikedItems } from "@/context/LikedItemsContext";
 import { Heart, Star, Plus, Minus, ArrowLeft, Share2 } from "lucide-react";
 import { BsArrowLeftRight } from "react-icons/bs";
-import { SkeletonLoader } from "@/components/animations/SkeletonLoader";
 import { Footer } from "@/components/Footer";
 import { NavDisplay } from "@/components/NavDisplay";
+import { fadeInUp, staggerChildren } from "@/components/animations/motion";
 
 interface FurnitureDetailsProps {
   furnitureId: string;
 }
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 50 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
-};
-
-const staggerChildren = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-};
 
 export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
   const router = useRouter();
@@ -94,14 +74,45 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen pt-24">
-        <div className="max-w-7xl mx-auto px-4 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <SkeletonLoader />
+      <div className="min-h-screen">
+        <div className="bg-[#F9F1E7] py-6">
+          <div className="mx-auto w-full max-w-[1440px] px-4 lg:px-12">
+            <div className="h-4 bg-gray-300 rounded w-48 animate-pulse"></div>
+          </div>
+        </div>
+
+        <div className="max-w-[1440px] mx-auto px-4 lg:px-12 py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            <div className="bg-gray-300 rounded-lg h-[500px] animate-pulse"></div>
+
             <div className="space-y-6">
-              <SkeletonLoader />
-              <SkeletonLoader />
-              <SkeletonLoader />
+              {/* Title */}
+              <div className="h-10 bg-gray-300 rounded w-3/4 animate-pulse"></div>
+
+              <div className="space-y-2">
+                <div className="h-4 bg-gray-300 rounded w-full animate-pulse"></div>
+                <div className="h-4 bg-gray-300 rounded w-2/3 animate-pulse"></div>
+              </div>
+
+              <div className="h-8 bg-gray-300 rounded w-32 animate-pulse"></div>
+
+              <div className="space-y-4">
+                <div className="h-10 bg-gray-300 rounded w-32 animate-pulse"></div>
+                <div className="h-12 bg-gray-300 rounded w-full animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-200 pt-12 space-y-6">
+            <div className="flex gap-8">
+              <div className="h-6 bg-gray-300 rounded w-24 animate-pulse"></div>
+              <div className="h-6 bg-gray-300 rounded w-24 animate-pulse"></div>
+              <div className="h-6 bg-gray-300 rounded w-24 animate-pulse"></div>
+            </div>
+            <div className="space-y-3">
+              <div className="h-6 bg-gray-300 rounded w-48 animate-pulse"></div>
+              <div className="h-4 bg-gray-300 rounded w-full animate-pulse"></div>
+              <div className="h-4 bg-gray-300 rounded w-3/4 animate-pulse"></div>
             </div>
           </div>
         </div>
@@ -208,20 +219,41 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
                 )}
               </div>
 
-              {furniture.furniture_details?.review && (
+              {furniture.furniture_details?.review !== undefined && (
                 <div className="flex items-center gap-2 mb-6">
                   <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        size={20}
-                        className={`${
-                          i < furniture.furniture_details!.review
-                            ? "fill-yellow-400 text-yellow-400"
-                            : "text-gray-300"
-                        }`}
-                      />
-                    ))}
+                    {[...Array(5)].map((_, i) => {
+                      const rating = furniture.furniture_details!.review;
+                      const isFullStar = i < Math.floor(rating);
+                      const isHalfStar =
+                        i === Math.floor(rating) && rating % 1 >= 0.5;
+
+                      if (isFullStar) {
+                        return (
+                          <Star
+                            key={i}
+                            size={20}
+                            className="fill-yellow-400 text-yellow-400"
+                          />
+                        );
+                      } else if (isHalfStar) {
+                        return (
+                          <div key={i} className="relative">
+                            <Star size={20} className="text-gray-300" />
+                            <div className="absolute top-0 left-0 w-1/2 overflow-hidden">
+                              <Star
+                                size={20}
+                                className="fill-yellow-400 text-yellow-400"
+                              />
+                            </div>
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <Star key={i} size={20} className="text-gray-300" />
+                        );
+                      }
+                    })}
                   </div>
                   <span className="text-gray-600">
                     ({furniture.furniture_details.review}/5)
@@ -470,7 +502,7 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
                               Height:
                             </span>
                             <span className="text-gray-600">
-                              {furniture.furniture_details.height}
+                              {furniture.furniture_details.height} cm
                             </span>
                           </div>
                         )}
