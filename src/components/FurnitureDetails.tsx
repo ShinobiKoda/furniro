@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FurnitureProps } from "@/types/type";
+import { FetchFurnitures } from "@/api/FetchFurnitureDetails";
 import { FetchFurnitureById } from "@/api/FetchFurnitureById";
 import { useCart } from "@/context/CartContext";
 import { useLikedItems } from "@/context/LikedItemsContext";
@@ -12,6 +13,7 @@ import { Heart, Star, Plus, Minus, ArrowLeft, Share2 } from "lucide-react";
 import { BsArrowLeftRight } from "react-icons/bs";
 import { Footer } from "@/components/Footer";
 import { NavDisplay } from "@/components/NavDisplay";
+import { FurnitureCard } from "@/components/FurnitureCard";
 import { fadeInUp, staggerChildren } from "@/components/animations/motion";
 
 interface FurnitureDetailsProps {
@@ -21,7 +23,11 @@ interface FurnitureDetailsProps {
 export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
   const router = useRouter();
   const [furniture, setFurniture] = useState<FurnitureProps | null>(null);
+  const [relatedFurniture, setRelatedFurniture] = useState<FurnitureProps[]>(
+    []
+  );
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingRelated, setLoadingRelated] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
   const [activeTab, setActiveTab] = useState<string>("description");
@@ -39,12 +45,37 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
         setError(error);
       } else if (data) {
         setFurniture(data);
+        // Fetch related furniture with the same tag
+        fetchRelatedFurniture(data.tag, data.id);
       }
       setLoading(false);
     };
 
     getFurnitureDetails();
   }, [furnitureId]);
+
+  const fetchRelatedFurniture = async (tag: string, currentId: number) => {
+    setLoadingRelated(true);
+    try {
+      const { data, error } = await FetchFurnitures();
+      if (error) {
+        console.error("Error fetching related furniture:", error);
+      } else if (data) {
+        // Filter furniture with the same tag, excluding the current item, and limit to 4 items
+        const related = data
+          .filter(
+            (item) =>
+              item.tag.toLowerCase() === tag.toLowerCase() &&
+              item.id !== currentId
+          )
+          .slice(0, 4);
+        setRelatedFurniture(related);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+    setLoadingRelated(false);
+  };
 
   const isLiked = furniture ? likedItems.has(furniture.id.toString()) : false;
   const isInCart = furniture
@@ -86,7 +117,6 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
             <div className="bg-gray-300 rounded-lg h-[500px] animate-pulse"></div>
 
             <div className="space-y-6">
-              {/* Title */}
               <div className="h-10 bg-gray-300 rounded w-3/4 animate-pulse"></div>
 
               <div className="space-y-2">
@@ -589,6 +619,46 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
                 </div>
               )}
             </div>
+          </motion.div>
+        )}
+
+        {relatedFurniture.length > 0 && (
+          <motion.div
+            variants={fadeInUp}
+            className="mt-16 pt-12 border-t border-gray-200"
+          >
+            <div className="text-center mb-8">
+              <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
+                Related Products
+              </h2>
+              <p className="text-gray-600 mb-4">
+                More {furniture?.tag.toLowerCase()} furniture you might like
+              </p>
+            </div>
+
+            {loadingRelated ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="bg-gray-300 rounded-lg h-[400px] animate-pulse"
+                  ></div>
+                ))}
+              </div>
+            ) : (
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={staggerChildren}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+              >
+                {relatedFurniture.map((relatedItem) => (
+                  <motion.div key={relatedItem.id} variants={fadeInUp}>
+                    <FurnitureCard furniture={relatedItem} />
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
           </motion.div>
         )}
 

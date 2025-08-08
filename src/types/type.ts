@@ -22,7 +22,7 @@ export interface FurnitureDetails{
   upholstery_color: string
   filling_material: string;
   finish_type: string
-  maximum_load_capacity: number
+  maximum_load_capacity: string;
   origin_of_manufacture: string
   width: string
   height: string
