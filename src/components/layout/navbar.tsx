@@ -16,6 +16,7 @@ import {
 import { useLikedItems } from "@/context/LikedItemsContext";
 import { useCart } from "@/context/CartContext";
 import { CartModal } from "../CartModal";
+import { SearchModal } from "../SearchModal";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -26,6 +27,7 @@ const montserrat = Montserrat({
 export function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -41,6 +43,14 @@ export function Navbar() {
 
   const closeCart = () => {
     setIsCartOpen(false);
+  };
+
+  const toggleSearch = () => {
+    setIsSearchOpen((prev) => !prev);
+  };
+
+  const closeSearch = () => {
+    setIsSearchOpen(false);
   };
 
   const { likedItems } = useLikedItems();
@@ -219,6 +229,10 @@ export function Navbar() {
 
             <motion.button
               variants={fadeInUp}
+              onClick={() => {
+                toggleSearch();
+                closeSidebar();
+              }}
               className="flex items-center w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
             >
               <Search className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
@@ -327,7 +341,11 @@ export function Navbar() {
               <User />
             </Link>
           </motion.div>
-          <motion.div variants={fadeInUp}>
+          <motion.div
+            variants={fadeInUp}
+            onClick={toggleSearch}
+            className="cursor-pointer"
+          >
             <Search />
           </motion.div>
           <motion.div
@@ -375,6 +393,9 @@ export function Navbar() {
             </>
           )}
         </AnimatePresence>
+
+        {/* Search Modal */}
+        <SearchModal isOpen={isSearchOpen} onClose={closeSearch} />
       </motion.div>
     </nav>
   );
