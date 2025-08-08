@@ -45,7 +45,9 @@ export function NavDisplay({ pathSegments }: NavDisplayProps) {
               {segment.charAt(0).toUpperCase() + segment.slice(1)}
             </Link>
           )}
-          {index < pathSegments.length - 1 && <MdOutlineKeyboardArrowRight size={20} />}
+          {index < pathSegments.length - 1 && (
+            <MdOutlineKeyboardArrowRight size={20} />
+          )}
         </span>
       ))}
     </p>
