@@ -24,7 +24,7 @@ export function NavDisplay({ pathSegments }: NavDisplayProps) {
       case "checkout":
         return "/checkout";
       default:
-        return null; // For product names and other dynamic segments
+        return null; 
     }
   };
 
