@@ -45,7 +45,6 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
         setError(error);
       } else if (data) {
         setFurniture(data);
-        // Fetch related furniture with the same tag
         fetchRelatedFurniture(data.tag, data.id);
       }
       setLoading(false);
@@ -61,7 +60,6 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
       if (error) {
         console.error("Error fetching related furniture:", error);
       } else if (data) {
-        // Filter furniture with the same tag, excluding the current item, and limit to 4 items
         const related = data
           .filter(
             (item) =>
@@ -553,6 +551,16 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
                             </span>
                             <span className="text-gray-600">
                               {furniture.furniture_details.weight} kg
+                            </span>
+                          </div>
+                        )}
+                         {furniture.furniture_details.maximum_load_capacity && (
+                          <div className="flex justify-between border-b border-gray-200 pb-2">
+                            <span className="font-medium text-gray-700">
+                              Max Load Capacity:
+                            </span>
+                            <span className="text-gray-600">
+                              {furniture.furniture_details.maximum_load_capacity}
                             </span>
                           </div>
                         )}

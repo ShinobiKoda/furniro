@@ -12,9 +12,149 @@ import Image from "next/image";
 import { Services } from "./Services";
 import { Footer } from "./Footer";
 import { useCart } from "@/context/CartContext";
+import { ClipLoader } from "react-spinners";
+import { useState } from "react";
+
+interface FormData {
+  firstName: string;
+  lastName: string;
+  companyName: string;
+  streetAddress: string;
+  townCity: string;
+  province: string;
+  zipCode: string;
+  phone: string;
+  email: string;
+  paymentMethod: string;
+}
+
+interface FormErrors {
+  firstName?: string;
+  lastName?: string;
+  streetAddress?: string;
+  townCity?: string;
+  province?: string;
+  zipCode?: string;
+  phone?: string;
+  email?: string;
+  paymentMethod?: string;
+}
 
 export function Checkout() {
   const { cartItems, getTotalPrice } = useCart();
+  const [isLoading, setIsLoading] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState(false);
+  const [formData, setFormData] = useState<FormData>({
+    firstName: "",
+    lastName: "",
+    companyName: "",
+    streetAddress: "",
+    townCity: "",
+    province: "",
+    zipCode: "",
+    phone: "",
+    email: "",
+    paymentMethod: "",
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = "First name is required";
+    }
+
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = "Last name is required";
+    }
+
+    if (!formData.streetAddress.trim()) {
+      newErrors.streetAddress = "Street address is required";
+    }
+
+    if (!formData.townCity.trim()) {
+      newErrors.townCity = "Town/City is required";
+    }
+
+    if (!formData.province) {
+      newErrors.province = "State/Province is required";
+    }
+
+    if (!formData.zipCode.trim()) {
+      newErrors.zipCode = "Zip code is required";
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+    } else if (!/^\d{11}$/.test(formData.phone)) {
+      newErrors.phone = "Please enter a valid 11-digit phone number";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    if (!formData.paymentMethod) {
+      newErrors.paymentMethod = "Please select a payment method";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    if (errors[name as keyof FormErrors]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: undefined,
+      }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+      setOrderSuccess(true);
+
+      setFormData({
+        firstName: "",
+        lastName: "",
+        companyName: "",
+        streetAddress: "",
+        townCity: "",
+        province: "",
+        zipCode: "",
+        phone: "",
+        email: "",
+        paymentMethod: "",
+      });
+
+      setErrors({});
+
+      setTimeout(() => {
+        setOrderSuccess(false);
+      }, 3000);
+    }, 2000);
+  };
 
   const nigerianStates = [
     "Abia",
@@ -93,36 +233,61 @@ export function Checkout() {
           Billing Details
         </motion.h2>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] w-full  gap-[105px]">
-          <motion.form variants={fadeInUp} action="" className="space-y-9">
+          <motion.form
+            id="checkout-form"
+            variants={fadeInUp}
+            onSubmit={handleSubmit}
+            className="space-y-9"
+          >
             <motion.div
               variants={fadeInUp}
               className="w-full flex flex-col lg:flex-row lg:items-center justify-between gap-[31px]"
             >
               <div className="flex flex-col gap-[22px] flex-1">
                 <label htmlFor="first-name" className="font-medium text-base">
-                  First Name
+                  First Name *
                 </label>
                 <motion.input
                   variants={scaleOnHover}
                   whileHover="hover"
                   whileFocus={{ scale: 1.02 }}
                   type="text"
-                  className="border border-[#9F9F9F] rounded-[10px] px-2 py-4 transition-all duration-200"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  className={`border rounded-[10px] px-2 py-4 transition-all duration-200 ${
+                    errors.firstName ? "border-red-500" : "border-[#9F9F9F]"
+                  }`}
                   id="first-name"
                 />
+                {errors.firstName && (
+                  <span className="text-red-500 text-sm">
+                    {errors.firstName}
+                  </span>
+                )}
               </div>
               <div className="flex flex-col gap-[22px] flex-1">
                 <label htmlFor="last-name" className="font-medium text-base">
-                  Last Name
+                  Last Name *
                 </label>
                 <motion.input
                   variants={scaleOnHover}
                   whileHover="hover"
                   whileFocus={{ scale: 1.02 }}
                   type="text"
-                  className="border border-[#9F9F9F] rounded-[10px] px-2 py-4 transition-all duration-200"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  className={`border rounded-[10px] px-2 py-4 transition-all duration-200 ${
+                    errors.lastName ? "border-red-500" : "border-[#9F9F9F]"
+                  }`}
                   id="last-name"
                 />
+                {errors.lastName && (
+                  <span className="text-red-500 text-sm">
+                    {errors.lastName}
+                  </span>
+                )}
               </div>
             </motion.div>
 
@@ -138,6 +303,9 @@ export function Checkout() {
                 whileHover="hover"
                 whileFocus={{ scale: 1.02 }}
                 type="text"
+                name="companyName"
+                value={formData.companyName}
+                onChange={handleInputChange}
                 id="company-name"
                 className="border border-[#9F9F9F] rounded-[10px] px-2 py-4 transition-all duration-200"
               />
@@ -171,16 +339,26 @@ export function Checkout() {
               className="flex flex-col gap-[22px]"
             >
               <label htmlFor="street-address" className="font-medium text-base">
-                Street Address
+                Street Address *
               </label>
               <motion.input
                 variants={scaleOnHover}
                 whileHover="hover"
                 whileFocus={{ scale: 1.02 }}
                 type="text"
+                name="streetAddress"
+                value={formData.streetAddress}
+                onChange={handleInputChange}
                 id="street-address"
-                className="border border-[#9F9F9F] rounded-[10px] px-2 py-4 transition-all duration-200"
+                className={`border rounded-[10px] px-2 py-4 transition-all duration-200 ${
+                  errors.streetAddress ? "border-red-500" : "border-[#9F9F9F]"
+                }`}
               />
+              {errors.streetAddress && (
+                <span className="text-red-500 text-sm">
+                  {errors.streetAddress}
+                </span>
+              )}
             </motion.div>
 
             <motion.div
@@ -188,16 +366,24 @@ export function Checkout() {
               className="flex flex-col gap-[22px]"
             >
               <label htmlFor="town_city" className="font-medium text-base">
-                Town/City
+                Town/City *
               </label>
               <motion.input
                 variants={scaleOnHover}
                 whileHover="hover"
                 whileFocus={{ scale: 1.02 }}
                 type="text"
+                name="townCity"
+                value={formData.townCity}
+                onChange={handleInputChange}
                 id="town_city"
-                className="border border-[#9F9F9F] rounded-[10px] px-2 py-4 transition-all duration-200"
+                className={`border rounded-[10px] px-2 py-4 transition-all duration-200 ${
+                  errors.townCity ? "border-red-500" : "border-[#9F9F9F]"
+                }`}
               />
+              {errors.townCity && (
+                <span className="text-red-500 text-sm">{errors.townCity}</span>
+              )}
             </motion.div>
 
             <motion.div
@@ -205,16 +391,20 @@ export function Checkout() {
               className="flex flex-col gap-[22px]"
             >
               <label htmlFor="province" className="font-medium text-base">
-                State/Province
+                State/Province *
               </label>
               <motion.div
                 variants={scaleOnHover}
                 whileHover="hover"
-                className="border border-[#9F9F9F] rounded-[10px] px-2 py-4 transition-all duration-200"
+                className={`border rounded-[10px] px-2 py-4 transition-all duration-200 ${
+                  errors.province ? "border-red-500" : "border-[#9F9F9F]"
+                }`}
               >
                 <select
                   name="province"
                   id="province"
+                  value={formData.province}
+                  onChange={handleInputChange}
                   className="w-full outline-0 border-0 bg-transparent"
                 >
                   <option value="">Select a state</option>
@@ -228,6 +418,9 @@ export function Checkout() {
                   ))}
                 </select>
               </motion.div>
+              {errors.province && (
+                <span className="text-red-500 text-sm">{errors.province}</span>
+              )}
             </motion.div>
 
             <motion.div
@@ -235,16 +428,24 @@ export function Checkout() {
               className="flex flex-col gap-[22px]"
             >
               <label htmlFor="zip-code" className="font-medium text-base">
-                Zip Code
+                Zip Code *
               </label>
               <motion.input
                 variants={scaleOnHover}
                 whileHover="hover"
                 whileFocus={{ scale: 1.02 }}
                 type="text"
+                name="zipCode"
+                value={formData.zipCode}
+                onChange={handleInputChange}
                 id="zip-code"
-                className="border border-[#9F9F9F] rounded-[10px] px-2 py-4 transition-all duration-200"
+                className={`border rounded-[10px] px-2 py-4 transition-all duration-200 ${
+                  errors.zipCode ? "border-red-500" : "border-[#9F9F9F]"
+                }`}
               />
+              {errors.zipCode && (
+                <span className="text-red-500 text-sm">{errors.zipCode}</span>
+              )}
             </motion.div>
 
             <motion.div
@@ -252,16 +453,24 @@ export function Checkout() {
               className="flex flex-col gap-[22px]"
             >
               <label htmlFor="phone" className="font-medium text-base">
-                Phone
+                Phone *
               </label>
               <motion.input
                 variants={scaleOnHover}
                 whileHover="hover"
                 whileFocus={{ scale: 1.02 }}
-                type="number"
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
                 id="phone"
-                className="border border-[#9F9F9F] rounded-[10px] px-2 py-4 transition-all duration-200"
+                className={`border rounded-[10px] px-2 py-4 transition-all duration-200 ${
+                  errors.phone ? "border-red-500" : "border-[#9F9F9F]"
+                }`}
               />
+              {errors.phone && (
+                <span className="text-red-500 text-sm">{errors.phone}</span>
+              )}
             </motion.div>
 
             <motion.div
@@ -269,16 +478,24 @@ export function Checkout() {
               className="flex flex-col gap-[22px]"
             >
               <label htmlFor="email" className="font-medium text-base">
-                Email address
+                Email address *
               </label>
               <motion.input
                 variants={scaleOnHover}
                 whileHover="hover"
                 whileFocus={{ scale: 1.02 }}
                 type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
                 id="email"
-                className="border border-[#9F9F9F] rounded-[10px] px-2 py-4 transition-all duration-200"
+                className={`border rounded-[10px] px-2 py-4 transition-all duration-200 ${
+                  errors.email ? "border-red-500" : "border-[#9F9F9F]"
+                }`}
               />
+              {errors.email && (
+                <span className="text-red-500 text-sm">{errors.email}</span>
+              )}
             </motion.div>
 
             <motion.input
@@ -392,7 +609,10 @@ export function Checkout() {
                 >
                   <input
                     type="radio"
-                    name="payment-method"
+                    name="paymentMethod"
+                    value="direct-bank-transfer"
+                    checked={formData.paymentMethod === "direct-bank-transfer"}
+                    onChange={handleInputChange}
                     id="direct-bank-transfer"
                   />
                   <label htmlFor="direct-bank-transfer">
@@ -406,11 +626,19 @@ export function Checkout() {
                 >
                   <input
                     type="radio"
-                    name="payment-method"
+                    name="paymentMethod"
+                    value="cash-on-delivery"
+                    checked={formData.paymentMethod === "cash-on-delivery"}
+                    onChange={handleInputChange}
                     id="cash-on-delivery"
                   />
                   <label htmlFor="cash-on-delivery">Cash On Delivery</label>
                 </motion.p>
+                {errors.paymentMethod && (
+                  <span className="text-red-500 text-sm">
+                    {errors.paymentMethod}
+                  </span>
+                )}
               </motion.div>
 
               <motion.p
@@ -434,15 +662,26 @@ export function Checkout() {
                 className="w-full flex items-center justify-center"
               >
                 <motion.button
+                  type="submit"
+                  form="checkout-form"
                   whileTap={{ scale: 0.95 }}
                   whileHover={{
                     boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
                     transition: { duration: 0.2 },
                   }}
-                  disabled={cartItems.length === 0}
-                  className="rounded-[15px] outline-none border w-full max-w-[318px] border-black lg:py-4 py-2 font-normal lg:text-xl text-lg cursor-pointer transition-all duration-200 hover:bg-black hover:text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-black"
+                  disabled={cartItems.length === 0 || isLoading}
+                  className="rounded-[15px] outline-none border w-full max-w-[318px] border-black lg:py-4 py-2 font-normal lg:text-xl text-lg cursor-pointer transition-all duration-200 hover:bg-black hover:text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-black flex items-center justify-center gap-2"
                 >
-                  Place Order
+                  {isLoading ? (
+                    <>
+                      <ClipLoader size={20} color="#000000" />
+                      <span>Processing...</span>
+                    </>
+                  ) : orderSuccess ? (
+                    <span>Order Placed Successfully!</span>
+                  ) : (
+                    <span>Place Order</span>
+                  )}
                 </motion.button>
               </motion.div>
             </motion.div>

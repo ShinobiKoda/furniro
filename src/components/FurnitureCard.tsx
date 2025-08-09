@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { FurnitureProps } from "@/types/type";
 import { Heart } from "lucide-react";
 import { CiShare2 } from "react-icons/ci";
-import { BsArrowLeftRight } from "react-icons/bs";
 import { useLikedItems } from "@/context/LikedItemsContext";
 import { IoBagAddOutline } from "react-icons/io5";
 import { useState } from "react";
@@ -36,7 +35,7 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
               onError={() => setImageError(true)}
             />
           ) : (
-            <div className="w-full h-[301px] bg-gray-300 flex items-center justify-center">
+            <div className="w-full min-h-[301px] bg-gray-300 flex items-center justify-center">
               <IoBagAddOutline size={80} className="text-gray-500" />
             </div>
           )}
@@ -73,12 +72,6 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
                   className="p-2 rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100"
                 >
                   <CiShare2 size={18} />
-                </motion.button>
-                <motion.button
-                  whileTap={{ scale: 0.9 }}
-                  className="p-2 rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100"
-                >
-                  <BsArrowLeftRight size={16} />
                 </motion.button>
               </div>
             </div>

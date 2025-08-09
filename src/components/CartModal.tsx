@@ -208,18 +208,6 @@ export function CartModal({ onClose }: CartModalProps) {
               Checkout
             </motion.button>
           </Link>
-
-          <Link href="/#" className="w-full">
-            <motion.button
-              className="w-full py-2 border border-black rounded-[50px] font-medium transition-all duration-200 cursor-pointer"
-              onClick={onClose}
-              variants={scaleOnHover}
-              whileHover="hover"
-              whileTap={{ scale: 0.95 }}
-            >
-              Comparison
-            </motion.button>
-          </Link>
         </motion.div>
       </motion.div>
     </motion.div>
