@@ -394,7 +394,6 @@ export function Navbar() {
           )}
         </AnimatePresence>
 
-        {/* Search Modal */}
         <SearchModal isOpen={isSearchOpen} onClose={closeSearch} />
       </motion.div>
     </nav>

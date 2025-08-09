@@ -38,13 +38,11 @@ export function ContactPage({ pathSegments }: ContactPageProps) {
     const newErrors = { name: "", email: "", message: "" };
     let isValid = true;
 
-    // Name validation
     if (!formData.name.trim()) {
       newErrors.name = "Name is required";
       isValid = false;
     }
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
@@ -73,7 +71,6 @@ export function ContactPage({ pathSegments }: ContactPageProps) {
       [name]: value,
     }));
 
-    // Clear error when user starts typing
     if (errors[name as keyof typeof errors]) {
       setErrors((prev) => ({
         ...prev,
@@ -92,13 +89,10 @@ export function ContactPage({ pathSegments }: ContactPageProps) {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // Trigger confetti animation
       triggerConfetti();
 
-      // Clear form data
       setFormData({
         name: "",
         email: "",
@@ -106,7 +100,6 @@ export function ContactPage({ pathSegments }: ContactPageProps) {
         message: "",
       });
 
-      // Clear any remaining errors
       setErrors({ name: "", email: "", message: "" });
     } catch (error) {
       console.error("Form submission error:", error);

@@ -11,5 +11,5 @@ export default function Home() {
     router.push("/home");
   }, [router]);
 
-  return null; // Render nothing since it's just a redirect
+  return null; 
 }

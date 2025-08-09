@@ -48,7 +48,6 @@ export async function FetchFurnitureById(id: string): Promise<{
   }
 
   if (data) {
-    // Transform the data to match our interface
     const furnitureData: FurnitureProps = {
       ...data,
       furniture_details:

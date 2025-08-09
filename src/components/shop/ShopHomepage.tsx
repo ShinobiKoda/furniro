@@ -49,7 +49,6 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
     getFurnitureDetails();
   }, []);
 
-  // Sorting function
   const sortFurniture = (
     data: FurnitureProps[],
     sortType: string

@@ -53,7 +53,7 @@ export default function NotFound() {
       const navbar = document.querySelector("nav");
       if (navbar) {
         navbar.style.display = "block";
-      }    // Restore navbar when component unmounts (user navigates away)
+      }    
 
     };
   }, []);
@@ -91,7 +91,6 @@ export default function NotFound() {
           variants={staggerChildren}
           className="text-center space-y-8"
         >
-          {/* Error Message */}
           <motion.div variants={fadeInUp} className="space-y-4">
             <h2 className="font-bold text-3xl lg:text-4xl text-[#3A3A3A]">
               Oops! Something went wrong

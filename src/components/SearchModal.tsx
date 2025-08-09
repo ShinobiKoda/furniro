@@ -86,7 +86,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
             onClick={handleClose}
@@ -96,7 +95,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             transition={{ duration: 0.3 }}
           />
 
-          {/* Modal */}
           <motion.div
             className="fixed inset-0 z-50 flex items-start justify-center pt-16 px-4"
             initial={{ opacity: 0, y: -50 }}
@@ -124,7 +122,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 </button>
               </div>
 
-              {/* Results */}
               <div className="overflow-y-auto max-h-[60vh]">
                 {loading && (
                   <div className="flex items-center justify-center py-12">
@@ -178,7 +175,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             whileHover={{ scale: 1.02 }}
                             transition={{ duration: 0.2 }}
                           >
-                            {/* Image */}
                             <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                               {!imageErrors.has(furniture.id) ? (
                                 <Image
@@ -199,7 +195,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                               )}
                             </div>
 
-                            {/* Content */}
                             <div className="flex-1 min-w-0">
                               <h3 className="font-semibold text-gray-900 truncate">
                                 {furniture.name}
