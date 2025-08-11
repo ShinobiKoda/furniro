@@ -17,6 +17,7 @@ import { useLikedItems } from "@/context/LikedItemsContext";
 import { useCart } from "@/context/CartContext";
 import { CartModal } from "../CartModal";
 import { SearchModal } from "../SearchModal";
+import { WishlistModal } from "../WishlistModal";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -28,6 +29,7 @@ export function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -51,6 +53,14 @@ export function Navbar() {
 
   const closeSearch = () => {
     setIsSearchOpen(false);
+  };
+
+  const toggleWishlist = () => {
+    setIsWishlistOpen((prev) => !prev);
+  };
+
+  const closeWishlist = () => {
+    setIsWishlistOpen(false);
   };
 
   const { likedItems } = useLikedItems();
@@ -92,7 +102,7 @@ export function Navbar() {
         <div
           className={`w-7 h-6 flex-col lg:hidden gap-[5px] cursor-pointer hover:opacity-85 relative right-0 top-0 z-60 *:rounded-md ${
             isSidebarOpen ? "rotate-90" : ""
-          } ${isCartOpen ? "hidden" : "flex"}`}
+          } ${isCartOpen || isWishlistOpen ? "hidden" : "flex"}`}
           onClick={toggleSidebar}
         >
           {getUniqueItemCount() > 0 && (
@@ -271,6 +281,10 @@ export function Navbar() {
 
             <motion.button
               variants={fadeInUp}
+              onClick={() => {
+                toggleWishlist();
+                closeSidebar();
+              }}
               className="flex items-center justify-between w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
             >
               <div className="flex items-center">
@@ -360,7 +374,11 @@ export function Navbar() {
               </span>
             )}
           </motion.div>
-          <motion.div variants={fadeInUp} className="relative">
+          <motion.div
+            variants={fadeInUp}
+            className="relative cursor-pointer"
+            onClick={toggleWishlist}
+          >
             <Heart className="text-2xl" />
             {likedItems.size > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
@@ -395,6 +413,7 @@ export function Navbar() {
         </AnimatePresence>
 
         <SearchModal isOpen={isSearchOpen} onClose={closeSearch} />
+        <WishlistModal isOpen={isWishlistOpen} onClose={closeWishlist} />
       </motion.div>
     </nav>
   );
