@@ -85,7 +85,11 @@ export function Navbar() {
         variants={fadeInUp}
         className="w-full max-w-[1440px] mx-auto flex items-center justify-between p-4 lg:px-12"
       >
-        <div className="flex items-center gap-2">
+        <motion.div
+          className="flex items-center gap-2"
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        >
           <Image
             src="/images/furniro_logo.webp"
             alt="Logo"
@@ -97,7 +101,7 @@ export function Navbar() {
           >
             <Link href="/home">Furniro</Link>
           </h1>
-        </div>
+        </motion.div>
 
         <div
           className={`w-7 h-6 flex-col lg:hidden gap-[5px] cursor-pointer hover:opacity-85 relative right-0 top-0 z-60 *:rounded-md ${
@@ -330,16 +334,32 @@ export function Navbar() {
           initial="hidden"
           animate="visible"
         >
-          <motion.li variants={fadeInUp}>
+          <motion.li
+            variants={fadeInUp}
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
             <Link href="/home">Home</Link>
           </motion.li>
-          <motion.li variants={fadeInUp}>
+          <motion.li
+            variants={fadeInUp}
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
             <Link href="/shop">Shop</Link>
           </motion.li>
-          <motion.li variants={fadeInUp}>
+          <motion.li
+            variants={fadeInUp}
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
             <Link href="/about">About</Link>
           </motion.li>
-          <motion.li variants={fadeInUp}>
+          <motion.li
+            variants={fadeInUp}
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
             <Link href="/contact">Contact</Link>
           </motion.li>
         </motion.ul>
@@ -350,7 +370,11 @@ export function Navbar() {
           initial="hidden"
           animate="visible"
         >
-          <motion.div variants={fadeInUp}>
+          <motion.div
+            variants={fadeInUp}
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
             <Link href="/blog">
               <User />
             </Link>
@@ -359,6 +383,8 @@ export function Navbar() {
             variants={fadeInUp}
             onClick={toggleSearch}
             className="cursor-pointer"
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
             <Search />
           </motion.div>
@@ -366,6 +392,8 @@ export function Navbar() {
             variants={fadeInUp}
             onClick={toggleCart}
             className="relative"
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
             <IoCartOutline className="text-2xl" />
             {getUniqueItemCount() > 0 && (
@@ -378,6 +406,8 @@ export function Navbar() {
             variants={fadeInUp}
             className="relative cursor-pointer"
             onClick={toggleWishlist}
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
             <Heart className="text-2xl" />
             {likedItems.size > 0 && (

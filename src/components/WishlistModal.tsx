@@ -101,7 +101,6 @@ export function WishlistModal({ isOpen, onClose }: WishlistModalProps) {
             exit="hidden"
           >
             <div className="flex flex-col h-full">
-              {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-200">
                 <div className="flex items-center gap-3">
                   <Heart className="w-6 h-6 text-red-500 fill-red-500" />
@@ -117,7 +116,6 @@ export function WishlistModal({ isOpen, onClose }: WishlistModalProps) {
                 </button>
               </div>
 
-              {/* Content */}
               <div className="flex-1 overflow-y-auto">
                 {loading ? (
                   <div className="p-6 space-y-4">
