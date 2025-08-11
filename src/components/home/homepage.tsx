@@ -221,18 +221,23 @@ export function HomePage() {
                 <motion.div
                   key={index}
                   variants={fadeInUp}
-                  className="flex-shrink-0 w-[80%] sm:w-[60%] md:w-[40%] lg:w-[30%] max-w-[300px] snap-center space-y-[30px]"
+                  className="flex-shrink-0 w-[80%] sm:w-[60%] md:w-[40%] lg:w-[30%] max-w-[300px] snap-center"
                 >
-                  <Image
-                    src={`/images/furniro_${category.toLowerCase()}-illustration.webp`}
-                    alt={`${category} category image`}
-                    width={500}
-                    height={500}
-                    className="w-full h-auto object-cover rounded-lg cursor-grab"
-                  />
-                  <p className="text-center font-semibold lg:text-2xl text-lg">
-                    {category}
-                  </p>
+                  <div className="relative group overflow-hidden rounded-lg cursor-pointer">
+                    <Image
+                      src={`/images/furniro_${category.toLowerCase()}-illustration.webp`}
+                      alt={`${category} category image`}
+                      width={500}
+                      height={500}
+                      className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 flex items-center justify-center p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+                      <p className="text-center font-semibold lg:text-2xl text-lg text-white">
+                        {category}
+                      </p>
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -359,7 +364,9 @@ export function HomePage() {
               initial="hidden"
               animate="visible"
               variants={slideInVariants}
-              className="relative w-full h-40 sm:h-48 lg:h-56 overflow-hidden rounded-lg"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="relative w-full h-40 sm:h-48 lg:h-56 overflow-hidden rounded-lg cursor-pointer"
             >
               <Image
                 src={image}

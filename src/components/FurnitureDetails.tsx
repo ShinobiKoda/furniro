@@ -10,7 +10,6 @@ import { FetchFurnitureById } from "@/api/FetchFurnitureById";
 import { useCart } from "@/context/CartContext";
 import { useLikedItems } from "@/context/LikedItemsContext";
 import { Heart, Star, Plus, Minus, ArrowLeft, Share2 } from "lucide-react";
-import { BsArrowLeftRight } from "react-icons/bs";
 import { Footer } from "@/components/Footer";
 import { NavDisplay } from "@/components/NavDisplay";
 import { FurnitureCard } from "@/components/FurnitureCard";
@@ -354,12 +353,7 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
                     <Share2 size={20} />
                   </motion.button>
 
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    className="p-4 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors"
-                  >
-                    <BsArrowLeftRight size={20} />
-                  </motion.button>
+                 
                 </div>
               </div>
             </div>
