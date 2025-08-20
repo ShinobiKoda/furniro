@@ -4,7 +4,7 @@ import { MdCancel } from "react-icons/md";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   fadeInUp,
   staggerChildren,
@@ -25,19 +25,9 @@ export function CartModal({ onClose }: CartModalProps) {
     setImageErrors((prev) => new Set(prev).add(itemId));
   };
 
-  useEffect(() => {
-    const originalStyle = window.getComputedStyle(document.body).overflow;
-
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = originalStyle;
-    };
-  }, []);
-
   return (
     <motion.div
-      className="bg-white top-0 right-0 max-w-[417px] w-screen h-screen px-6 shadow-2xl py-4 overflow-y-auto flex flex-col z-80"
+      className="bg-white top-0 right-0 max-w-[417px] w-screen h-screen px-6 shadow-2xl py-4 overflow-y-auto overscroll-contain flex flex-col z-80"
       initial={{ x: "100%", opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: "100%", opacity: 0 }}

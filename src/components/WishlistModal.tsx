@@ -116,7 +116,7 @@ export function WishlistModal({ isOpen, onClose }: WishlistModalProps) {
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto">
+              <div className="flex-1 overflow-y-auto overscroll-contain">
                 {loading ? (
                   <div className="p-6 space-y-4">
                     {Array.from({ length: 3 }).map((_, index) => (

@@ -67,15 +67,31 @@ export function Navbar() {
   const { getUniqueItemCount } = useCart();
 
   useEffect(() => {
-    if (isSidebarOpen) {
-      const originalStyle = window.getComputedStyle(document.body).overflow;
-      document.body.style.overflow = "hidden";
+    const shouldLock = isSidebarOpen || isCartOpen || isSearchOpen || isWishlistOpen;
+    const { body, documentElement: html } = document;
 
-      return () => {
-        document.body.style.overflow = originalStyle;
-      };
+    if (shouldLock) {
+      body.style.overflow = "hidden";
+      html.style.overflow = "hidden";
+      body.style.setProperty("overscroll-behavior", "contain");
+      html.style.setProperty("overscroll-behavior", "contain");
+      body.style.setProperty("touch-action", "none");
+    } else {
+      body.style.overflow = "";
+      html.style.overflow = "";
+      body.style.removeProperty("overscroll-behavior");
+      html.style.removeProperty("overscroll-behavior");
+      body.style.removeProperty("touch-action");
     }
-  }, [isSidebarOpen]);
+
+    return () => {
+      body.style.overflow = "";
+      html.style.overflow = "";
+      body.style.removeProperty("overscroll-behavior");
+      html.style.removeProperty("overscroll-behavior");
+      body.style.removeProperty("touch-action");
+    };
+  }, [isSidebarOpen, isCartOpen, isSearchOpen, isWishlistOpen]);
 
   return (
     <nav className="w-screen fixed top-0 left-0 bg-white z-50">
@@ -137,7 +153,7 @@ export function Navbar() {
 
         {isSidebarOpen && (
           <motion.div
-            className="fixed inset-0 backdrop-blur-[2px] bg-white/20 z-40"
+            className="fixed inset-0 backdrop-blur-[2px] bg-white/20 z-40 overscroll-none"
             onClick={closeSidebar}
             initial="hidden"
             animate="visible"
@@ -146,165 +162,167 @@ export function Navbar() {
         )}
 
         <motion.div
-          className={`fixed top-0 right-0 h-full w-[300px] bg-white p-8 z-50 shadow-2xl rounded-l-2xl lg:hidden`}
+          className={`fixed top-0 right-0 h-full w-[300px] bg-white z-50 shadow-2xl rounded-l-2xl lg:hidden flex flex-col`}
           initial="hidden"
           animate={isSidebarOpen ? "visible" : "hidden"}
           variants={slideInFromRight}
           transition={{ duration: 0.5, ease: "easeInOut" }}
         >
-          <motion.div
-            className="flex items-center justify-center mb-8"
-            variants={fadeInUp}
-            initial="hidden"
-            animate={isSidebarOpen ? "visible" : "hidden"}
-          >
-            <h2 className="text-xl font-semibold text-gray-800">Menu</h2>
-          </motion.div>
-
-          <motion.div
-            className="mb-8"
-            variants={staggerChildren}
-            initial="hidden"
-            animate={isSidebarOpen ? "visible" : "hidden"}
-          >
-            <motion.h3
-              className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4"
+          <div className="flex-1 overflow-y-auto overscroll-contain p-8">
+            <motion.div
+              className="flex items-center justify-center mb-8"
               variants={fadeInUp}
+              initial="hidden"
+              animate={isSidebarOpen ? "visible" : "hidden"}
             >
-              Navigation
-            </motion.h3>
-            <motion.ul className="space-y-4">
-              <motion.li variants={fadeInUp}>
-                <Link
-                  href="/home"
-                  onClick={closeSidebar}
-                  className="flex items-center p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
-                >
-                  <Home className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-                  <span>Home</span>
-                  <span className="w-2 h-2 bg-[#B88E2F] rounded-full ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                </Link>
-              </motion.li>
-              <motion.li variants={fadeInUp}>
-                <Link
-                  href="/shop"
-                  onClick={closeSidebar}
-                  className="flex items-center p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
-                >
-                  <Store className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-                  <span>Shop</span>
-                  <span className="w-2 h-2 bg-[#B88E2F] rounded-full ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                </Link>
-              </motion.li>
-              <motion.li variants={fadeInUp}>
-                <Link
-                  href="/about"
-                  onClick={closeSidebar}
-                  className="flex items-center p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
-                >
-                  <Info className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-                  <span>About</span>
-                  <span className="w-2 h-2 bg-[#B88E2F] rounded-full ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                </Link>
-              </motion.li>
-              <motion.li variants={fadeInUp}>
-                <Link
-                  href="/contact"
-                  onClick={closeSidebar}
-                  className="flex items-center p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
-                >
-                  <Mail className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-                  <span>Contact</span>
-                  <span className="w-2 h-2 bg-[#B88E2F] rounded-full ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                </Link>
-              </motion.li>
-            </motion.ul>
-          </motion.div>
-
-          <motion.hr
-            className="border-gray-200 mb-6"
-            variants={fadeInUp}
-            initial="hidden"
-            animate={isSidebarOpen ? "visible" : "hidden"}
-          />
-
-          <motion.div
-            className="space-y-4"
-            variants={staggerChildren}
-            initial="hidden"
-            animate={isSidebarOpen ? "visible" : "hidden"}
-          >
-            <motion.h3
-              className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4"
-              variants={fadeInUp}
-            >
-              Actions
-            </motion.h3>
-
-            <motion.button
-              variants={fadeInUp}
-              onClick={() => {
-                toggleSearch();
-                closeSidebar();
-              }}
-              className="flex items-center w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
-            >
-              <Search className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-              <span>Search</span>
-            </motion.button>
-
-            <motion.div variants={fadeInUp}>
-              <Link
-                href="/blog"
-                onClick={closeSidebar}
-                className="flex items-center w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
-              >
-                <User className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-                <span>Blog</span>
-              </Link>
+              <h2 className="text-xl font-semibold text-gray-800">Menu</h2>
             </motion.div>
 
-            <motion.button
-              variants={fadeInUp}
-              onClick={() => {
-                toggleCart();
-                closeSidebar();
-              }}
-              className="flex items-center justify-between w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+            <motion.div
+              className="mb-8"
+              variants={staggerChildren}
+              initial="hidden"
+              animate={isSidebarOpen ? "visible" : "hidden"}
             >
-              <div className="flex items-center">
-                <IoCartOutline className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-                <span>Cart</span>
-              </div>
-              {getUniqueItemCount() > 0 && (
-                <span className="bg-[#B88E2F] text-white text-xs px-2 py-1 rounded-full min-w-[20px] h-5 flex items-center justify-center">
-                  {getUniqueItemCount()}
-                </span>
-              )}
-            </motion.button>
+              <motion.h3
+                className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4"
+                variants={fadeInUp}
+              >
+                Navigation
+              </motion.h3>
+              <motion.ul className="space-y-4">
+                <motion.li variants={fadeInUp}>
+                  <Link
+                    href="/home"
+                    onClick={closeSidebar}
+                    className="flex items-center p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+                  >
+                    <Home className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                    <span>Home</span>
+                    <span className="w-2 h-2 bg-[#B88E2F] rounded-full ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                  </Link>
+                </motion.li>
+                <motion.li variants={fadeInUp}>
+                  <Link
+                    href="/shop"
+                    onClick={closeSidebar}
+                    className="flex items-center p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+                  >
+                    <Store className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                    <span>Shop</span>
+                    <span className="w-2 h-2 bg-[#B88E2F] rounded-full ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                  </Link>
+                </motion.li>
+                <motion.li variants={fadeInUp}>
+                  <Link
+                    href="/about"
+                    onClick={closeSidebar}
+                    className="flex items-center p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+                  >
+                    <Info className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                    <span>About</span>
+                    <span className="w-2 h-2 bg-[#B88E2F] rounded-full ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                  </Link>
+                </motion.li>
+                <motion.li variants={fadeInUp}>
+                  <Link
+                    href="/contact"
+                    onClick={closeSidebar}
+                    className="flex items-center p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+                  >
+                    <Mail className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                    <span>Contact</span>
+                    <span className="w-2 h-2 bg-[#B88E2F] rounded-full ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                  </Link>
+                </motion.li>
+              </motion.ul>
+            </motion.div>
 
-            <motion.button
+            <motion.hr
+              className="border-gray-200 mb-6"
               variants={fadeInUp}
-              onClick={() => {
-                toggleWishlist();
-                closeSidebar();
-              }}
-              className="flex items-center justify-between w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+              initial="hidden"
+              animate={isSidebarOpen ? "visible" : "hidden"}
+            />
+
+            <motion.div
+              className="space-y-4"
+              variants={staggerChildren}
+              initial="hidden"
+              animate={isSidebarOpen ? "visible" : "hidden"}
             >
-              <div className="flex items-center">
-                <Heart className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-                <span>Wishlist</span>
-              </div>
-              {likedItems.size > 0 && (
-                <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full min-w-[20px] h-5 flex items-center justify-center">
-                  {likedItems.size}
-                </span>
-              )}
-            </motion.button>
-          </motion.div>
+              <motion.h3
+                className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4"
+                variants={fadeInUp}
+              >
+                Actions
+              </motion.h3>
+
+              <motion.button
+                variants={fadeInUp}
+                onClick={() => {
+                  toggleSearch();
+                  closeSidebar();
+                }}
+                className="flex items-center w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+              >
+                <Search className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                <span>Search</span>
+              </motion.button>
+
+              <motion.div variants={fadeInUp}>
+                <Link
+                  href="/blog"
+                  onClick={closeSidebar}
+                  className="flex items-center w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+                >
+                  <User className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                  <span>Blog</span>
+                </Link>
+              </motion.div>
+
+              <motion.button
+                variants={fadeInUp}
+                onClick={() => {
+                  toggleCart();
+                  closeSidebar();
+                }}
+                className="flex items-center justify-between w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+              >
+                <div className="flex items-center">
+                  <IoCartOutline className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                  <span>Cart</span>
+                </div>
+                {getUniqueItemCount() > 0 && (
+                  <span className="bg-[#B88E2F] text-white text-xs px-2 py-1 rounded-full min-w-[20px] h-5 flex items-center justify-center">
+                    {getUniqueItemCount()}
+                  </span>
+                )}
+              </motion.button>
+
+              <motion.button
+                variants={fadeInUp}
+                onClick={() => {
+                  toggleWishlist();
+                  closeSidebar();
+                }}
+                className="flex items-center justify-between w-full p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+              >
+                <div className="flex items-center">
+                  <Heart className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                  <span>Wishlist</span>
+                </div>
+                {likedItems.size > 0 && (
+                  <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full min-w-[20px] h-5 flex items-center justify-center">
+                    {likedItems.size}
+                  </span>
+                )}
+              </motion.button>
+            </motion.div>
+          </div>
 
           <motion.div
-            className="absolute bottom-8 left-8 right-8"
+            className="p-8 border-t bg-white"
             variants={fadeInUp}
             initial="hidden"
             animate={isSidebarOpen ? "visible" : "hidden"}
@@ -317,13 +335,9 @@ export function Navbar() {
                   width={30}
                   height={25}
                 />
-                <span className="ml-2 font-semibold text-[#B88E2F]">
-                  Furniro
-                </span>
+                <span className="ml-2 font-semibold text-[#B88E2F]">Furniro</span>
               </div>
-              <p className="text-xs text-gray-500">
-                Quality furniture for your home
-              </p>
+              <p className="text-xs text-gray-500">Quality furniture for your home</p>
             </div>
           </motion.div>
         </motion.div>
@@ -422,7 +436,7 @@ export function Navbar() {
           {isCartOpen && (
             <>
               <motion.div
-                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 overscroll-none"
                 onClick={closeCart}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

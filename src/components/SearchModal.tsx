@@ -87,7 +87,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
       {isOpen && (
         <>
           <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overscroll-none"
             onClick={handleClose}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -104,25 +104,32 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
           >
             <div className="bg-white rounded-lg shadow-2xl w-full max-w-3xl max-h-[80vh] overflow-hidden">
               {/* Header */}
-              <div className="flex items-center gap-4 p-6 border-b border-gray-200">
-                <Search size={24} className="text-gray-400" />
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  placeholder="Search for furniture..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 text-lg outline-none placeholder-gray-400"
-                />
-                <button
-                  onClick={handleClose}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                >
-                  <X size={24} className="text-gray-400" />
-                </button>
+              <div className="p-6 border-b border-gray-200">
+                <div className="relative flex items-center">
+                  <Search
+                    size={20}
+                    className="text-gray-400 absolute left-3 pointer-events-none"
+                  />
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Search for furniture..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full text-lg outline-none placeholder-gray-400 pl-10 pr-12 py-2 rounded-md border border-transparent focus:border-gray-200"
+                  />
+                  <button
+                    onClick={handleClose}
+                    className="absolute right-2 p-2 rounded-full hover:bg-gray-100 transition-colors"
+                    aria-label="Close search"
+                    title="Close"
+                  >
+                    <X size={20} className="text-gray-400" />
+                  </button>
+                </div>
               </div>
 
-              <div className="overflow-y-auto max-h-[60vh]">
+              <div className="overflow-y-auto overscroll-contain max-h-[60vh]">
                 {loading && (
                   <div className="flex items-center justify-center py-12">
                     <div className="text-gray-500">Loading furniture...</div>
