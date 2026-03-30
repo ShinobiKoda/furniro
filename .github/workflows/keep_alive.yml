@@ -12,4 +12,4 @@ jobs:
     steps:
       - name: Ping Site
         # Replace the URL below with your actual site URL or API route
-        run: curl -LsI https://https://furniro-roan-gamma.vercel.app/home
+        run: curl -LsI https://furniro-roan-gamma.vercel.app/home
