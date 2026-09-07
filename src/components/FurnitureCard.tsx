@@ -6,29 +6,30 @@ import { motion } from "framer-motion";
 import { FurnitureProps } from "@/types/type";
 import { Heart } from "lucide-react";
 import { CiShare2 } from "react-icons/ci";
-import { useLikedItems } from "@/context/LikedItemsContext";
+// import { useLikedItems } from "@/context/LikedItemsContext";
 import { IoBagAddOutline } from "react-icons/io5";
 import { useState } from "react";
+import { Product } from "@/services/products";
 
-export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
-  const { likedItems, toggleLike } = useLikedItems();
+export function FurnitureCard({ product }: {product: Product}) {
+  // const { likedItems, toggleLike } = useLikedItems();
   const [imageError, setImageError] = useState(false);
 
-  const isLiked = likedItems.has(furniture.id.toString());
+  // const isLiked = likedItems.has(product.id.toString());
 
-  const handleLikeToggle = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    toggleLike(furniture.id.toString());
-  };
+  // const handleLikeToggle = (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   toggleLike(product.id.toString());
+  // };
 
   return (
-    <Link href={`/furniture/${furniture.id}`}>
+    <Link href={`/furniture/${product.id}`}>
       <div className="group flex flex-col gap-3 w-full bg-[#F4F5F7] relative max-w-sm mx-auto hover:shadow-lg transition-shadow duration-300 cursor-pointer">
         <div className="w-full max-w-sm min-h-[301px] relative overflow-hidden">
           {!imageError ? (
             <Image
-              src={furniture.image_url}
-              alt={furniture.name}
+              src={product.image_url}
+              alt={product.name}
               width={300}
               height={200}
               className="w-full max-h-[301px] object-cover"
@@ -39,32 +40,27 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
               <IoBagAddOutline size={80} className="text-gray-500" />
             </div>
           )}
-          {furniture.discount_percent && (
+          {/* {furniture.discount_percent && (
             <span className="absolute top-4 right-4 h-12 w-12 rounded-full bg-red-400 text-white flex items-center justify-center font-medium text-base z-10">
               -{furniture.discount_percent}%
             </span>
-          )}
-          {furniture.new && (
+          )} */}
+          {/* {furniture.new && (
             <span className="absolute top-4 left-4 h-12 w-12 rounded-full bg-[#2EC1AC] text-white flex items-center justify-center font-medium text-base z-10">
               New!
             </span>
-          )}
+          )} */}
 
           <div className="w-full px-4 py-3 border-t border-gray-200">
             <div className="flex items-center">
               <div className="flex items-center gap-3 *:hover:cursor-pointer">
                 <motion.button
                   whileTap={{ scale: 0.9 }}
-                  className={`p-2 rounded-full border transition-colors duration-200 ${
-                    isLiked
-                      ? "bg-red-50 border-red-200 text-red-500"
-                      : "bg-gray-50 border-gray-200 text-gray-600"
-                  }`}
-                  onClick={handleLikeToggle}
+                  className={`p-2 rounded-full border transition-colors duration-200`}
                 >
                   <Heart
                     size={18}
-                    className={`${isLiked ? "fill-red-500" : ""}`}
+                    className="fill-red-500"
                   />
                 </motion.button>
                 <motion.button
@@ -80,13 +76,13 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
           <div className="w-full px-4 py-6">
             <p className="flex flex-col">
               <span className="font-semibold lg:text-2xl text-lg text-[#3A3A3A]">
-                {furniture.name}
+                {product.name}
               </span>
               <span className="font-medium text-base text-[#898989]">
-                {furniture.description}
+                {product.short_description}
               </span>
             </p>
-            {furniture.discount_price ? (
+            {/* {furniture.discount_price ? (
               <p className="flex items-center justify-between">
                 <span className="font-semibold lg:text-xl text-base text-[#3A3A3A]">
                   ₦{furniture.discount_price.toLocaleString()}
@@ -100,7 +96,7 @@ export function FurnitureCard({ furniture }: { furniture: FurnitureProps }) {
               <p className="font-semibold lg:text-xl text-base text-[#3A3A3A]">
                 ₦{furniture.price.toLocaleString()}
               </p>
-            )}
+            )} */}
           </div>
         </div>
       </div>

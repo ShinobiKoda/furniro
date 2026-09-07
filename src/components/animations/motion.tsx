@@ -1,17 +1,19 @@
+import { Variants } from "framer-motion";
+
 export const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
+} as const satisfies Variants;
 
 export const fadeIn = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.8, ease: "easeOut" } },
-};
+} as const satisfies Variants;
 
 export const slideInFromRight = {
   hidden: { x: "100%" },
   visible: { x: "0%", transition: { duration: 0.4, ease: "easeInOut" } },
-};
+} as const satisfies Variants;
 
 export const staggerChildren = {
   hidden: { opacity: 0 },
@@ -21,12 +23,12 @@ export const staggerChildren = {
       staggerChildren: 0.2,
     },
   },
-};
+} as const satisfies Variants;
 
 export const fadeInDown = {
   hidden: { opacity: 0, y: -30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
+} as const satisfies Variants;
 
 export const zoomIn = {
   hidden: { scale: 0.8, opacity: 0 },
@@ -35,7 +37,7 @@ export const zoomIn = {
     opacity: 1,
     transition: { duration: 0.7, ease: "easeOut" },
   },
-};
+} as const satisfies Variants;
 
 export const zoomOut = {
   hidden: { scale: 1.2, opacity: 0 },
@@ -44,7 +46,7 @@ export const zoomOut = {
     opacity: 1,
     transition: { duration: 0.7, ease: "easeOut" },
   },
-};
+} as const satisfies Variants;
 
 export const rotateIn = {
   hidden: { rotate: -90, opacity: 0 },
@@ -53,12 +55,12 @@ export const rotateIn = {
     opacity: 1,
     transition: { duration: 0.8, ease: "easeOut" },
   },
-};
+} as const satisfies Variants;
 
 export const slideInFromLeft = {
   hidden: { x: "-100%" },
   visible: { x: "0%", transition: { duration: 0.8, ease: "easeInOut" } },
-};
+} as const satisfies Variants;
 
 export const bounce = {
   hidden: { y: 0 },
@@ -71,7 +73,7 @@ export const bounce = {
       repeatType: "loop",
     },
   },
-};
+} as const satisfies Variants;
 
 export const scaleOnHover = {
   hidden: { scale: 1 },
@@ -91,4 +93,4 @@ export const scaleOnHover = {
       damping: 25,
     },
   },
-};
+} as const satisfies Variants;

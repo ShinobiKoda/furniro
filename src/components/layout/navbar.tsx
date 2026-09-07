@@ -16,8 +16,8 @@ import {
 import { useLikedItems } from "@/context/LikedItemsContext";
 import { useCart } from "@/context/CartContext";
 import { CartModal } from "../CartModal";
-import { SearchModal } from "../SearchModal";
-import { WishlistModal } from "../WishlistModal";
+// import { SearchModal } from "../SearchModal";
+// import { WishlistModal } from "../WishlistModal";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",

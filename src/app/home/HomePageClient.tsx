@@ -1,19 +1,17 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { zoomIn, fadeInUp, staggerChildren } from "../animations/motion";
+import { zoomIn, fadeInUp, staggerChildren } from "../../components/animations/motion";
 import Image from "next/image";
-import { FetchFurnitures } from "@/api/FetchFurnitureDetails";
 import { useState, useEffect, useRef } from "react";
 import React from "react";
-import { FurnitureCard } from "../FurnitureCard";
-import { FurnitureProps } from "@/types/type";
-import { SkeletonLoader } from "../animations/SkeletonLoader";
+import { FurnitureCard } from "../../components/FurnitureCard";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import Link from "next/link";
+import { Category } from "@/services/categories";
+import { Product } from "@/services/products";
 
-const categories = ["Dining", "Living", "Bedroom"];
 
 const slideInVariants = {
   hidden: { opacity: 0, x: -100 },
@@ -23,7 +21,7 @@ const slideInVariants = {
     transition: {
       delay: index * 0.3,
       duration: 0.8,
-      ease: "easeInOut",
+      ease: "easeInOut" as const,
     },
   }),
 };
@@ -62,49 +60,34 @@ const Section = React.forwardRef<
 
 Section.displayName = "Section";
 
-export function HomePage() {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [furnitureDetails, setFurnitureDetails] = useState<
-    FurnitureProps[] | null
-  >(null);
+interface HomePageProps {
+  categories: Category[];
+  products: Product[];
+}
+
+const setUpImages = [
+  "/images/furniro_furniture-setup-1.webp",
+  "/images/furniro_furniture-setup-2.webp",
+  "/images/furniro_furniture-setup-3.webp",
+  "/images/furniro_furniture-setup-4.webp",
+  "/images/furniro_furniture-setup-5.webp",
+  "/images/furniro_furniture-setup-6.webp",
+  "/images/furniro_furniture-setup-7.webp",
+];
+
+const images = [
+  "/images/furniro_room-inspirations-1.webp",
+  "/images/furniro_room-inspiration-2.webp",
+];
+
+export function HomePage({ categories, products }: HomePageProps) {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [showAllProducts, setShowAllProducts] = useState<boolean>(false);
   const productsRef = useRef<HTMLDivElement>(null);
 
-  const images = [
-    "/images/furniro_room-inspirations-1.webp",
-    "/images/furniro_room-inspiration-2.webp",
-  ];
-
-  const setUpImages = [
-    "/images/furniro_furniture-setup-1.webp",
-    "/images/furniro_furniture-setup-2.webp",
-    "/images/furniro_furniture-setup-3.webp",
-    "/images/furniro_furniture-setup-4.webp",
-    "/images/furniro_furniture-setup-5.webp",
-    "/images/furniro_furniture-setup-6.webp",
-    "/images/furniro_furniture-setup-7.webp",
-  ];
-
   const slideInterval = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    const getFurnitureDetails = async () => {
-      const { data, error } = await FetchFurnitures();
 
-      if (error) {
-        console.log(error);
-      }
-
-      if (data) {
-        console.log(data);
-        setFurnitureDetails(data);
-        setLoading(false);
-      }
-    };
-
-    getFurnitureDetails();
-  }, []);
 
   useEffect(() => {
     const startSliding = () => {
@@ -225,7 +208,7 @@ export function HomePage() {
                 >
                   <div className="relative group overflow-hidden rounded-lg cursor-pointer">
                     <Image
-                      src={`/images/furniro_${category.toLowerCase()}-illustration.webp`}
+                      src={`/images/furniro_${category.name.toLowerCase()}-illustration.webp`}
                       alt={`${category} category image`}
                       width={500}
                       height={500}
@@ -234,7 +217,7 @@ export function HomePage() {
                     <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="absolute inset-0 flex items-center justify-center p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
                       <p className="text-center font-semibold lg:text-2xl text-lg text-white">
-                        {category}
+                        {category.name}
                       </p>
                     </div>
                   </div>
@@ -248,25 +231,18 @@ export function HomePage() {
       <Section ref={productsRef}>
         <div className="flex items-center justify-center flex-col gap-8 mb-[69px]">
           <h2 className="font-bold lg;text-[40px] text-2xl">Our Products</h2>
-          {loading && (
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 w-full px-4 items-center justify-center max-w-[1440px] mx-auto gap-8 min-h-[50vh]">
-              {Array.from({ length: 8 }).map((_, index) => (
-                <SkeletonLoader key={index} />
-              ))}
-            </div>
-          )}
-          {furnitureDetails && (
+          {products && (
             <motion.div
               initial="hidden"
               animate="visible"
               variants={staggerChildren}
               className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:grid-cols-4 w-full px-4 lg:px-12 items-center justify-center max-w-[1440px] mx-auto"
             >
-              {furnitureDetails
+              {products
                 .slice(0, showAllProducts ? 16 : 8)
-                .map((furniture) => (
-                  <motion.div key={furniture.id} variants={fadeInUp}>
-                    <FurnitureCard furniture={furniture} />
+                .map((product) => (
+                  <motion.div key={product.id} variants={fadeInUp}>
+                    <FurnitureCard product={product} />
                   </motion.div>
                 ))}
             </motion.div>
@@ -335,9 +311,8 @@ export function HomePage() {
                   key={index}
                   onClick={() => setCurrentIndex(index)}
                   whileHover={{ scale: 1.2 }}
-                  className={`w-3 h-3 rounded-full cursor-pointer ${
-                    index === currentIndex ? "bg-[#B88E2F]" : "bg-gray-300"
-                  }`}
+                  className={`w-3 h-3 rounded-full cursor-pointer ${index === currentIndex ? "bg-[#B88E2F]" : "bg-gray-300"
+                    }`}
                 ></motion.div>
               ))}
             </div>

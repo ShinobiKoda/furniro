@@ -1,5 +1,13 @@
-import { HomePage } from "@/components/home/homepage";
 
-export default function Home() {
-  return <HomePage />;
+import { fetchProducts } from '@/services/products';
+import { fetchCategories } from '@/services/categories';
+import { HomePage } from './HomePageClient';
+
+
+export default async function Products() {
+
+  const products = await fetchProducts();
+  const categories = await fetchCategories();
+
+  return <HomePage products={products} categories={categories}/>
 }
