@@ -1,15 +1,15 @@
-// next.config.js
+// next.config.ts
+import type { NextConfig } from "next";
 
-const { hostname } = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || "");
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const hostname = supabaseUrl ? new URL(supabaseUrl).hostname : undefined;
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: hostname,
-        pathname: "/**",
-      },
+      ...(hostname
+        ? [{ protocol: "https" as const, hostname, pathname: "/**" }]
+        : []),
       {
         protocol: "https",
         hostname: "images.unsplash.com",
@@ -19,9 +19,9 @@ const nextConfig = {
         protocol: "https",
         hostname: "cdn.pixabay.com",
         pathname: "/**",
-      }
+      },
     ],
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
