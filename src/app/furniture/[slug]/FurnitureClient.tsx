@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FurnitureProps } from "@/types/type";
-import { FetchFurnitures } from "@/api/FetchFurnitureDetails";
-import { FetchFurnitureById } from "@/api/FetchFurnitureById";
 import { useCart } from "@/context/CartContext";
 import { useLikedItems } from "@/context/LikedItemsContext";
 import { Heart, Star, Plus, Minus, ArrowLeft, Share2 } from "lucide-react";
@@ -14,140 +12,78 @@ import { Footer } from "@/components/Footer";
 import { NavDisplay } from "@/components/NavDisplay";
 import { FurnitureCard } from "@/components/FurnitureCard";
 import { fadeInUp, staggerChildren } from "@/components/animations/motion";
+import { Product } from "@/services/products";
 
 interface FurnitureDetailsProps {
-  furnitureId: string;
+  productSlug: string;
+  product: Product;
 }
 
-export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
+export default function FurnitureClient({ productSlug, product }: FurnitureDetailsProps) {
   const router = useRouter();
-  const [furniture, setFurniture] = useState<FurnitureProps | null>(null);
   const [relatedFurniture, setRelatedFurniture] = useState<FurnitureProps[]>(
     []
   );
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [loadingRelated, setLoadingRelated] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
   const [activeTab, setActiveTab] = useState<string>("description");
   const [imageError, setImageError] = useState(false);
 
-  const { addToCart, removeFromCart, cartItems } = useCart();
-  const { likedItems, toggleLike } = useLikedItems();
+  // const { addToCart, removeFromCart, cartItems } = useCart();
+  // const { likedItems, toggleLike } = useLikedItems();
 
-  useEffect(() => {
-    const getFurnitureDetails = async () => {
-      setLoading(true);
-      const { data, error } = await FetchFurnitureById(furnitureId);
+  //  const fetchRelatedFurniture = async (tag: string, currentId: number) => {
+  //   setLoadingRelated(true);
+  //   try {
+  //     const { data, error } = await FetchFurnitures();
+  //     if (error) {
+  //       console.error("Error fetching related furniture:", error);
+  //     } else if (data) {
+  //       const related = data
+  //         .filter(
+  //           (item) =>
+  //             item.tag.toLowerCase() === tag.toLowerCase() &&
+  //             item.id !== currentId
+  //         )
+  //         .slice(0, 4);
+  //       setRelatedFurniture(related);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  //   setLoadingRelated(false);
+  // };
 
-      if (error) {
-        setError(error);
-      } else if (data) {
-        setFurniture(data);
-        fetchRelatedFurniture(data.tag, data.id);
-      }
-      setLoading(false);
-    };
+  // const isLiked = furniture ? likedItems.has(furniture.id.toString()) : false;
+  // const isInCart = furniture
+  //   ? cartItems.some((item) => item.furniture.id === furniture.id)
+  //   : false;
 
-    getFurnitureDetails();
-  }, [furnitureId]);
+  // const handleLikeToggle = () => {
+  //   if (furniture) {
+  //     toggleLike(furniture.id.toString());
+  //   }
+  // };
 
-  const fetchRelatedFurniture = async (tag: string, currentId: number) => {
-    setLoadingRelated(true);
-    try {
-      const { data, error } = await FetchFurnitures();
-      if (error) {
-        console.error("Error fetching related furniture:", error);
-      } else if (data) {
-        const related = data
-          .filter(
-            (item) =>
-              item.tag.toLowerCase() === tag.toLowerCase() &&
-              item.id !== currentId
-          )
-          .slice(0, 4);
-        setRelatedFurniture(related);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-    setLoadingRelated(false);
-  };
-
-  const isLiked = furniture ? likedItems.has(furniture.id.toString()) : false;
-  const isInCart = furniture
-    ? cartItems.some((item) => item.furniture.id === furniture.id)
-    : false;
-
-  const handleLikeToggle = () => {
-    if (furniture) {
-      toggleLike(furniture.id.toString());
-    }
-  };
-
-  const handleAddToCart = () => {
-    if (furniture) {
-      if (isInCart) {
-        removeFromCart(furniture.id);
-      } else {
-        for (let i = 0; i < quantity; i++) {
-          addToCart(furniture);
-        }
-      }
-    }
-  };
+  // const handleAddToCart = () => {
+  //   if (furniture) {
+  //     if (isInCart) {
+  //       removeFromCart(furniture.id);
+  //     } else {
+  //       for (let i = 0; i < quantity; i++) {
+  //         addToCart(furniture);
+  //       }
+  //     }
+  //   }
+  // };
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
   const decreaseQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
 
-  if (loading) {
-    return (
-      <div className="min-h-screen">
-        <div className="bg-[#F9F1E7] py-6">
-          <div className="mx-auto w-full max-w-[1440px] px-4 lg:px-12">
-            <div className="h-4 bg-gray-300 rounded w-48 animate-pulse"></div>
-          </div>
-        </div>
 
-        <div className="max-w-[1440px] mx-auto px-4 lg:px-12 py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            <div className="bg-gray-300 rounded-lg h-[500px] animate-pulse"></div>
-
-            <div className="space-y-6">
-              <div className="h-10 bg-gray-300 rounded w-3/4 animate-pulse"></div>
-
-              <div className="space-y-2">
-                <div className="h-4 bg-gray-300 rounded w-full animate-pulse"></div>
-                <div className="h-4 bg-gray-300 rounded w-2/3 animate-pulse"></div>
-              </div>
-
-              <div className="h-8 bg-gray-300 rounded w-32 animate-pulse"></div>
-
-              <div className="space-y-4">
-                <div className="h-10 bg-gray-300 rounded w-32 animate-pulse"></div>
-                <div className="h-12 bg-gray-300 rounded w-full animate-pulse"></div>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-200 pt-12 space-y-6">
-            <div className="flex gap-8">
-              <div className="h-6 bg-gray-300 rounded w-24 animate-pulse"></div>
-              <div className="h-6 bg-gray-300 rounded w-24 animate-pulse"></div>
-              <div className="h-6 bg-gray-300 rounded w-24 animate-pulse"></div>
-            </div>
-            <div className="space-y-3">
-              <div className="h-6 bg-gray-300 rounded w-48 animate-pulse"></div>
-              <div className="h-4 bg-gray-300 rounded w-full animate-pulse"></div>
-              <div className="h-4 bg-gray-300 rounded w-3/4 animate-pulse"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error || !furniture) {
+  if (error || !product) {
     return (
       <div className="min-h-screen pt-24 flex items-center justify-center">
         <div className="text-center">
@@ -168,7 +104,7 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
     );
   }
 
-  const pathSegments = ["Shop", furniture.name];
+  const pathSegments = ["Shop", product.name];
 
   return (
     <div className="min-h-screen">
@@ -189,8 +125,8 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
             <div className="relative bg-[#F9F1E7] rounded-lg overflow-hidden">
               {!imageError ? (
                 <Image
-                  src={furniture.image_url}
-                  alt={furniture.name}
+                  src={product.image_url}
+                  alt={product.name}
                   width={600}
                   height={600}
                   className="w-full h-[500px] object-cover"
@@ -207,7 +143,7 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
                 </div>
               )}
 
-              {furniture.discount_percent && (
+              {/* {furniture.discount_percent && (
                 <span className="absolute top-4 right-4 h-12 w-12 rounded-full bg-red-400 text-white flex items-center justify-center font-medium text-sm">
                   -{furniture.discount_percent}%
                 </span>
@@ -216,20 +152,20 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
                 <span className="absolute top-4 left-4 h-12 w-12 rounded-full bg-[#2EC1AC] text-white flex items-center justify-center font-medium text-sm">
                   New!
                 </span>
-              )}
+              )} */}
             </div>
           </motion.div>
 
           <motion.div variants={fadeInUp} className="space-y-6">
             <div>
               <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
-                {furniture.name}
+                {product.name}
               </h1>
               <p className="text-lg text-gray-600 mb-4">
-                {furniture.description}
+                {product.short_description}
               </p>
 
-              <div className="flex items-center gap-4 mb-6">
+              {/* <div className="flex items-center gap-4 mb-6">
                 {furniture.discount_price ? (
                   <>
                     <span className="text-3xl font-bold text-[#B88E2F]">
@@ -244,9 +180,9 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
                     ₦{furniture.price.toLocaleString()}
                   </span>
                 )}
-              </div>
+              </div> */}
 
-              {furniture.furniture_details?.review !== undefined && (
+              {/* {furniture.furniture_details?.review !== undefined && (
                 <div className="flex items-center gap-2 mb-6">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => {
@@ -286,13 +222,13 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
                     ({furniture.furniture_details.review}/5)
                   </span>
                 </div>
-              )}
+              )} */}
 
-              {furniture.furniture_details?.short_description && (
+              {/* {furniture.furniture_details?.short_description && (
                 <p className="text-gray-700 mb-6">
                   {furniture.furniture_details.short_description}
                 </p>
-              )}
+              )} */}
             </div>
 
             <div className="space-y-6">
@@ -317,7 +253,7 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              {/* <div className="flex flex-col sm:flex-row gap-4">
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={handleAddToCart}
@@ -355,15 +291,15 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
 
                  
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <div className="border-t border-gray-200 pt-6 space-y-3 text-sm">
-              {furniture.furniture_details?.sku && (
+              {product.sku && (
                 <div className="flex">
                   <span className="font-medium text-gray-700 w-24">SKU:</span>
                   <span className="text-gray-600">
-                    {furniture.furniture_details.sku}
+                    {product.sku}
                   </span>
                 </div>
               )}
@@ -372,10 +308,10 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
                   Category:
                 </span>
                 <span className="text-gray-600 capitalize">
-                  {furniture.tag}
+                  {product.category_id}
                 </span>
               </div>
-              {furniture.furniture_details?.origin_of_manufacture && (
+              {/* {furniture.furniture_details?.origin_of_manufacture && (
                 <div className="flex">
                   <span className="font-medium text-gray-700 w-24">
                     Origin:
@@ -384,12 +320,12 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
                     {furniture.furniture_details.origin_of_manufacture}
                   </span>
                 </div>
-              )}
+              )} */}
             </div>
           </motion.div>
         </div>
 
-        {furniture.furniture_details && (
+        {/* {furniture.furniture_details && (
           <motion.div
             variants={fadeInUp}
             className="border-t border-gray-200 pt-12"
@@ -622,9 +558,9 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
               )}
             </div>
           </motion.div>
-        )}
+        )} */}
 
-        {relatedFurniture.length > 0 && (
+        {/* {relatedFurniture.length > 0 && (
           <motion.div
             variants={fadeInUp}
             className="mt-16 pt-12 border-t border-gray-200"
@@ -662,7 +598,7 @@ export function FurnitureDetails({ furnitureId }: FurnitureDetailsProps) {
               </motion.div>
             )}
           </motion.div>
-        )}
+        )} */}
 
         <motion.div
           variants={fadeInUp}

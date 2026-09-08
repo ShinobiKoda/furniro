@@ -23,7 +23,7 @@ export function FurnitureCard({ product }: {product: Product}) {
   // };
 
   return (
-    <Link href={`/furniture/${product.id}`}>
+    <Link href={`/furniture/${product.slug}`}>
       <div className="group flex flex-col gap-3 w-full bg-[#F4F5F7] relative max-w-sm mx-auto hover:shadow-lg transition-shadow duration-300 cursor-pointer">
         <div className="w-full max-w-sm min-h-[301px] relative overflow-hidden">
           {!imageError ? (
@@ -34,6 +34,7 @@ export function FurnitureCard({ product }: {product: Product}) {
               height={200}
               className="w-full max-h-[301px] object-cover"
               onError={() => setImageError(true)}
+              unoptimized
             />
           ) : (
             <div className="w-full min-h-[301px] bg-gray-300 flex items-center justify-center">
