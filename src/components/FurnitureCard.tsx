@@ -28,7 +28,7 @@ export function FurnitureCard({ product }: {product: Product}) {
         <div className="w-full max-w-sm min-h-[301px] relative overflow-hidden">
           {!imageError ? (
             <Image
-              src={product.image_url}
+              src={product?.image_url ?? "/images/furniro_hero-bg.webp"}
               alt={product.name}
               width={300}
               height={200}

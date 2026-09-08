@@ -125,7 +125,7 @@ export default function FurnitureClient({ productSlug, product }: FurnitureDetai
             <div className="relative bg-[#F9F1E7] rounded-lg overflow-hidden">
               {!imageError ? (
                 <Image
-                  src={product.image_url}
+                  src={product?.image_url ?? "/images/furniro_hero-bg.webp"}
                   alt={product.name}
                   width={600}
                   height={600}

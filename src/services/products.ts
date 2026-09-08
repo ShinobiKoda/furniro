@@ -8,7 +8,14 @@ export interface Product{
     stock: number;
     is_active: boolean;
     short_description: string;
-    image_url: string;
+    image_url: string | null;
+    compare_at_price?: number;
+    description?: string;
+    is_featured: boolean;
+    material?: string;
+    dimensions?: string;
+
+
 }
 
 export async function fetchProducts(): Promise<Product[]>{
