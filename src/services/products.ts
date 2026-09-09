@@ -1,9 +1,11 @@
 import { PaginatedResponse } from "@/types/type";
 import { ENV } from "@/lib/config";
+import { Category } from "./categories";
 
 export interface Product{
     id: number;
     category_id: number;
+    category: Category | null;
     name: string;
     slug: string;
     sku: string;

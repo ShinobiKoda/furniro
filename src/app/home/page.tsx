@@ -6,8 +6,12 @@ import { HomePage } from './HomePageClient';
 
 export default async function Products() {
 
-  const products = await fetchProducts();
-  const categories = await fetchCategories();
 
-  return <HomePage products={products.data} categories={categories}/>
+  const [products, categories] = await Promise.all([
+    fetchProducts(),
+    fetchCategories()
+  ]
+  )
+
+  return <HomePage products={products.data} categories={categories} />
 }

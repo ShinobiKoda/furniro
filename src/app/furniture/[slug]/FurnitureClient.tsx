@@ -13,13 +13,13 @@ import { NavDisplay } from "@/components/NavDisplay";
 import { FurnitureCard } from "@/components/FurnitureCard";
 import { fadeInUp, staggerChildren } from "@/components/animations/motion";
 import { Product } from "@/services/products";
+import { Category } from "@/services/categories";
 
 interface FurnitureDetailsProps {
-  productSlug: string;
   product: Product;
 }
 
-export default function FurnitureClient({ productSlug, product }: FurnitureDetailsProps) {
+export default function FurnitureClient({ product }: FurnitureDetailsProps) {
   const router = useRouter();
   const [relatedFurniture, setRelatedFurniture] = useState<FurnitureProps[]>(
     []
@@ -147,12 +147,12 @@ export default function FurnitureClient({ productSlug, product }: FurnitureDetai
                 <span className="absolute top-4 right-4 h-12 w-12 rounded-full bg-red-400 text-white flex items-center justify-center font-medium text-sm">
                   -{furniture.discount_percent}%
                 </span>
-              )}
-              {furniture.new && (
-                <span className="absolute top-4 left-4 h-12 w-12 rounded-full bg-[#2EC1AC] text-white flex items-center justify-center font-medium text-sm">
-                  New!
-                </span>
               )} */}
+              {product.is_featured && (
+                <span className="absolute top-4 left-4 h-12 w-12 rounded-full bg-[#2EC1AC] text-white flex items-center justify-center font-medium text-sm">
+                  Featured!
+                </span>
+              )}
             </div>
           </motion.div>
 
@@ -162,7 +162,7 @@ export default function FurnitureClient({ productSlug, product }: FurnitureDetai
                 {product.name}
               </h1>
               <p className="text-lg text-gray-600 mb-4">
-                {product.short_description}
+                {product.description}
               </p>
 
               {/* <div className="flex items-center gap-4 mb-6">
@@ -224,11 +224,11 @@ export default function FurnitureClient({ productSlug, product }: FurnitureDetai
                 </div>
               )} */}
 
-              {/* {furniture.furniture_details?.short_description && (
+              {product.short_description && (
                 <p className="text-gray-700 mb-6">
-                  {furniture.furniture_details.short_description}
+                  {product.short_description}
                 </p>
-              )} */}
+              )}
             </div>
 
             <div className="space-y-6">
@@ -308,7 +308,7 @@ export default function FurnitureClient({ productSlug, product }: FurnitureDetai
                   Category:
                 </span>
                 <span className="text-gray-600 capitalize">
-                  {product.category_id}
+                  {product?.category?.name}
                 </span>
               </div>
               {/* {furniture.furniture_details?.origin_of_manufacture && (

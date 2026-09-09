@@ -208,7 +208,7 @@ export function HomePage({ categories, products }: HomePageProps) {
                 >
                   <div className="relative group overflow-hidden rounded-lg cursor-pointer">
                     <Image
-                      src={`/images/furniro_${category.name.toLowerCase()}-illustration.webp`}
+                      src={`${category.image_url}`}
                       alt={`${category} category image`}
                       width={500}
                       height={500}

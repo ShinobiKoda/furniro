@@ -2,6 +2,7 @@
 
 import { fetchProductBySlug } from "@/services/products";
 import FurnitureClient from "./FurnitureClient";
+import { fetchCategoryById } from "@/services/categories";
 
 interface FurniturePageProps {
   params: Promise<{
@@ -21,5 +22,5 @@ export default async function FurniturePage({ params }: FurniturePageProps) {
 
 
 
-  return <FurnitureClient product={product} productSlug={slug}/>;
+  return <FurnitureClient product={product} />;
 }
