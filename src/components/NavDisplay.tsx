@@ -23,6 +23,8 @@ export function NavDisplay({ pathSegments }: NavDisplayProps) {
         return "/cart";
       case "checkout":
         return "/checkout";
+      case "login":
+        return "/login";
       default:
         return null; 
     }

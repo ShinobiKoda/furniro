@@ -235,6 +235,17 @@ export function Navbar() {
                     <span className="w-2 h-2 bg-[#B88E2F] rounded-full ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   </Link>
                 </motion.li>
+                <motion.li variants={fadeInUp}>
+                  <Link
+                    href="/login"
+                    onClick={closeSidebar}
+                    className="flex items-center p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
+                  >
+                    <User className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                    <span>Login</span>
+                    <span className="w-2 h-2 bg-[#B88E2F] rounded-full ml-auto opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                  </Link>
+                </motion.li>
               </motion.ul>
             </motion.div>
 
@@ -375,6 +386,13 @@ export function Navbar() {
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
             <Link href="/contact">Contact</Link>
+          </motion.li>
+          <motion.li
+            variants={fadeInUp}
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
+            <Link href="/login">Login</Link>
           </motion.li>
         </motion.ul>
 
