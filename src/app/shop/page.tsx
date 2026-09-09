@@ -1,11 +1,12 @@
-"use client";
 
 import { ShopHomepage } from "@/components/shop/ShopHomepage";
-import { usePathname } from "next/navigation";
+import { fetchProducts } from "@/services/products";
 
-export default function Shop() {
-  const pathname = usePathname();
-  const pathSegments = pathname.split("/").filter(Boolean);
+export default async function Shop() {
 
-  return <ShopHomepage pathSegments={pathSegments} />;
+  const products = await fetchProducts();
+
+  console.log(products);
+
+  return <ShopHomepage products={products.data}/>;
 }

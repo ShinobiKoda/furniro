@@ -11,7 +11,7 @@ export interface FurnitureProps {
   furniture_details: FurnitureDetails | null;
 }
 
-export interface FurnitureDetails{
+export interface FurnitureDetails {
   short_description: string
   full_description: string
   sales_package: string;
@@ -60,4 +60,27 @@ export interface FetchCountriesResponse {
   success: boolean;
   data?: Country[];
   error?: string;
+}
+
+
+export interface PaginationLink {
+  url: string | null;
+  label: string;
+  active: boolean;
+}
+
+export interface PaginatedResponse<T> {
+  current_page: number;
+  data: T[]; // The magic happens here!
+  first_page_url: string;
+  from: number | null;
+  last_page: number; // You missed this one!
+  last_page_url: string;
+  links: PaginationLink[];
+  next_page_url: string | null;
+  path: string;
+  per_page: number;
+  prev_page_url: string | null; // You missed this one too!
+  to: number | null;
+  total: number;
 }

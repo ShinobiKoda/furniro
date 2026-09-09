@@ -6,129 +6,137 @@ import { zoomIn, fadeInUp, staggerChildren } from "../animations/motion";
 import { BsSliders, BsGridFill, BsViewList } from "react-icons/bs";
 import { Services } from "../Services";
 import { useState, useEffect, useRef } from "react";
-import { FetchFurnitures } from "@/api/FetchFurnitureDetails";
 import { FurnitureCard } from "../FurnitureCard";
 import { FurnitureProps } from "@/types/type";
 import { SkeletonLoader } from "../animations/SkeletonLoader";
 import { Footer } from "../Footer";
 import Image from "next/image";
+import { Product } from "@/services/products";
+import { usePathname } from "next/navigation";
+
 
 interface ShopHomepageProps {
-  pathSegments: string[];
+  products: Product[];
+
 }
 
-export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [furnitureDetails, setFurnitureDetails] = useState<
-    FurnitureProps[] | null
-  >(null);
-  const [sortedFurnitureDetails, setSortedFurnitureDetails] = useState<
-    FurnitureProps[] | null
-  >(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [sortBy, setSortBy] = useState<string>("default");
-  const itemsPerPage = 16;
-  const productsRef = useRef<HTMLDivElement>(null);
+export function ShopHomepage({ products }: ShopHomepageProps) {
+  const pathname = usePathname();
 
-  useEffect(() => {
-    const getFurnitureDetails = async () => {
-      const { data, error } = await FetchFurnitures();
 
-      if (error) {
-        console.log(error);
-      }
+    const pathSegments = pathname.split("/").filter(Boolean);
+  
+  // const [loading, setLoading] = useState<boolean>(true);
+  // const [furnitureDetails, setFurnitureDetails] = useState<
+  //   FurnitureProps[] | null
+  // >(null);
+  // const [sortedFurnitureDetails, setSortedFurnitureDetails] = useState<
+  //   FurnitureProps[] | null
+  // >(null);
+  // const [currentPage, setCurrentPage] = useState<number>(1);
+  // const [sortBy, setSortBy] = useState<string>("default");
+  // const itemsPerPage = 16;
+  // const productsRef = useRef<HTMLDivElement>(null);
 
-      if (data) {
-        console.log(data);
-        setFurnitureDetails(data);
-        setSortedFurnitureDetails(data);
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const getFurnitureDetails = async () => {
+  //     const { data, error } = await FetchFurnitures();
 
-    getFurnitureDetails();
-  }, []);
+  //     if (error) {
+  //       console.log(error);
+  //     }
 
-  const sortFurniture = (
-    data: FurnitureProps[],
-    sortType: string
-  ): FurnitureProps[] => {
-    const sortedData = [...data];
+  //     if (data) {
+  //       console.log(data);
+  //       setFurnitureDetails(data);
+  //       setSortedFurnitureDetails(data);
+  //       setLoading(false);
+  //     }
+  //   };
 
-    switch (sortType) {
-      case "alphabetical":
-        return sortedData.sort((a, b) => a.name.localeCompare(b.name));
-      case "price-low":
-        return sortedData.sort((a, b) => a.price - b.price);
-      case "price-high":
-        return sortedData.sort((a, b) => b.price - a.price);
-      case "tag-chair":
-        return sortedData.filter((item) => item.tag.toLowerCase() === "chair");
-      case "tag-sofa":
-        return sortedData.filter((item) => item.tag.toLowerCase() === "sofa");
-      case "tag-decor":
-        return sortedData.filter((item) => item.tag.toLowerCase() === "decor");
-      case "tag-kitchen":
-        return sortedData.filter(
-          (item) => item.tag.toLowerCase() === "kitchen"
-        );
-      case "tag-bed":
-        return sortedData.filter((item) => item.tag.toLowerCase() === "bed");
-      case "tag-dresser":
-        return sortedData.filter(
-          (item) => item.tag.toLowerCase() === "dresser"
-        );
-      case "tag-stand":
-        return sortedData.filter((item) => item.tag.toLowerCase() === "stand");
-      case "tag-shelf":
-        return sortedData.filter((item) => item.tag.toLowerCase() === "shelf");
-      case "tag-tv":
-        return sortedData.filter((item) => item.tag.toLowerCase() === "tv");
-      case "tag-table":
-        return sortedData.filter((item) => item.tag.toLowerCase() === "table");
-      case "tag-shoe":
-        return sortedData.filter((item) => item.tag.toLowerCase() === "shoe");
-      default:
-        return sortedData;
-    }
-  };
+  //   getFurnitureDetails();
+  // }, []);
 
-  const handleSortChange = (sortType: string) => {
-    setSortBy(sortType);
-    setCurrentPage(1); 
+  // const sortFurniture = (
+  //   data: FurnitureProps[],
+  //   sortType: string
+  // ): FurnitureProps[] => {
+  //   const sortedData = [...data];
 
-    if (furnitureDetails) {
-      const sorted = sortFurniture(furnitureDetails, sortType);
-      setSortedFurnitureDetails(sorted);
-    }
-  };
+  //   switch (sortType) {
+  //     case "alphabetical":
+  //       return sortedData.sort((a, b) => a.name.localeCompare(b.name));
+  //     case "price-low":
+  //       return sortedData.sort((a, b) => a.price - b.price);
+  //     case "price-high":
+  //       return sortedData.sort((a, b) => b.price - a.price);
+  //     case "tag-chair":
+  //       return sortedData.filter((item) => item.tag.toLowerCase() === "chair");
+  //     case "tag-sofa":
+  //       return sortedData.filter((item) => item.tag.toLowerCase() === "sofa");
+  //     case "tag-decor":
+  //       return sortedData.filter((item) => item.tag.toLowerCase() === "decor");
+  //     case "tag-kitchen":
+  //       return sortedData.filter(
+  //         (item) => item.tag.toLowerCase() === "kitchen"
+  //       );
+  //     case "tag-bed":
+  //       return sortedData.filter((item) => item.tag.toLowerCase() === "bed");
+  //     case "tag-dresser":
+  //       return sortedData.filter(
+  //         (item) => item.tag.toLowerCase() === "dresser"
+  //       );
+  //     case "tag-stand":
+  //       return sortedData.filter((item) => item.tag.toLowerCase() === "stand");
+  //     case "tag-shelf":
+  //       return sortedData.filter((item) => item.tag.toLowerCase() === "shelf");
+  //     case "tag-tv":
+  //       return sortedData.filter((item) => item.tag.toLowerCase() === "tv");
+  //     case "tag-table":
+  //       return sortedData.filter((item) => item.tag.toLowerCase() === "table");
+  //     case "tag-shoe":
+  //       return sortedData.filter((item) => item.tag.toLowerCase() === "shoe");
+  //     default:
+  //       return sortedData;
+  //   }
+  // };
 
-  useEffect(() => {
-    if (furnitureDetails) {
-      const sorted = sortFurniture(furnitureDetails, sortBy);
-      setSortedFurnitureDetails(sorted);
-    }
-  }, [furnitureDetails, sortBy]);
+  // const handleSortChange = (sortType: string) => {
+  //   setSortBy(sortType);
+  //   setCurrentPage(1); 
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+  //   if (furnitureDetails) {
+  //     const sorted = sortFurniture(furnitureDetails, sortType);
+  //     setSortedFurnitureDetails(sorted);
+  //   }
+  // };
 
-    if (productsRef.current) {
-      const yOffset = -200;
-      const y =
-        productsRef.current.getBoundingClientRect().top +
-        window.pageYOffset +
-        yOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
-  };
+  // useEffect(() => {
+  //   if (furnitureDetails) {
+  //     const sorted = sortFurniture(furnitureDetails, sortBy);
+  //     setSortedFurnitureDetails(sorted);
+  //   }
+  // }, [furnitureDetails, sortBy]);
 
-  const paginatedFurnitureDetails = sortedFurnitureDetails
-    ? sortedFurnitureDetails.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-      )
-    : [];
+  // const handlePageChange = (page: number) => {
+  //   setCurrentPage(page);
+
+  //   if (productsRef.current) {
+  //     const yOffset = -200;
+  //     const y =
+  //       productsRef.current.getBoundingClientRect().top +
+  //       window.pageYOffset +
+  //       yOffset;
+  //     window.scrollTo({ top: y, behavior: "smooth" });
+  //   }
+  // };
+
+  // const paginatedFurnitureDetails = sortedFurnitureDetails
+  //   ? sortedFurnitureDetails.slice(
+  //       (currentPage - 1) * itemsPerPage,
+  //       currentPage * itemsPerPage
+  //     )
+  //   : [];
 
   return (
     <div className="w-full">
@@ -176,7 +184,7 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
               />
               <div className="w-px h-8 bg-[#9F9F9F]"></div>
             </div>
-            <p className="hidden lg:block font-regular text-base">
+            {/* <p className="hidden lg:block font-regular text-base">
               Showing <span>{(currentPage - 1) * itemsPerPage + 1}</span>-
               <span>
                 {Math.min(
@@ -185,10 +193,10 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
                 )}
               </span>{" "}
               of <span>{sortedFurnitureDetails?.length || 0}</span> results
-            </p>
+            </p> */}
           </div>
           <div className="flex items-center gap-4">
-            <div className="font-normal lg:text-xl text-lg flex items-center gap-4">
+            {/* <div className="font-normal lg:text-xl text-lg flex items-center gap-4">
               <p className="text-black hidden lg:block">Sort by</p>
               <div className="relative">
                 <select
@@ -232,43 +240,43 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
                   </svg>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
 
-      <div ref={productsRef} className="mt-[46px] w-full mb-[85px]">
+      <div  className="mt-[46px] w-full mb-[85px]">
         <div className="flex items-center justify-center flex-col gap-8 mb-[40px]">
-          {loading && (
+          {/* {loading && (
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 w-full px-4 items-center justify-center max-w-[1440px] mx-auto gap-8 min-h-[50vh]">
               {Array.from({ length: 8 }).map((_, index) => (
                 <SkeletonLoader key={index} />
               ))}
             </div>
-          )}
-          {sortedFurnitureDetails && sortedFurnitureDetails.length > 0 && (
+          )} */}
+          {products && products.length > 0 && (
             <motion.div
               initial="hidden"
               animate="visible"
               variants={staggerChildren}
               className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:grid-cols-4 w-full px-4 lg:px-12 items-center justify-center max-w-[1440px] mx-auto"
             >
-              {paginatedFurnitureDetails.map((furniture) => (
-                <motion.div key={furniture.id} variants={fadeInUp}>
-                  <FurnitureCard furniture={furniture} />
+              {products.map((product) => (
+                <motion.div key={product.id} variants={fadeInUp}>
+                  <FurnitureCard product={product} />
                 </motion.div>
               ))}
             </motion.div>
           )}
-          {sortedFurnitureDetails && sortedFurnitureDetails.length === 0 && (
+          {/* {sortedFurnitureDetails && sortedFurnitureDetails.length === 0 && (
             <div className="flex items-center justify-center h-[300px]">
               <p className="text-xl text-[#9F9F9F] font-medium">
                 No products found for this category
               </p>
             </div>
-          )}
+          )} */}
         </div>
-        <div className="flex items-center justify-center gap-4 flex-wrap">
+        {/* <div className="flex items-center justify-center gap-4 flex-wrap">
           {sortedFurnitureDetails &&
             sortedFurnitureDetails.length > itemsPerPage && (
               <>
@@ -315,7 +323,7 @@ export function ShopHomepage({ pathSegments }: ShopHomepageProps) {
                 </button>
               </>
             )}
-        </div>
+        </div> */}
       </div>
 
       <Services />
