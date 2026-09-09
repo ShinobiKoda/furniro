@@ -10,7 +10,7 @@ import {
 
 interface LikedItemsContextProps {
   likedItems: Set<string>;
-  toggleLike: (id: string) => void;
+  toggleLike: (slug: string) => void;
 }
 
 const LikedItemsContext = createContext<LikedItemsContextProps | undefined>(

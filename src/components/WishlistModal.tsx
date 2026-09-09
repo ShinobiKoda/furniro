@@ -7,7 +7,7 @@ import { useCart } from "@/context/CartContext";
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { fetchProducts, fetchProductBySlug, Product } from "@/services/products";
+import { fetchProductBySlug, Product } from "@/services/products";
 
 
 
@@ -55,8 +55,8 @@ export function WishlistModal({ isOpen, onClose }: WishlistModalProps) {
     addToCart(furniture);
   };
 
-  const isInCart = (furnitureId: number) => {
-    return cartItems.some((item) => item.furniture.id === furnitureId);
+  const isInCart = (furnitureId: string) => {
+    return cartItems.some((item) => item.furniture.slug === furnitureId);
   };
 
   const modalVariants = {
@@ -154,7 +154,7 @@ export function WishlistModal({ isOpen, onClose }: WishlistModalProps) {
                   <div className="p-6 space-y-4">
                     {wishlistItems.map((item, index) => (
                       <motion.div
-                        key={item.id}
+                        key={item.slug}
                         variants={itemVariants}
                         initial="hidden"
                         animate="visible"
@@ -162,7 +162,7 @@ export function WishlistModal({ isOpen, onClose }: WishlistModalProps) {
                         className="flex gap-4 p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
                       >
                         <Link
-                          href={`/furniture/${item.id}`}
+                          href={`/furniture/${item.slug}`}
                           onClick={onClose}
                           className="flex-shrink-0"
                         >
@@ -177,7 +177,7 @@ export function WishlistModal({ isOpen, onClose }: WishlistModalProps) {
 
                         <div className="flex-1 min-w-0">
                           <Link
-                            href={`/furniture/${item.id}`}
+                            href={`/furniture/${item.slug}`}
                             onClick={onClose}
                             className="block"
                           >
@@ -211,20 +211,20 @@ export function WishlistModal({ isOpen, onClose }: WishlistModalProps) {
                           <div className="flex items-center gap-2 mt-3">
                             <button
                               onClick={() => handleAddToCart(item)}
-                              disabled={isInCart(item.id)}
+                              disabled={isInCart(item.slug)}
                               className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                                isInCart(item.id)
+                                isInCart(item.slug)
                                   ? "bg-gray-100 text-gray-500 cursor-not-allowed"
                                   : "bg-[#B88E2F] text-white hover:bg-[#A67C29]"
                               }`}
                             >
                               <ShoppingCart className="w-4 h-4" />
-                              {isInCart(item.id) ? "In Cart" : "Add to Cart"}
+                              {isInCart(item.slug) ? "In Cart" : "Add to Cart"}
                             </button>
 
                             <button
                               onClick={() =>
-                                handleRemoveFromWishlist(item.id.toString())
+                                handleRemoveFromWishlist(item.slug.toString())
                               }
                               className="p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors"
                               title="Remove from wishlist"

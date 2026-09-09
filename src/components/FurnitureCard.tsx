@@ -6,21 +6,21 @@ import { motion } from "framer-motion";
 import { FurnitureProps } from "@/types/type";
 import { Heart } from "lucide-react";
 import { CiShare2 } from "react-icons/ci";
-// import { useLikedItems } from "@/context/LikedItemsContext";
+import { useLikedItems } from "@/context/LikedItemsContext";
 import { IoBagAddOutline } from "react-icons/io5";
 import { useState } from "react";
 import { Product } from "@/services/products";
 
 export function FurnitureCard({ product }: {product: Product}) {
-  // const { likedItems, toggleLike } = useLikedItems();
+  const { likedItems, toggleLike } = useLikedItems();
   const [imageError, setImageError] = useState(false);
 
-  // const isLiked = likedItems.has(product.id.toString());
+  const isLiked = likedItems.has(product.id.toString());
 
-  // const handleLikeToggle = (e: React.MouseEvent) => {
-  //   e.stopPropagation();
-  //   toggleLike(product.id.toString());
-  // };
+  const handleLikeToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleLike(product.slug);
+  };
 
   return (
     <Link href={`/furniture/${product.slug}`}>
@@ -61,7 +61,8 @@ export function FurnitureCard({ product }: {product: Product}) {
                 >
                   <Heart
                     size={18}
-                    className="fill-red-500"
+                    className={`${isLiked ? "fill-red-500" : "outline-none"}`}
+                    onClick={(e)=>handleLikeToggle(e)}
                   />
                 </motion.button>
                 <motion.button
