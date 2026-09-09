@@ -3,8 +3,8 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "../components/layout/navbar";
 import { ToastProvider } from "../components/animations/toast";
-// import { LikedItemsProvider } from "@/context/LikedItemsContext";
-// import { CartProvider } from "@/context/CartContext";
+import { LikedItemsProvider } from "@/context/LikedItemsContext";
+import { CartProvider } from "@/context/CartContext";
 import Providers from "@/providers";
 
 const poppins = Poppins({
@@ -29,16 +29,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
-        {/* <CartProvider> */}
-        {/* <LikedItemsProvider> */}
-        {/* <Navbar /> */}
+        <CartProvider>
+        <LikedItemsProvider>
+        <Navbar />
         <ToastProvider />
         <Providers>
           <div className="lg:pt-[76px] pt-[65px]">{children}</div>
 
         </Providers>
-        {/* </LikedItemsProvider> */}
-        {/* </CartProvider> */}
+        </LikedItemsProvider>
+        </CartProvider>
       </body>
     </html>
   );

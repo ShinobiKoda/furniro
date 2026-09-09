@@ -7,16 +7,16 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { FurnitureProps } from "@/types/type";
+import { Product } from "@/services/products";
 
 interface CartItem {
-  furniture: FurnitureProps;
+  furniture: Product;
   quantity: number;
 }
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (furniture: FurnitureProps) => void;
+  addToCart: (furniture: Product) => void;
   removeFromCart: (furnitureId: number) => void;
   updateQuantity: (furnitureId: number, quantity: number) => void;
   clearCart: () => void;
@@ -62,7 +62,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     }
   }, [cartItems, isInitialized]);
 
-  const addToCart = (furniture: FurnitureProps) => {
+  const addToCart = (furniture: Product) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find(
         (item) => item.furniture.id === furniture.id
@@ -105,7 +105,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   const getTotalPrice = () => {
     return cartItems.reduce((total, item) => {
-      const price = item.furniture.discount_price || item.furniture.price;
+      const price = item.furniture.compare_at_price || item.furniture.price;
       return total + price * item.quantity;
     }, 0);
   };

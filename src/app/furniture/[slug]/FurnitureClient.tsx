@@ -561,7 +561,7 @@ export default function FurnitureClient({ product, relatedProducts }: FurnitureD
           </motion.div>
         )}
 
-        {relatedProducts.length > 0 && (
+        {relatedProducts?.length > 0 && (
           <motion.div
             variants={fadeInUp}
             className="mt-16 pt-12 border-t border-gray-200"

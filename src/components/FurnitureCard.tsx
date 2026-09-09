@@ -25,7 +25,7 @@ export function FurnitureCard({ product }: {product: Product}) {
   return (
     <Link href={`/furniture/${product.slug}`}>
       <div className="group flex flex-col gap-3 w-full bg-[#F4F5F7] relative max-w-sm mx-auto hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-        <div className="w-full max-w-sm min-h-[301px] relative overflow-hidden">
+        <div className="w-full max-w-sm h-[450px] relative overflow-hidden">
           {!imageError ? (
             <Image
               src={product?.image_url ?? "/images/furniro_hero-bg.webp"}
@@ -41,16 +41,16 @@ export function FurnitureCard({ product }: {product: Product}) {
               <IoBagAddOutline size={80} className="text-gray-500" />
             </div>
           )}
-          {/* {furniture.discount_percent && (
+          {product.compare_at_price && (
             <span className="absolute top-4 right-4 h-12 w-12 rounded-full bg-red-400 text-white flex items-center justify-center font-medium text-base z-10">
-              -{furniture.discount_percent}%
+              -{product.compare_at_price}%
             </span>
-          )} */}
-          {/* {furniture.new && (
+          )} 
+           {product.is_featured && (
             <span className="absolute top-4 left-4 h-12 w-12 rounded-full bg-[#2EC1AC] text-white flex items-center justify-center font-medium text-base z-10">
               New!
             </span>
-          )} */}
+          )}
 
           <div className="w-full px-4 py-3 border-t border-gray-200">
             <div className="flex items-center">
@@ -79,25 +79,25 @@ export function FurnitureCard({ product }: {product: Product}) {
               <span className="font-semibold lg:text-2xl text-lg text-[#3A3A3A]">
                 {product.name}
               </span>
-              <span className="font-medium text-base text-[#898989]">
+              <span className="font-medium text-base text-[#898989] truncate">
                 {product.short_description}
               </span>
             </p>
-            {/* {furniture.discount_price ? (
+            {product.compare_at_price ? (
               <p className="flex items-center justify-between">
                 <span className="font-semibold lg:text-xl text-base text-[#3A3A3A]">
-                  ₦{furniture.discount_price.toLocaleString()}
+                  ₦{product.compare_at_price.toLocaleString()}
                 </span>
 
                 <span className="font-normal text-base text-[#B0B0B0] line-through">
-                  ₦{furniture.price.toLocaleString()}
+                  ₦{product.price.toLocaleString()}
                 </span>
               </p>
             ) : (
               <p className="font-semibold lg:text-xl text-base text-[#3A3A3A]">
-                ₦{furniture.price.toLocaleString()}
+                ₦{product.price.toLocaleString()}
               </p>
-            )} */}
+            )}
           </div>
         </div>
       </div>
