@@ -17,9 +17,10 @@ import { Category } from "@/services/categories";
 
 interface FurnitureDetailsProps {
   product: Product;
+  relatedProducts: Product[];
 }
 
-export default function FurnitureClient({ product }: FurnitureDetailsProps) {
+export default function FurnitureClient({ product, relatedProducts }: FurnitureDetailsProps) {
   const router = useRouter();
   const [relatedFurniture, setRelatedFurniture] = useState<FurnitureProps[]>(
     []
@@ -108,11 +109,11 @@ export default function FurnitureClient({ product }: FurnitureDetailsProps) {
 
   return (
     <div className="min-h-screen">
-      <div className="bg-[#F9F1E7] py-6">
+      {/* <div className="bg-[#F9F1E7] py-6">
         <div className="mx-auto  w-full max-w-[1440px] px-4 lg:px-12">
           <NavDisplay pathSegments={pathSegments} />
         </div>
-      </div>
+      </div> */}
 
       <motion.div
         initial="hidden"
@@ -126,7 +127,7 @@ export default function FurnitureClient({ product }: FurnitureDetailsProps) {
               {!imageError ? (
                 <Image
                   src={product?.image_url ?? "/images/furniro_hero-bg.webp"}
-                  alt={product.name}
+                  alt={product?.name ?? "Product Image"}
                   width={600}
                   height={600}
                   className="w-full h-[500px] object-cover"
@@ -177,7 +178,7 @@ export default function FurnitureClient({ product }: FurnitureDetailsProps) {
                   </>
                 ) : (
                   <span className="text-3xl font-bold text-[#B88E2F]">
-                    ₦{product.price.toLocaleString()}
+                    ₦{product.price}
                   </span>
                 )}
               </div>
@@ -560,7 +561,7 @@ export default function FurnitureClient({ product }: FurnitureDetailsProps) {
           </motion.div>
         )}
 
-        {/* {relatedFurniture.length > 0 && (
+        {relatedProducts.length > 0 && (
           <motion.div
             variants={fadeInUp}
             className="mt-16 pt-12 border-t border-gray-200"
@@ -570,7 +571,7 @@ export default function FurnitureClient({ product }: FurnitureDetailsProps) {
                 Related Products
               </h2>
               <p className="text-gray-600 mb-4">
-                More {furniture?.tag.toLowerCase()} furniture you might like
+                More {product?.category?.name.toLowerCase()} furniture you might like
               </p>
             </div>
 
@@ -590,15 +591,15 @@ export default function FurnitureClient({ product }: FurnitureDetailsProps) {
                 variants={staggerChildren}
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
               >
-                {relatedFurniture.map((relatedItem) => (
+                {relatedProducts.map((relatedItem) => (
                   <motion.div key={relatedItem.id} variants={fadeInUp}>
-                    <FurnitureCard furniture={relatedItem} />
+                    <FurnitureCard product={relatedItem} />
                   </motion.div>
                 ))}
               </motion.div>
             )}
           </motion.div>
-        )} */}
+        )}
 
         <motion.div
           variants={fadeInUp}

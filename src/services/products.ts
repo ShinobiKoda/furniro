@@ -3,6 +3,11 @@ import { ENV } from "@/lib/config";
 import { Category } from "./categories";
 import { Review } from "./reviews";
 
+export interface ProductResponse{
+    product: Product;
+    related_products: Product[];
+}
+
 export interface Product{
     id: number;
     category_id: number;
@@ -33,7 +38,7 @@ export async function fetchProducts(): Promise<PaginatedResponse<Product>>{
   return response.json();
 }
 
-export async function fetchProductBySlug(slug: string): Promise<Product>{
+export async function fetchProductBySlug(slug: string): Promise<ProductResponse>{
     const response = await fetch(`${ENV.API_URL}/products/${slug}`, {
         next: {revalidate: 60}
     });
