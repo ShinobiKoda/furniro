@@ -6,7 +6,6 @@ export default async function Shop() {
 
   const products = await fetchProducts();
 
-  console.log(products);
 
-  return <ShopHomepage products={products.data}/>;
+  return <ShopHomepage products={products.data} />;
 }
