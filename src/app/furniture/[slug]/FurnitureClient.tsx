@@ -143,11 +143,11 @@ export default function FurnitureClient({ product }: FurnitureDetailsProps) {
                 </div>
               )}
 
-              {/* {furniture.discount_percent && (
+              {product.compare_at_price && (
                 <span className="absolute top-4 right-4 h-12 w-12 rounded-full bg-red-400 text-white flex items-center justify-center font-medium text-sm">
-                  -{furniture.discount_percent}%
+                  -{product.compare_at_price}%
                 </span>
-              )} */}
+              )}
               {product.is_featured && (
                 <span className="absolute top-4 left-4 h-12 w-12 rounded-full bg-[#2EC1AC] text-white flex items-center justify-center font-medium text-sm">
                   Featured!
@@ -165,28 +165,28 @@ export default function FurnitureClient({ product }: FurnitureDetailsProps) {
                 {product.description}
               </p>
 
-              {/* <div className="flex items-center gap-4 mb-6">
-                {furniture.discount_price ? (
+              <div className="flex items-center gap-4 mb-6">
+                {product.compare_at_price ? (
                   <>
                     <span className="text-3xl font-bold text-[#B88E2F]">
-                      ₦{furniture.discount_price.toLocaleString()}
+                      ₦{product.compare_at_price.toLocaleString()}
                     </span>
                     <span className="text-xl text-gray-500 line-through">
-                      ₦{furniture.price.toLocaleString()}
+                      ₦{product.price.toLocaleString()}
                     </span>
                   </>
                 ) : (
                   <span className="text-3xl font-bold text-[#B88E2F]">
-                    ₦{furniture.price.toLocaleString()}
+                    ₦{product.price.toLocaleString()}
                   </span>
                 )}
-              </div> */}
+              </div>
 
-              {/* {furniture.furniture_details?.review !== undefined && (
+              {/* {product.review !== undefined && (
                 <div className="flex items-center gap-2 mb-6">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => {
-                      const rating = furniture.furniture_details!.review;
+                      const rating = product.furniture_details!.review;
                       const isFullStar = i < Math.floor(rating);
                       const isHalfStar =
                         i === Math.floor(rating) && rating % 1 >= 0.5;
@@ -311,21 +311,21 @@ export default function FurnitureClient({ product }: FurnitureDetailsProps) {
                   {product?.category?.name}
                 </span>
               </div>
-              {/* {furniture.furniture_details?.origin_of_manufacture && (
+              {product?.specifications?.origin_of_manufacture && (
                 <div className="flex">
                   <span className="font-medium text-gray-700 w-24">
                     Origin:
                   </span>
                   <span className="text-gray-600">
-                    {furniture.furniture_details.origin_of_manufacture}
+                    {product.specifications.origin_of_manufacture}
                   </span>
                 </div>
-              )} */}
+              )}
             </div>
           </motion.div>
         </div>
 
-        {/* {furniture.furniture_details && (
+        {product && (
           <motion.div
             variants={fadeInUp}
             className="border-t border-gray-200 pt-12"
@@ -370,15 +370,15 @@ export default function FurnitureClient({ product }: FurnitureDetailsProps) {
                     Product Description
                   </h3>
                   <p className="text-gray-700 leading-relaxed">
-                    {furniture.furniture_details.full_description}
+                    {product.description}
                   </p>
-                  {furniture.furniture_details.sales_package && (
+                  {product?.specifications?.sales_package && (
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-2">
                         Sales Package
                       </h4>
                       <p className="text-gray-700">
-                        {furniture.furniture_details.sales_package}
+                        {product.specifications.sales_package}
                       </p>
                     </div>
                   )}
@@ -396,43 +396,43 @@ export default function FurnitureClient({ product }: FurnitureDetailsProps) {
                         General
                       </h4>
                       <div className="space-y-3 text-sm">
-                        {furniture.furniture_details.model_number && (
+                        {product?.specifications?.model_number && (
                           <div className="flex justify-between border-b border-gray-200 pb-2">
                             <span className="font-medium text-gray-700">
                               Model Number:
                             </span>
                             <span className="text-gray-600">
-                              {furniture.furniture_details.model_number}
+                              {product.specifications.model_number}
                             </span>
                           </div>
                         )}
-                        {furniture.furniture_details.secondary_material && (
+                        {product?.specifications?.secondary_material && (
                           <div className="flex justify-between border-b border-gray-200 pb-2">
                             <span className="font-medium text-gray-700">
                               Material:
                             </span>
                             <span className="text-gray-600">
-                              {furniture.furniture_details.secondary_material}
+                              {product.specifications.secondary_material}
                             </span>
                           </div>
                         )}
-                        {furniture.furniture_details.config && (
+                        {product?.specifications?.config && (
                           <div className="flex justify-between border-b border-gray-200 pb-2">
                             <span className="font-medium text-gray-700">
                               Configuration:
                             </span>
                             <span className="text-gray-600">
-                              {furniture.furniture_details.config}
+                              {product.specifications.config}
                             </span>
                           </div>
                         )}
-                        {furniture.furniture_details.finish_type && (
+                        {product?.specifications?.finish_type && (
                           <div className="flex justify-between border-b border-gray-200 pb-2">
                             <span className="font-medium text-gray-700">
                               Finish:
                             </span>
                             <span className="text-gray-600">
-                              {furniture.furniture_details.finish_type}
+                              {product.specifications.finish_type}
                             </span>
                           </div>
                         )}
@@ -444,53 +444,53 @@ export default function FurnitureClient({ product }: FurnitureDetailsProps) {
                         Dimensions
                       </h4>
                       <div className="space-y-3 text-sm">
-                        {furniture.furniture_details.width && (
+                        {product?.specifications?.width && (
                           <div className="flex justify-between border-b border-gray-200 pb-2">
                             <span className="font-medium text-gray-700">
                               Width:
                             </span>
                             <span className="text-gray-600">
-                              {furniture.furniture_details.width} cm
+                              {product.specifications.width} cm
                             </span>
                           </div>
                         )}
-                        {furniture.furniture_details.height && (
+                        {product?.specifications?.height && (
                           <div className="flex justify-between border-b border-gray-200 pb-2">
                             <span className="font-medium text-gray-700">
                               Height:
                             </span>
                             <span className="text-gray-600">
-                              {furniture.furniture_details.height} cm
+                              {product.specifications.height} cm
                             </span>
                           </div>
                         )}
-                        {furniture.furniture_details.depth && (
+                        {product?.specifications?.depth && (
                           <div className="flex justify-between border-b border-gray-200 pb-2">
                             <span className="font-medium text-gray-700">
                               Depth:
                             </span>
                             <span className="text-gray-600">
-                              {furniture.furniture_details.depth} cm
+                              {product.specifications.depth} cm
                             </span>
                           </div>
                         )}
-                        {furniture.furniture_details.weight && (
+                        {product?.specifications?.weight && (
                           <div className="flex justify-between border-b border-gray-200 pb-2">
                             <span className="font-medium text-gray-700">
                               Weight:
                             </span>
                             <span className="text-gray-600">
-                              {furniture.furniture_details.weight} kg
+                              {product.specifications.weight} kg
                             </span>
                           </div>
                         )}
-                         {furniture.furniture_details.maximum_load_capacity && (
+                         {product?.specifications?.maximum_load_capacity && (
                           <div className="flex justify-between border-b border-gray-200 pb-2">
                             <span className="font-medium text-gray-700">
                               Max Load Capacity:
                             </span>
                             <span className="text-gray-600">
-                              {furniture.furniture_details.maximum_load_capacity}
+                              {product.specifications.maximum_load_capacity}
                             </span>
                           </div>
                         )}
@@ -507,46 +507,46 @@ export default function FurnitureClient({ product }: FurnitureDetailsProps) {
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
-                      {furniture.furniture_details.warranty_summary && (
+                      {product?.specifications?.warranty_summary && (
                         <div>
                           <h4 className="font-semibold text-gray-900 mb-2">
                             Warranty Summary
                           </h4>
                           <p className="text-gray-700">
-                            {furniture.furniture_details.warranty_summary}
+                            {product.specifications.warranty_summary}
                           </p>
                         </div>
                       )}
-                      {furniture.furniture_details.domestic_warranty && (
+                      {product?.specifications?.domestic_warranty && (
                         <div>
                           <h4 className="font-semibold text-gray-900 mb-2">
                             Domestic Warranty
                           </h4>
                           <p className="text-gray-700">
-                            {furniture.furniture_details.domestic_warranty}
+                            {product.specifications.domestic_warranty}
                           </p>
                         </div>
                       )}
                     </div>
                     <div className="space-y-4">
-                      {furniture.furniture_details.covered_in_warranty && (
+                      {product?.specifications?.covered_in_warranty && (
                         <div>
                           <h4 className="font-semibold text-gray-900 mb-2">
                             Covered in Warranty
                           </h4>
                           <p className="text-gray-700">
-                            {furniture.furniture_details.covered_in_warranty}
+                            {product.specifications.covered_in_warranty}
                           </p>
                         </div>
                       )}
-                      {furniture.furniture_details.not_covered_in_warranty && (
+                      {product?.specifications?.not_covered_in_warranty && (
                         <div>
                           <h4 className="font-semibold text-gray-900 mb-2">
                             Not Covered in Warranty
                           </h4>
                           <p className="text-gray-700">
                             {
-                              furniture.furniture_details
+                              product.specifications
                                 .not_covered_in_warranty
                             }
                           </p>
@@ -558,7 +558,7 @@ export default function FurnitureClient({ product }: FurnitureDetailsProps) {
               )}
             </div>
           </motion.div>
-        )} */}
+        )}
 
         {/* {relatedFurniture.length > 0 && (
           <motion.div

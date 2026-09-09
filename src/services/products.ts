@@ -1,6 +1,7 @@
 import { PaginatedResponse } from "@/types/type";
 import { ENV } from "@/lib/config";
 import { Category } from "./categories";
+import { Review } from "./reviews";
 
 export interface Product{
     id: number;
@@ -17,11 +18,9 @@ export interface Product{
     compare_at_price: number | null;
     description: string | null;
     is_featured: boolean;
-    material?: string;
-    dimensions?: string;
+    review: Review[] | null;
+    specifications: Record<string, string | number | boolean> | null;
 }
-
-
 
 export async function fetchProducts(): Promise<PaginatedResponse<Product>>{
     const response = await fetch(`${ENV.API_URL}/products`, {
@@ -42,7 +41,5 @@ export async function fetchProductBySlug(slug: string): Promise<Product>{
     if(!response.ok){
         throw new Error(`Failed to fetch Product: ${response.status}`)
     }
-
-
     return response.json();
 }
