@@ -1,6 +1,4 @@
 ```markdown
-<div align="center">
-
 # Furniro — Furniture E‑commerce UI
 
 Interactive, responsive furniture storefront featuring product browsing, rich product details, cart, wishlist, checkout, blog, and contact pages. Powered by Next.js App Router, Tailwind CSS, Framer Motion, and a RESTful Laravel API.
@@ -143,7 +141,3 @@ public/
 ## 🤝 Contributing
 
 Issues and pull requests are welcome. Please ensure you run `npm run lint` before opening a pull request.
-
-```
-
-```
