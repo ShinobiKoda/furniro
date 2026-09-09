@@ -11,7 +11,7 @@ const fadeInUp = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: "easeInOut" },
+    transition: { duration: 0.8, ease: "easeInOut" as const },
   },
 };
 
@@ -20,7 +20,7 @@ const zoomIn = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.6, ease: "easeInOut" },
+    transition: { duration: 0.6, ease: "easeInOut" as const },
   },
 };
 

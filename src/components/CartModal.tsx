@@ -92,7 +92,7 @@ export function CartModal({ onClose }: CartModalProps) {
                     </div>
                   ) : (
                     <Image
-                      src={item.furniture.image_url}
+                      src={item.furniture.image_url ?? ""}
                       alt={item.furniture.name}
                       width={108}
                       height={105}
@@ -119,7 +119,7 @@ export function CartModal({ onClose }: CartModalProps) {
                     <span className="font-medium text-[#B88E2F] text-[12px]">
                       ₦
                       {(
-                        item.furniture.discount_price || item.furniture.price
+                        item.furniture.compare_at_price || item.furniture.price
                       ).toLocaleString()}
                     </span>
                   </motion.div>

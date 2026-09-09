@@ -547,7 +547,7 @@ export function Checkout() {
                       <p className="font-light text-base">
                         ₦
                         {(
-                          (item.furniture.discount_price ||
+                          (item.furniture.compare_at_price ||
                             item.furniture.price) * item.quantity
                         ).toLocaleString()}
                       </p>

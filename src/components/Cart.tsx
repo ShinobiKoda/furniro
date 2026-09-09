@@ -110,7 +110,7 @@ export function Cart({ pathSegments }: CartPageProps) {
                         </div>
                       ) : (
                         <Image
-                          src={item.furniture.image_url}
+                          src={item.furniture.image_url ?? ""}
                           alt={item.furniture.name}
                           width={108}
                           height={105}
@@ -126,7 +126,7 @@ export function Cart({ pathSegments }: CartPageProps) {
                   <p className="text-[#9F9F9F] text-base font-normal">
                     ₦
                     {(
-                      item.furniture.discount_price || item.furniture.price
+                      item.furniture.compare_at_price || item.furniture.price
                     ).toLocaleString()}
                   </p>
                   <input
@@ -144,7 +144,7 @@ export function Cart({ pathSegments }: CartPageProps) {
                   <p>
                     ₦
                     {(
-                      (item.furniture.discount_price || item.furniture.price) *
+                      (item.furniture.compare_at_price || item.furniture.price) *
                       item.quantity
                     ).toLocaleString()}
                   </p>
