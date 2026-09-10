@@ -68,7 +68,7 @@ export function Navbar() {
   };
 
   const { likedItems } = useLikedItems();
-  const { getUniqueItemCount } = useCart();
+  // const { getUniqueItemCount } = useCart();
 
   useEffect(() => {
     const shouldLock = isSidebarOpen || isCartOpen || isSearchOpen || isWishlistOpen;
@@ -129,7 +129,7 @@ export function Navbar() {
           } ${isCartOpen || isWishlistOpen ? "hidden" : "flex"}`}
           onClick={toggleSidebar}
         >
-          {getUniqueItemCount() > 0 && (
+          {/* {getUniqueItemCount() > 0 && (
             <span
               className={`absolute -top-2 -right-2 bg-[#B88E2F] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full z-10 transition-transform duration-100 ease-in-out ${
                 isSidebarOpen ? "-rotate-90" : ""
@@ -137,7 +137,7 @@ export function Navbar() {
             >
               {getUniqueItemCount()}
             </span>
-          )}
+          )} */}
           <div
             className={`w-full h-1 bg-black transition-transform duration-100 ease-in-out ${
               isSidebarOpen ? "rotate-45 translate-y-[8px]" : ""
@@ -308,11 +308,11 @@ export function Navbar() {
                   <IoCartOutline className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
                   <span>Cart</span>
                 </div>
-                {getUniqueItemCount() > 0 && (
+                {/* {getUniqueItemCount() > 0 && (
                   <span className="bg-[#B88E2F] text-white text-xs px-2 py-1 rounded-full min-w-[20px] h-5 flex items-center justify-center">
                     {getUniqueItemCount()}
                   </span>
-                )}
+                )} */}
               </motion.button>
 
               <motion.button
@@ -439,11 +439,11 @@ export function Navbar() {
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
             <IoCartOutline className="text-2xl" />
-            {getUniqueItemCount() > 0 && (
+            {/* {getUniqueItemCount() > 0 && (
               <span className="absolute -top-2 -right-2 bg-[#B88E2F] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
                 {getUniqueItemCount()}
               </span>
-            )}
+            )} */}
           </motion.div>
           <motion.div
             variants={fadeInUp}

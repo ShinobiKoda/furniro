@@ -11,6 +11,7 @@ import { Footer } from "@/components/Footer";
 import Link from "next/link";
 import { Category } from "@/services/categories";
 import { Product } from "@/services/products";
+import { fetchCartItems } from "@/services/cart";
 
 
 const slideInVariants = {
@@ -65,20 +66,8 @@ interface HomePageProps {
   products: Product[];
 }
 
-const setUpImages = [
-  "/images/furniro_furniture-setup-1.webp",
-  "/images/furniro_furniture-setup-2.webp",
-  "/images/furniro_furniture-setup-3.webp",
-  "/images/furniro_furniture-setup-4.webp",
-  "/images/furniro_furniture-setup-5.webp",
-  "/images/furniro_furniture-setup-6.webp",
-  "/images/furniro_furniture-setup-7.webp",
-];
 
-const images = [
-  "/images/furniro_room-inspirations-1.webp",
-  "/images/furniro_room-inspiration-2.webp",
-];
+
 
 export function HomePage({ categories, products }: HomePageProps) {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -89,37 +78,15 @@ export function HomePage({ categories, products }: HomePageProps) {
 
 
 
-  useEffect(() => {
-    const startSliding = () => {
-      slideInterval.current = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-      }, 5000);
-    };
 
-    startSliding();
 
-    return () => {
-      if (slideInterval.current) clearInterval(slideInterval.current);
-    };
-  }, [images.length]);
-
-  const handleNext = () => {
-    if (slideInterval.current) clearInterval(slideInterval.current);
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    slideInterval.current = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000);
-  };
-
-  const handlePrev = () => {
-    if (slideInterval.current) clearInterval(slideInterval.current);
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-    slideInterval.current = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000);
-  };
+  // const handleNext = () => {
+  //   if (slideInterval.current) clearInterval(slideInterval.current);
+  //   setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  //   slideInterval.current = setInterval(() => {
+  //     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  //   }, 5000);
+  // };
 
   const handleShowMore = () => {
     setShowAllProducts((prev) => {
@@ -273,15 +240,15 @@ export function HomePage({ categories, products }: HomePageProps) {
             </button>
           </div>
           <div className="relative w-full max-w-[400px] overflow-hidden">
-            <motion.button
+            {/* <motion.button
               onClick={handlePrev}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black bg-white h-12 w-12 text-3xl flex items-center justify-center p-3 rounded-full z-10 hover:opacity-90 cursor-pointer"
             >
               <ArrowLeft />
-            </motion.button>
-            <motion.div
+            </motion.button> */}
+            {/* <motion.div
               key={currentIndex}
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
@@ -296,17 +263,17 @@ export function HomePage({ categories, products }: HomePageProps) {
                 height={500}
                 className="w-full h-auto object-cover"
               />
-            </motion.div>
-            <motion.button
+            </motion.div> */}
+            {/* <motion.button
               onClick={handleNext}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className="absolute right-4 top-1/2 transform -translate-y-1/2 text-black bg-white h-12 w-12 text-3xl flex items-center justify-center p-3 rounded-full z-10 hover:opacity-90 cursor-pointer"
             >
               <ArrowRight />
-            </motion.button>
+            </motion.button> */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-              {images.map((_, index) => (
+              {/* {images.map((_, index) => (
                 <motion.div
                   key={index}
                   onClick={() => setCurrentIndex(index)}
@@ -314,7 +281,7 @@ export function HomePage({ categories, products }: HomePageProps) {
                   className={`w-3 h-3 rounded-full cursor-pointer ${index === currentIndex ? "bg-[#B88E2F]" : "bg-gray-300"
                     }`}
                 ></motion.div>
-              ))}
+              ))} */}
             </div>
           </div>
         </div>
@@ -331,7 +298,7 @@ export function HomePage({ categories, products }: HomePageProps) {
             </span>
           </h2>
         </Section>
-        <Section className="relative w-full h-auto mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        {/* <Section className="relative w-full h-auto mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {setUpImages.map((image, index) => (
             <motion.div
               key={index}
@@ -352,7 +319,7 @@ export function HomePage({ categories, products }: HomePageProps) {
               />
             </motion.div>
           ))}
-        </Section>
+        </Section> */}
       </div>
       <Footer />
     </div>

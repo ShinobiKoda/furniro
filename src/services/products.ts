@@ -1,7 +1,6 @@
 import { PaginatedResponse } from "@/types/type";
 import { ENV } from "@/lib/config";
 import { Category } from "./categories";
-import { Review } from "./reviews";
 
 export interface ProductResponse{
     product: Product;
@@ -23,7 +22,6 @@ export interface Product{
     compare_at_price: number | null;
     description: string | null;
     is_featured: boolean;
-    review: Review[] | null;
     specifications: Record<string, string | number | boolean> | null;
 }
 

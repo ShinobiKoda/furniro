@@ -18,7 +18,7 @@ interface WishlistModalProps {
 
 export function WishlistModal({ isOpen, onClose }: WishlistModalProps) {
   const { likedItems, toggleLike } = useLikedItems();
-  const { addToCart, cartItems } = useCart();
+  const { cartItems } = useCart();
   const [wishlistItems, setWishlistItems] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -51,12 +51,12 @@ export function WishlistModal({ isOpen, onClose }: WishlistModalProps) {
     toggleLike(itemId);
   };
 
-  const handleAddToCart = (furniture: Product) => {
-    addToCart(furniture);
-  };
+  // const handleAddToCart = (furniture: Product) => {
+  //   addToCart(furniture);
+  // };
 
   const isInCart = (furnitureId: string) => {
-    return cartItems.some((item) => item.furniture.slug === furnitureId);
+    return cartItems?.data.some((item) => item.product.slug === furnitureId);
   };
 
   const modalVariants = {
@@ -210,7 +210,7 @@ export function WishlistModal({ isOpen, onClose }: WishlistModalProps) {
 
                           <div className="flex items-center gap-2 mt-3">
                             <button
-                              onClick={() => handleAddToCart(item)}
+                              // onClick={() => handleAddToCart(item)}
                               disabled={isInCart(item.slug)}
                               className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                                 isInCart(item.slug)

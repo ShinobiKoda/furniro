@@ -84,3 +84,8 @@ export interface PaginatedResponse<T> {
   to: number | null;
   total: number;
 }
+
+export interface CreateReponse<T>{
+  message: string;
+  data: T;
+}

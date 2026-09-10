@@ -18,7 +18,7 @@ interface CartModalProps {
 }
 
 export function CartModal({ onClose }: CartModalProps) {
-  const { cartItems, removeFromCart, getTotalPrice } = useCart();
+  const { cartItems } = useCart();
   const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
 
   const handleImageError = (itemId: number) => {
@@ -63,7 +63,7 @@ export function CartModal({ onClose }: CartModalProps) {
         initial="hidden"
         animate="visible"
       >
-        {cartItems.length === 0 ? (
+        {!cartItems?.data?.length ? (
           <motion.div
             variants={fadeInUp}
             className="text-center py-8 text-gray-500"
@@ -72,9 +72,9 @@ export function CartModal({ onClose }: CartModalProps) {
             <p className="text-sm">Add some furniture to get started!</p>
           </motion.div>
         ) : (
-          cartItems.map((item) => (
+          cartItems?.data?.map((item) => (
             <motion.div
-              key={item.furniture.id}
+              key={item.product.id}
               className="flex items-center justify-between w-full gap-4"
               variants={fadeInUp}
               whileHover={{ scale: 1.02 }}
@@ -86,18 +86,18 @@ export function CartModal({ onClose }: CartModalProps) {
                   variants={scaleOnHover}
                   whileHover="hover"
                 >
-                  {imageErrors.has(item.furniture.id) ? (
+                  {imageErrors.has(item.product.id) ? (
                     <div className="w-full h-full bg-[#B88E2F]/20 flex items-center justify-center">
                       <IoBagAddOutline className="text-[#B88E2F] text-3xl" />
                     </div>
                   ) : (
                     <Image
-                      src={item.furniture.image_url ?? ""}
-                      alt={item.furniture.name}
+                      src={item.product.image_url ?? ""}
+                      alt={item.product.name}
                       width={108}
                       height={105}
                       className="w-full h-full object-cover"
-                      onError={() => handleImageError(item.furniture.id)}
+                      onError={() => handleImageError(item.product.id)}
                     />
                   )}
                 </motion.div>
@@ -107,7 +107,7 @@ export function CartModal({ onClose }: CartModalProps) {
                     className="font-normal text-base"
                     variants={fadeInUp}
                   >
-                    {item.furniture.name}
+                    {item.product.name}
                   </motion.h3>
                   <motion.div
                     className="flex items-center gap-4 text-sm"
@@ -119,7 +119,7 @@ export function CartModal({ onClose }: CartModalProps) {
                     <span className="font-medium text-[#B88E2F] text-[12px]">
                       ₦
                       {(
-                        item.furniture.compare_at_price || item.furniture.price
+                        item.product.compare_at_price || item.product.price
                       ).toLocaleString()}
                     </span>
                   </motion.div>
@@ -131,7 +131,7 @@ export function CartModal({ onClose }: CartModalProps) {
                 variants={scaleOnHover}
                 whileHover="hover"
                 whileTap={{ scale: 0.9 }}
-                onClick={() => removeFromCart(item.furniture.id)}
+                // onClick={() => removeFromCart(item.furniture.id)}
               >
                 <MdCancel className="text-[#9F9F9F] hover:text-red-500 text-2xl transition-colors duration-200 cursor-pointer" />
               </motion.button>
@@ -160,12 +160,12 @@ export function CartModal({ onClose }: CartModalProps) {
           variants={fadeInUp}
         >
           <span className="font-normal text-base">Subtotal</span>
-          <motion.span
+          {/* <motion.span
             className="font-semibold text-base text-[#B88E2F]"
             variants={fadeInUp}
           >
             ₦{getTotalPrice().toLocaleString()}
-          </motion.span>
+          </motion.span> */}
         </motion.div>
 
         <motion.div

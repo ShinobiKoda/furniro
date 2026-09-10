@@ -9,20 +9,20 @@ import React, {
 } from "react";
 import { Product } from "@/services/products";
 
-interface CartItem {
-  furniture: Product;
-  quantity: number;
-}
+
+import { fetchCartItems } from "@/services/cart";
+import { PaginatedResponse } from "@/types/type";
+import { CartItem } from "@/services/cart";
 
 interface CartContextType {
-  cartItems: CartItem[];
-  addToCart: (furniture: Product) => void;
-  removeFromCart: (furnitureId: number) => void;
-  updateQuantity: (furnitureId: number, quantity: number) => void;
-  clearCart: () => void;
-  getTotalPrice: () => number;
-  getItemCount: () => number;
-  getUniqueItemCount: () => number;
+  cartItems: PaginatedResponse<CartItem> | null;
+  // addToCart: (furniture: Product) => void;
+  // removeFromCart: (furnitureId: number) => void;
+  // updateQuantity: (furnitureId: number, quantity: number) => void;
+  // clearCart: () => void;
+  // getTotalPrice: () => number;
+  // getItemCount: () => number;
+  // getUniqueItemCount: () => number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -40,93 +40,106 @@ interface CartProviderProps {
 }
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<PaginatedResponse<CartItem> | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  useEffect(() => {
-    const savedCartItems = localStorage.getItem("furniro-cart-items");
-    if (savedCartItems) {
-      try {
-        const parsedItems = JSON.parse(savedCartItems);
-        setCartItems(parsedItems);
-      } catch (error) {
-        console.error("Error parsing cart items from localStorage:", error);
+  // useEffect(() => {
+  //   const savedCartItems = localStorage.getItem("furniro-cart-items");
+  //   if (savedCartItems) {
+  //     try {
+  //       const parsedItems = JSON.parse(savedCartItems);
+  //       setCartItems(parsedItems);
+  //     } catch (error) {
+  //       console.error("Error parsing cart items from localStorage:", error);
+  //     }
+  //   }
+  //   setIsInitialized(true);
+  // }, []);
+
+  // useEffect(() => {
+  //   if (isInitialized) {
+  //     localStorage.setItem("furniro-cart-items", JSON.stringify(cartItems));
+  //   }
+  // }, [cartItems, isInitialized]);
+
+  useEffect(() =>{
+    const getCartItems = async () => {
+      try{
+        const data = await fetchCartItems();
+
+        setCartItems(data);
+      }catch(error){
+        console.error("Failed to fetch Cart items", error);
       }
     }
-    setIsInitialized(true);
+    getCartItems();
   }, []);
 
-  useEffect(() => {
-    if (isInitialized) {
-      localStorage.setItem("furniro-cart-items", JSON.stringify(cartItems));
-    }
-  }, [cartItems, isInitialized]);
+  // const addToCart = (furniture: Product) => {
+  //   setCartItems((prevItems) => {
+  //     const existingItem = prevItems.find(
+  //       (item) => item.furniture.id === furniture.id
+  //     );
 
-  const addToCart = (furniture: Product) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find(
-        (item) => item.furniture.id === furniture.id
-      );
+  //     if (existingItem) {
+  //       return prevItems.map((item) =>
+  //         item.furniture.id === furniture.id
+  //           ? { ...item, quantity: item.quantity + 1 }
+  //           : item
+  //       );
+  //     } else {
+  //       return [...prevItems, { furniture, quantity: 1 }];
+  //     }
+  //   });
+  // };
 
-      if (existingItem) {
-        return prevItems.map((item) =>
-          item.furniture.id === furniture.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      } else {
-        return [...prevItems, { furniture, quantity: 1 }];
-      }
-    });
-  };
+  // const removeFromCart = (furnitureId: number) => {
+  //   setCartItems((prevItems) =>
+  //     prevItems.filter((item) => item.furniture.id !== furnitureId)
+  //   );
+  // };
 
-  const removeFromCart = (furnitureId: number) => {
-    setCartItems((prevItems) =>
-      prevItems.filter((item) => item.furniture.id !== furnitureId)
-    );
-  };
+  // const updateQuantity = (furnitureId: number, quantity: number) => {
+  //   if (quantity <= 0) {
+  //     removeFromCart(furnitureId);
+  //     return;
+  //   }
 
-  const updateQuantity = (furnitureId: number, quantity: number) => {
-    if (quantity <= 0) {
-      removeFromCart(furnitureId);
-      return;
-    }
+  //   setCartItems((prevItems) =>
+  //     prevItems.map((item) =>
+  //       item.furniture.id === furnitureId ? { ...item, quantity } : item
+  //     )
+  //   );
+  // };
 
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.furniture.id === furnitureId ? { ...item, quantity } : item
-      )
-    );
-  };
+  // const clearCart = () => {
+  //   setCartItems([]);
+  // };
 
-  const clearCart = () => {
-    setCartItems([]);
-  };
+  // const getTotalPrice = () => {
+  //   return cartItems.reduce((total, item) => {
+  //     const price = item.furniture.compare_at_price || item.furniture.price;
+  //     return total + price * item.quantity;
+  //   }, 0);
+  // };
 
-  const getTotalPrice = () => {
-    return cartItems.reduce((total, item) => {
-      const price = item.furniture.compare_at_price || item.furniture.price;
-      return total + price * item.quantity;
-    }, 0);
-  };
+  // const getItemCount = () => {
+  //   return cartItems.reduce((total, item) => total + item.quantity, 0);
+  // };
 
-  const getItemCount = () => {
-    return cartItems.reduce((total, item) => total + item.quantity, 0);
-  };
-
-  const getUniqueItemCount = () => {
-    return cartItems.length;
-  };
+  // const getUniqueItemCount = () => {
+  //   return cartItems.length;
+  // };
 
   const value: CartContextType = {
     cartItems,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    clearCart,
-    getTotalPrice,
-    getItemCount,
-    getUniqueItemCount,
+    // addToCart,
+    // removeFromCart,
+    // updateQuantity,
+    // clearCart,
+    // getTotalPrice,
+    // getItemCount,
+    // getUniqueItemCount,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
