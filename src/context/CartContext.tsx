@@ -10,13 +10,13 @@ import React, {
 import { Product } from "@/services/products";
 
 
-import { fetchCartItems } from "@/services/cart";
+import { fetchCartItems, addItemToCart } from "@/services/cart";
 import { PaginatedResponse } from "@/types/type";
 import { CartItem } from "@/services/cart";
 
 interface CartContextType {
   cartItems: PaginatedResponse<CartItem> | null;
-  // addToCart: (furniture: Product) => void;
+  addToCart: (furniture: Product) => Promise<void>;
   // removeFromCart: (furnitureId: number) => void;
   // updateQuantity: (furnitureId: number, quantity: number) => void;
   // clearCart: () => void;
@@ -75,23 +75,16 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     getCartItems();
   }, []);
 
-  // const addToCart = (furniture: Product) => {
-  //   setCartItems((prevItems) => {
-  //     const existingItem = prevItems.find(
-  //       (item) => item.furniture.id === furniture.id
-  //     );
-
-  //     if (existingItem) {
-  //       return prevItems.map((item) =>
-  //         item.furniture.id === furniture.id
-  //           ? { ...item, quantity: item.quantity + 1 }
-  //           : item
-  //       );
-  //     } else {
-  //       return [...prevItems, { furniture, quantity: 1 }];
-  //     }
-  //   });
-  // };
+  const addToCart = async (furniture: Product) => {
+    try {
+      if (!cartItems) return;
+      await addItemToCart( furniture.id);
+      const data = await fetchCartItems();
+      setCartItems(data);
+    } catch (error) {
+      console.error("Failed to add item to cart", error);
+    }
+  };
 
   // const removeFromCart = (furnitureId: number) => {
   //   setCartItems((prevItems) =>
@@ -133,7 +126,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   const value: CartContextType = {
     cartItems,
-    // addToCart,
+    addToCart,
     // removeFromCart,
     // updateQuantity,
     // clearCart,

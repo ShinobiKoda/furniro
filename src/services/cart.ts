@@ -17,9 +17,9 @@ export async function fetchCartItems (): Promise<PaginatedResponse<CartItem>>{
     return data;
 }
 
-export async function addItemToCart(cart_id: number, product_id: number):Promise<CreateReponse<CartItem>>{
+export async function addItemToCart( product_id: number):Promise<CreateReponse<CartItem>>{
     const data = await client.post("/cart-items", {
-        cart_id, product_id
+        product_id
     });
 
     return data;
