@@ -6,6 +6,7 @@ import { ToastProvider } from "../components/animations/toast";
 import { LikedItemsProvider } from "@/context/LikedItemsContext";
 import { CartProvider } from "@/context/CartContext";
 import Providers from "@/providers";
+import { AuthProvider } from "@/context/AuthContext";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -29,16 +30,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
-        <CartProvider>
-        <LikedItemsProvider>
-        <Navbar />
-        <ToastProvider />
-        <Providers>
-          <div className="lg:pt-[76px] pt-[65px]">{children}</div>
+        <AuthProvider>
+          <CartProvider>
+            <LikedItemsProvider>
+              <Navbar />
+              <ToastProvider />
+              <Providers>
+                <div className="lg:pt-[76px] pt-[65px]">{children}</div>
 
-        </Providers>
-        </LikedItemsProvider>
-        </CartProvider>
+              </Providers>
+            </LikedItemsProvider>
+          </CartProvider>
+
+        </AuthProvider>
       </body>
     </html>
   );

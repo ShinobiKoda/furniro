@@ -18,6 +18,7 @@ import { useCart } from "@/context/CartContext";
 import { CartModal } from "../CartModal";
 import { SearchModal } from "../SearchModal";
 import { WishlistModal } from "../WishlistModal";
+import { useAuth } from "@/context/AuthContext";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -30,6 +31,9 @@ export function Navbar() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+
+  const {user} = useAuth();
+
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -392,7 +396,14 @@ export function Navbar() {
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
-            <Link href="/login">Login</Link>
+            <Link href="/login">Signup</Link>
+          </motion.li>
+          <motion.li
+            variants={fadeInUp}
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
+            <Link href="/shop">{user?.name}</Link>
           </motion.li>
         </motion.ul>
 

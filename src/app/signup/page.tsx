@@ -15,16 +15,16 @@ import { Footer } from "../../components/Footer";
 import { usePathname } from "next/navigation";
 import { signUp } from "@/services/auth";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 
-interface LoginPageProps {
-
-}
-
-export default function LoginPage() {
+export default function SignupPage() {
   const router = useRouter();
   const pathname = usePathname();
   const pathSegments = pathname.split("/").filter(Boolean);
+  const [formError, setFormError] = useState("");
+
+  const {setUser} = useAuth();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -59,8 +59,8 @@ export default function LoginPage() {
     if (!formData.password) {
       newErrors.password = "Password is required";
       isValid = false;
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
       isValid = false;
     }
 
@@ -93,22 +93,25 @@ export default function LoginPage() {
     }
 
     setIsSubmitting(true);
+    setFormError("");
 
     try {
 
-      await signUp(formData.username, formData.email, formData.password);
+      const data = await signUp(formData.username, formData.email, formData.password);
+      setUser(data.user);
 
-      // router.push('/home');
+      router.push('/home');
 
-      // setFormData({
-      //   username: "",
-      //   email: "",
-      //   password: "",
-      // });
+      setFormData({
+        username: "",
+        email: "",
+        password: "",
+      });
 
       setErrors({ username: "", email: "", password: "" });
     } catch (error) {
       console.error("Form submission error:", error);
+      setFormError(error instanceof Error ? error.message : "Failed to Register");
     } finally {
       setIsSubmitting(false);
     }
@@ -149,13 +152,13 @@ export default function LoginPage() {
           variants={fadeInUp}
           className="capitalize font-semibold lg:text-4xl text-2xl"
         >
-          Welcome Back
+          Furniro
         </motion.h2>
         <motion.p
           variants={fadeInUp}
           className="font-normal lg:text-base text-sm text-[#9F9F9F]"
         >
-          Please login to your account.
+          Create an account.
         </motion.p>
       </motion.div>
 
@@ -225,6 +228,10 @@ export default function LoginPage() {
             )}
           </motion.div>
 
+          {formError && (
+            <p className="text-red-500 text-sm text-center">{formError}</p>
+          )}
+
           <motion.div
             variants={fadeInUp}
             className="w-full flex items-center justify-center"
@@ -239,7 +246,7 @@ export default function LoginPage() {
                   <ClipLoader size={20} color="#ffffff" />
                 </>
               ) : (
-                "Login"
+                "Signup"
               )}
             </button>
           </motion.div>
