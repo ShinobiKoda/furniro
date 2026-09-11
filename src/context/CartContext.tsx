@@ -11,7 +11,7 @@ import { Product } from "@/services/products";
 
 
 import { fetchCartItems, addItemToCart, removeItemFromCart } from "@/services/cart";
-import { PaginatedResponse } from "@/types/type";
+import { useAuth } from "./AuthContext";
 import { CartItem } from "@/services/cart";
 
 interface CartContextType {
@@ -43,6 +43,8 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[] | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
+  const {user} = useAuth();
+
   // useEffect(() => {
   //   const savedCartItems = localStorage.getItem("furniro-cart-items");
   //   if (savedCartItems) {
@@ -63,7 +65,11 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   // }, [cartItems, isInitialized]);
 
   useEffect(() => {
+
+
+
     const getCartItems = async () => {
+      if(!user) return;
       try {
         const data = await fetchCartItems();
 
@@ -72,6 +78,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         console.error("Failed to fetch Cart items", error);
       }
     }
+
     getCartItems();
   }, []);
 
