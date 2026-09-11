@@ -23,7 +23,7 @@ interface CartPageProps {
 }
 
 export function Cart({ pathSegments }: CartPageProps) {
-  const { cartItems, removeFromCart, updateQuantity, getTotalPrice } =
+  const { cartItems, removeFromCart } =
     useCart();
   const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
 
@@ -31,11 +31,11 @@ export function Cart({ pathSegments }: CartPageProps) {
     setImageErrors((prev) => new Set(prev).add(itemId));
   };
 
-  const handleQuantityChange = (furnitureId: number, newQuantity: number) => {
-    if (newQuantity > 0) {
-      updateQuantity(furnitureId, newQuantity);
-    }
-  };
+  // const handleQuantityChange = (furnitureId: number, newQuantity: number) => {
+  //   if (newQuantity > 0) {
+  //     updateQuantity(furnitureId, newQuantity);
+  //   }
+  // };
   return (
     <div className="w-full">
       <header
@@ -78,7 +78,7 @@ export function Cart({ pathSegments }: CartPageProps) {
             <li>Subtotal</li>
           </motion.ul>
 
-          {cartItems.length === 0 ? (
+          {cartItems?.length === 0 ? (
             <motion.div
               variants={fadeInUp}
               className="text-center py-16 text-gray-500"
@@ -91,9 +91,9 @@ export function Cart({ pathSegments }: CartPageProps) {
               variants={staggerChildren}
               className="space-y-6 mt-[55px]"
             >
-              {cartItems.map((item) => (
+              {cartItems?.map((item) => (
                 <motion.div
-                  key={item.furniture.id}
+                  key={item.id}
                   variants={fadeInUp}
                   className="flex items-center gap-4 lg:gap-[114px] justify-around overflow-x-auto scrollbar-hide"
                 >
@@ -104,47 +104,47 @@ export function Cart({ pathSegments }: CartPageProps) {
                       transition={{ duration: 0.5, ease: "easeOut" }}
                       className="w-[108px] h-[105px] rounded-lg overflow-hidden bg-[#B88E2F]/10 flex-shrink-0 relative"
                     >
-                      {imageErrors.has(item.furniture.id) ? (
+                      {imageErrors.has(item.id) ? (
                         <div className="w-full h-full bg-[#B88E2F]/20 flex items-center justify-center">
                           <IoBagAddOutline className="text-[#B88E2F] text-3xl" />
                         </div>
                       ) : (
                         <Image
-                          src={item.furniture.image_url ?? ""}
-                          alt={item.furniture.name}
+                          src={item?.product?.image_url ?? ""}
+                          alt={item?.product?.name}
                           width={108}
                           height={105}
                           className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                          onError={() => handleImageError(item.furniture.id)}
+                          onError={() => handleImageError(item?.product?.id)}
                         />
                       )}
                     </motion.div>
                     <span className="text-[#9F9F9F] text-base font-normal text-nowrap">
-                      {item.furniture.name}
+                      {item?.product?.name}
                     </span>
                   </div>
                   <p className="text-[#9F9F9F] text-base font-normal">
                     ₦
                     {(
-                      item.furniture.compare_at_price || item.furniture.price
+                      item?.product?.compare_at_price || item?.product?.price
                     ).toLocaleString()}
                   </p>
                   <input
                     type="number"
                     min="1"
                     value={item.quantity}
-                    onChange={(e) =>
-                      handleQuantityChange(
-                        item.furniture.id,
-                        parseInt(e.target.value)
-                      )
-                    }
+                    // onChange={(e) =>
+                    //   handleQuantityChange(
+                    //     item?.product?.id,
+                    //     parseInt(e.target.value)
+                    //   )
+                    // }
                     className="p-3 rounded-[5px] border text-base font-normal w-16 text-center"
                   />
                   <p>
                     ₦
                     {(
-                      (item.furniture.compare_at_price || item.furniture.price) *
+                      (item?.product?.compare_at_price || item?.product?.price) *
                       item.quantity
                     ).toLocaleString()}
                   </p>
@@ -152,7 +152,7 @@ export function Cart({ pathSegments }: CartPageProps) {
                     variants={scaleOnHover}
                     whileHover="hover"
                     className="cursor-pointer"
-                    onClick={() => removeFromCart(item.furniture.id)}
+                    onClick={() => removeFromCart(item?.product?.id)}
                   >
                     <AiFillDelete
                       className="text-[#B88E2F] text-base font-normal hover:text-red-500 transition-colors duration-200"
@@ -186,13 +186,13 @@ export function Cart({ pathSegments }: CartPageProps) {
             <p className="w-full flex items-center justify-between text-base">
               <span className="font-medium">Subtotal</span>
               <span className="font-normal">
-                ₦{getTotalPrice().toLocaleString()}
+                {/* ₦{getTotalPrice().toLocaleString()} */}
               </span>
             </p>
             <p className="w-full flex items-center justify-between font-medium">
               <span className="text-base">Total</span>
               <span className="text-xl text-[#B88E2F]">
-                ₦{getTotalPrice().toLocaleString()}
+                {/* ₦{getTotalPrice().toLocaleString()} */}
               </span>
             </p>
           </motion.div>
@@ -203,7 +203,7 @@ export function Cart({ pathSegments }: CartPageProps) {
                 whileHover="hover"
                 whileTap={{ scale: 0.98 }}
                 className="py-4 px-18 border border-black rounded-[15px] font-normal text-xl hover:opacity-85 cursor-pointer disabled:cursor-not-allowed"
-                disabled={cartItems.length === 0}
+                disabled={cartItems?.length === 0}
               >
                 Checkout
               </motion.button>

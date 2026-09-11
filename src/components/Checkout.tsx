@@ -41,7 +41,7 @@ interface FormErrors {
 }
 
 export function Checkout() {
-  const { cartItems, getTotalPrice } = useCart();
+  const { cartItems } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -520,7 +520,7 @@ export function Checkout() {
               <span>Subtotal</span>
             </motion.p>
             <motion.div variants={staggerChildren} className="space-y-3.5">
-              {cartItems.length === 0 ? (
+              {cartItems?.length === 0 ? (
                 <motion.div
                   variants={fadeInUp}
                   className="text-center py-8 text-gray-500"
@@ -530,15 +530,15 @@ export function Checkout() {
                 </motion.div>
               ) : (
                 <>
-                  {cartItems.map((item) => (
+                  {cartItems?.map((item) => (
                     <motion.div
-                      key={item.furniture.id}
+                      key={item?.product?.id}
                       variants={fadeInUp}
                       className="flex items-center justify-between"
                     >
                       <p>
                         <span className="font-regular text-base text-[#9F9F9F]">
-                          {item.furniture.name}{" "}
+                          {item?.product?.name}{" "}
                         </span>
                         <span className="font-medium text-[12px]">
                           x{item.quantity}
@@ -547,8 +547,8 @@ export function Checkout() {
                       <p className="font-light text-base">
                         ₦
                         {(
-                          (item.furniture.compare_at_price ||
-                            item.furniture.price) * item.quantity
+                          (item?.product?.compare_at_price ||
+                            item?.product?.price) * item.quantity
                         ).toLocaleString()}
                       </p>
                     </motion.div>
@@ -559,7 +559,7 @@ export function Checkout() {
                   >
                     <span className="font-normal">Subtotal</span>
                     <span className="font-light">
-                      ₦{getTotalPrice().toLocaleString()}
+                      {/* ₦{getTotalPrice().toLocaleString()} */}
                     </span>
                   </motion.p>
                   <motion.p
@@ -568,7 +568,7 @@ export function Checkout() {
                   >
                     <span className="font-normal text-base">Total</span>
                     <span className="font-bold lg:text-2xl text-lg text-[#B88E2F]">
-                      ₦{getTotalPrice().toLocaleString()}
+                      {/* ₦{getTotalPrice().toLocaleString()} */}
                     </span>
                   </motion.p>
                 </>
@@ -669,7 +669,7 @@ export function Checkout() {
                     boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
                     transition: { duration: 0.2 },
                   }}
-                  disabled={cartItems.length === 0 || isLoading}
+                  disabled={cartItems?.length === 0 || isLoading}
                   className="rounded-[15px] outline-none border w-full max-w-[318px] border-black lg:py-4 py-2 font-normal lg:text-xl text-lg cursor-pointer transition-all duration-200 hover:bg-black hover:text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-black flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
