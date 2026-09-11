@@ -18,7 +18,7 @@ interface CartModalProps {
 }
 
 export function CartModal({ onClose }: CartModalProps) {
-  const { cartItems } = useCart();
+  const { cartItems, removeFromCart } = useCart();
   const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
 
   const handleImageError = (itemId: number) => {
@@ -63,7 +63,7 @@ export function CartModal({ onClose }: CartModalProps) {
         initial="hidden"
         animate="visible"
       >
-        {!cartItems?.data?.length ? (
+        {!cartItems?.length ? (
           <motion.div
             variants={fadeInUp}
             className="text-center py-8 text-gray-500"
@@ -72,7 +72,7 @@ export function CartModal({ onClose }: CartModalProps) {
             <p className="text-sm">Add some furniture to get started!</p>
           </motion.div>
         ) : (
-          cartItems?.data?.map((item) => (
+          cartItems?.map((item) => (
             <motion.div
               key={item.product.id}
               className="flex items-center justify-between w-full gap-4"
@@ -131,7 +131,7 @@ export function CartModal({ onClose }: CartModalProps) {
                 variants={scaleOnHover}
                 whileHover="hover"
                 whileTap={{ scale: 0.9 }}
-                // onClick={() => removeFromCart(item.furniture.id)}
+                onClick={() => removeFromCart(item.id)}
               >
                 <MdCancel className="text-[#9F9F9F] hover:text-red-500 text-2xl transition-colors duration-200 cursor-pointer" />
               </motion.button>

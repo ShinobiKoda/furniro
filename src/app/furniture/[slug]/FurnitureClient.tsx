@@ -32,8 +32,8 @@ export default function FurnitureClient({ product, relatedProducts }: FurnitureD
   const [activeTab, setActiveTab] = useState<string>("description");
   const [imageError, setImageError] = useState(false);
 
-  // const { addToCart, removeFromCart, cartItems } = useCart();
-  // const { likedItems, toggleLike } = useLikedItems();
+  const { addToCart, cartItems } = useCart();
+  const { likedItems, toggleLike } = useLikedItems();
 
   //  const fetchRelatedFurniture = async (tag: string, currentId: number) => {
   //   setLoadingRelated(true);
@@ -57,28 +57,28 @@ export default function FurnitureClient({ product, relatedProducts }: FurnitureD
   //   setLoadingRelated(false);
   // };
 
-  // const isLiked = furniture ? likedItems.has(furniture.id.toString()) : false;
-  // const isInCart = furniture
-  //   ? cartItems.some((item) => item.furniture.id === furniture.id)
-  //   : false;
+  const isLiked = product ? likedItems.has(product.slug) : false;
+  const isInCart = product
+    ? cartItems?.some((item) => item.product.id === product.id)
+    : false;
 
-  // const handleLikeToggle = () => {
-  //   if (furniture) {
-  //     toggleLike(furniture.id.toString());
-  //   }
-  // };
+  const handleLikeToggle = () => {
+    if (product) {
+      toggleLike(product.slug);
+    }
+  };
 
-  // const handleAddToCart = () => {
-  //   if (furniture) {
-  //     if (isInCart) {
-  //       removeFromCart(furniture.id);
-  //     } else {
-  //       for (let i = 0; i < quantity; i++) {
-  //         addToCart(furniture);
-  //       }
-  //     }
-  //   }
-  // };
+  const handleAddToCart = () => {
+    if (product) {
+      if (isInCart) {
+        console.log("Remove from cart");
+      } else {
+        for (let i = 0; i < quantity; i++) {
+          addToCart(product);
+        }
+      }
+    }
+  };
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
   const decreaseQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
@@ -146,12 +146,12 @@ export default function FurnitureClient({ product, relatedProducts }: FurnitureD
 
               {product.compare_at_price && (
                 <span className="absolute top-4 right-4 h-12 w-12 rounded-full bg-red-400 text-white flex items-center justify-center font-medium text-sm">
-                  -{product.compare_at_price}%
+                  -{Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100)}%
                 </span>
               )}
               {product.is_featured && (
                 <span className="absolute top-4 left-4 h-12 w-12 rounded-full bg-[#2EC1AC] text-white flex items-center justify-center font-medium text-sm">
-                  Featured!
+                  New!
                 </span>
               )}
             </div>
@@ -170,10 +170,10 @@ export default function FurnitureClient({ product, relatedProducts }: FurnitureD
                 {product.compare_at_price ? (
                   <>
                     <span className="text-3xl font-bold text-[#B88E2F]">
-                      ₦{product.compare_at_price.toLocaleString()}
+                      ₦{product.price.toLocaleString()}
                     </span>
                     <span className="text-xl text-gray-500 line-through">
-                      ₦{product.price.toLocaleString()}
+                      ₦{product.compare_at_price.toLocaleString()}
                     </span>
                   </>
                 ) : (
@@ -254,7 +254,7 @@ export default function FurnitureClient({ product, relatedProducts }: FurnitureD
                 </div>
               </div>
 
-              {/* <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={handleAddToCart}
@@ -292,7 +292,7 @@ export default function FurnitureClient({ product, relatedProducts }: FurnitureD
 
                  
                 </div>
-              </div> */}
+              </div>
             </div>
 
             <div className="border-t border-gray-200 pt-6 space-y-3 text-sm">

@@ -10,19 +10,19 @@ import React, {
 import { Product } from "@/services/products";
 
 
-import { fetchCartItems, addItemToCart } from "@/services/cart";
+import { fetchCartItems, addItemToCart, removeItemFromCart } from "@/services/cart";
 import { PaginatedResponse } from "@/types/type";
 import { CartItem } from "@/services/cart";
 
 interface CartContextType {
-  cartItems: PaginatedResponse<CartItem> | null;
+  cartItems: CartItem[] | null;
   addToCart: (furniture: Product) => Promise<void>;
-  // removeFromCart: (furnitureId: number) => void;
+  removeFromCart: (itemId: number) => void;
   // updateQuantity: (furnitureId: number, quantity: number) => void;
   // clearCart: () => void;
   // getTotalPrice: () => number;
   // getItemCount: () => number;
-  // getUniqueItemCount: () => number;
+  getUniqueItemCount: () => number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -40,7 +40,7 @@ interface CartProviderProps {
 }
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const [cartItems, setCartItems] = useState<PaginatedResponse<CartItem> | null>(null);
+  const [cartItems, setCartItems] = useState<CartItem[] | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
   // useEffect(() => {
@@ -62,13 +62,13 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   //   }
   // }, [cartItems, isInitialized]);
 
-  useEffect(() =>{
+  useEffect(() => {
     const getCartItems = async () => {
-      try{
+      try {
         const data = await fetchCartItems();
 
         setCartItems(data);
-      }catch(error){
+      } catch (error) {
         console.error("Failed to fetch Cart items", error);
       }
     }
@@ -76,21 +76,48 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   }, []);
 
   const addToCart = async (furniture: Product) => {
+
+    if (!furniture) return;
+
+    const previousItems = cartItems;
+
+    const existingItem = cartItems?.find((item) => item.product_id === furniture.id);
+
+    if (existingItem) {
+      if (!furniture) return;
+      setCartItems((prev) => prev!.map((item) => item.product_id === furniture.id ? { ...item, quantity: item.quantity + 1 } : item))
+    } else {
+      const optimisticItem: CartItem = {
+        id: Math.random(),
+        cart_id: -1,
+        product_id: furniture.id,
+        quantity: 1,
+        product: furniture
+      }
+
+      setCartItems((prev)=> (prev ? [...prev, optimisticItem]: [optimisticItem]));
+    }
+
     try {
-      if (!cartItems) return;
-      await addItemToCart( furniture.id);
+      await addItemToCart(furniture.id);
       const data = await fetchCartItems();
       setCartItems(data);
     } catch (error) {
+      setCartItems(previousItems);
       console.error("Failed to add item to cart", error);
     }
   };
 
-  // const removeFromCart = (furnitureId: number) => {
-  //   setCartItems((prevItems) =>
-  //     prevItems.filter((item) => item.furniture.id !== furnitureId)
-  //   );
-  // };
+  const removeFromCart = async (itemId: number) => {
+    try {
+      if (!cartItems) return;
+      await removeItemFromCart(itemId);
+      const data = await fetchCartItems();
+      setCartItems(data);
+    } catch (error) {
+      console.error("Failed to remove item from cart", error);
+    }
+  };
 
   // const updateQuantity = (furnitureId: number, quantity: number) => {
   //   if (quantity <= 0) {
@@ -120,19 +147,19 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   //   return cartItems.reduce((total, item) => total + item.quantity, 0);
   // };
 
-  // const getUniqueItemCount = () => {
-  //   return cartItems.length;
-  // };
+  const getUniqueItemCount = () => {
+    return cartItems?.length ?? 0;
+  };
 
   const value: CartContextType = {
     cartItems,
     addToCart,
-    // removeFromCart,
+    removeFromCart,
     // updateQuantity,
     // clearCart,
     // getTotalPrice,
     // getItemCount,
-    // getUniqueItemCount,
+    getUniqueItemCount,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

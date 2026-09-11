@@ -43,7 +43,7 @@ export function FurnitureCard({ product }: {product: Product}) {
           )}
           {product.compare_at_price && (
             <span className="absolute top-4 right-4 h-12 w-12 rounded-full bg-red-400 text-white flex items-center justify-center font-medium text-base z-10">
-              -{product.compare_at_price}%
+              -{Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100)}%
             </span>
           )} 
            {product.is_featured && (
@@ -87,11 +87,11 @@ export function FurnitureCard({ product }: {product: Product}) {
             {product.compare_at_price ? (
               <p className="flex items-center justify-between">
                 <span className="font-semibold lg:text-xl text-base text-[#3A3A3A]">
-                  ₦{product.compare_at_price.toLocaleString()}
+                  ₦{product.price.toLocaleString()}
                 </span>
 
                 <span className="font-normal text-base text-[#B0B0B0] line-through">
-                  ₦{product.price.toLocaleString()}
+                  ₦{product.compare_at_price.toLocaleString()}
                 </span>
               </p>
             ) : (

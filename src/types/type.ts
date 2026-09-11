@@ -85,7 +85,7 @@ export interface PaginatedResponse<T> {
   total: number;
 }
 
-export interface CreateReponse<T>{
+export interface MessageResponse<T>{
   message: string;
   data: T;
 }
