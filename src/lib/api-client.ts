@@ -17,11 +17,11 @@ async function request(method: string, path: string, body?: unknown) {
     body: body ? JSON.stringify(body) : undefined,
   });
 
-  if (res.status === 401) {
-    localStorage.removeItem("auth_token");
-    window.location.href = "/signup";
-    return;
-  }
+  // if (res.status === 401) {
+  //   localStorage.removeItem("auth_token");
+  //   window.location.href = "/signup";
+  //   return;
+  // }
 
   const data = await res.json().catch(() => null);
   if (!res.ok) throw new Error(data?.message ?? "Something went wrong");
