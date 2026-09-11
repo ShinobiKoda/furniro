@@ -73,9 +73,7 @@ export default function FurnitureClient({ product, relatedProducts }: FurnitureD
       if (isInCart) {
         console.log("Remove from cart");
       } else {
-        for (let i = 0; i < quantity; i++) {
-          addToCart(product);
-        }
+        addToCart(product, quantity);
       }
     }
   };

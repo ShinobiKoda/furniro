@@ -16,7 +16,7 @@ import { CartItem } from "@/services/cart";
 
 interface CartContextType {
   cartItems: CartItem[] | null;
-  addToCart: (furniture: Product) => Promise<void>;
+  addToCart: (furniture: Product, quantity?: number) => Promise<void>;
   removeFromCart: (itemId: number) => void;
   // updateQuantity: (furnitureId: number, quantity: number) => void;
   // clearCart: () => void;
@@ -75,7 +75,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     getCartItems();
   }, []);
 
-  const addToCart = async (furniture: Product) => {
+  const addToCart = async (furniture: Product, quantity: number = 1) => {
 
     if (!furniture) return;
 
@@ -85,13 +85,13 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
     if (existingItem) {
       if (!furniture) return;
-      setCartItems((prev) => prev!.map((item) => item.product_id === furniture.id ? { ...item, quantity: item.quantity + 1 } : item))
+      setCartItems((prev) => prev!.map((item) => item.product_id === furniture.id ? { ...item, quantity: item.quantity + quantity } : item))
     } else {
       const optimisticItem: CartItem = {
         id: Math.random(),
         cart_id: -1,
         product_id: furniture.id,
-        quantity: 1,
+        quantity: quantity,
         product: furniture
       }
 
@@ -99,7 +99,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     }
 
     try {
-      await addItemToCart(furniture.id);
+      await addItemToCart(furniture.id, quantity);
       const data = await fetchCartItems();
       setCartItems(data);
     } catch (error) {
