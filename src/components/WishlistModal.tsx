@@ -56,7 +56,7 @@ export function WishlistModal({ isOpen, onClose }: WishlistModalProps) {
   // };
 
   const isInCart = (furnitureId: string) => {
-    return cartItems?.data.some((item) => item.product.slug === furnitureId);
+    return cartItems?.some((item) => item.product.slug === furnitureId);
   };
 
   const modalVariants = {
