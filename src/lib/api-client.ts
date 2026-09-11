@@ -19,7 +19,7 @@ async function request(method: string, path: string, body?: unknown) {
 
   if (res.status === 401) {
     localStorage.removeItem("auth_token");
-    window.location.href = "/login";
+    window.location.href = "/signup";
     return;
   }
 

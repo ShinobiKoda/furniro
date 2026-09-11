@@ -241,7 +241,7 @@ export function Navbar() {
                 </motion.li>
                 <motion.li variants={fadeInUp}>
                   <Link
-                    href="/login"
+                    href="/signup"
                     onClick={closeSidebar}
                     className="flex items-center p-3 text-gray-700 hover:bg-gray-50 hover:text-[#B88E2F] rounded-lg transition-all duration-200 group"
                   >
@@ -396,7 +396,7 @@ export function Navbar() {
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
-            <Link href="/login">Signup</Link>
+            <Link href="/signup">Signup</Link>
           </motion.li>
           <motion.li
             variants={fadeInUp}
